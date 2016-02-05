@@ -1,0 +1,291 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A596C3541C64AF6D00943FCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A596C3531C64AF6D00943FCF /* AppDelegate.swift */; };
+		A596C3561C64AF6D00943FCF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A596C3551C64AF6D00943FCF /* ViewController.swift */; };
+		A596C3591C64AF6D00943FCF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A596C3571C64AF6D00943FCF /* Main.storyboard */; };
+		A596C35B1C64AF6D00943FCF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A596C35A1C64AF6D00943FCF /* Assets.xcassets */; };
+		A596C35E1C64AF6D00943FCF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A596C35C1C64AF6D00943FCF /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A596C3501C64AF6D00943FCF /* JIRA Commander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JIRA Commander.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A596C3531C64AF6D00943FCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A596C3551C64AF6D00943FCF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		A596C3581C64AF6D00943FCF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A596C35A1C64AF6D00943FCF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A596C35D1C64AF6D00943FCF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A596C35F1C64AF6D00943FCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A596C34D1C64AF6D00943FCF /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A596C3471C64AF6D00943FCF = {
+			isa = PBXGroup;
+			children = (
+				A596C3521C64AF6D00943FCF /* JIRA Commander */,
+				A596C3511C64AF6D00943FCF /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		A596C3511C64AF6D00943FCF /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A596C3501C64AF6D00943FCF /* JIRA Commander.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A596C3521C64AF6D00943FCF /* JIRA Commander */ = {
+			isa = PBXGroup;
+			children = (
+				A596C3531C64AF6D00943FCF /* AppDelegate.swift */,
+				A596C3551C64AF6D00943FCF /* ViewController.swift */,
+				A596C3571C64AF6D00943FCF /* Main.storyboard */,
+				A596C35A1C64AF6D00943FCF /* Assets.xcassets */,
+				A596C35C1C64AF6D00943FCF /* LaunchScreen.storyboard */,
+				A596C35F1C64AF6D00943FCF /* Info.plist */,
+			);
+			path = "JIRA Commander";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A596C34F1C64AF6D00943FCF /* JIRA Commander */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A596C3621C64AF6D00943FCF /* Build configuration list for PBXNativeTarget "JIRA Commander" */;
+			buildPhases = (
+				A596C34C1C64AF6D00943FCF /* Sources */,
+				A596C34D1C64AF6D00943FCF /* Frameworks */,
+				A596C34E1C64AF6D00943FCF /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "JIRA Commander";
+			productName = "JIRA Commander";
+			productReference = A596C3501C64AF6D00943FCF /* JIRA Commander.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A596C3481C64AF6D00943FCF /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 0720;
+				LastUpgradeCheck = 0720;
+				ORGANIZATIONNAME = "Tim Ordenewitz";
+				TargetAttributes = {
+					A596C34F1C64AF6D00943FCF = {
+						CreatedOnToolsVersion = 7.2.1;
+					};
+				};
+			};
+			buildConfigurationList = A596C34B1C64AF6D00943FCF /* Build configuration list for PBXProject "JIRA Commander" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A596C3471C64AF6D00943FCF;
+			productRefGroup = A596C3511C64AF6D00943FCF /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A596C34F1C64AF6D00943FCF /* JIRA Commander */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A596C34E1C64AF6D00943FCF /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A596C35E1C64AF6D00943FCF /* LaunchScreen.storyboard in Resources */,
+				A596C35B1C64AF6D00943FCF /* Assets.xcassets in Resources */,
+				A596C3591C64AF6D00943FCF /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A596C34C1C64AF6D00943FCF /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A596C3561C64AF6D00943FCF /* ViewController.swift in Sources */,
+				A596C3541C64AF6D00943FCF /* AppDelegate.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		A596C3571C64AF6D00943FCF /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A596C3581C64AF6D00943FCF /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A596C35C1C64AF6D00943FCF /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A596C35D1C64AF6D00943FCF /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A596C3601C64AF6D00943FCF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A596C3611C64AF6D00943FCF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.2;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A596C3631C64AF6D00943FCF /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "JIRA Commander/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.scandio.JIRA-Commander";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		A596C3641C64AF6D00943FCF /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				INFOPLIST_FILE = "JIRA Commander/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.scandio.JIRA-Commander";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A596C34B1C64AF6D00943FCF /* Build configuration list for PBXProject "JIRA Commander" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A596C3601C64AF6D00943FCF /* Debug */,
+				A596C3611C64AF6D00943FCF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A596C3621C64AF6D00943FCF /* Build configuration list for PBXNativeTarget "JIRA Commander" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A596C3631C64AF6D00943FCF /* Debug */,
+				A596C3641C64AF6D00943FCF /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A596C3481C64AF6D00943FCF /* Project object */;
+}
