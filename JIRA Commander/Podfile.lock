@@ -1,10 +1,15 @@
 PODS:
   - QorumLogs (0.4)
+  - RestEssentials (1.0)
 
 DEPENDENCIES:
   - QorumLogs
+  - RestEssentials (~> 1.0)
 
 SPEC CHECKSUMS:
   QorumLogs: 63d7bd4a3f59fa5f7afedafa3ab9202b065c6466
+  RestEssentials: 361dc2daa930a776075625ce7a0d70e2714a1fef
 
-COCOAPODS: 0.39.0
+PODFILE CHECKSUM: 459402c9621a4497969d51c1da35d8b83ed783d5
+
+COCOAPODS: 1.0.0.beta.3
