@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="xEh-UB-a1I">
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
@@ -29,13 +29,10 @@
                                 <state key="normal" title="LOGIN" backgroundImage="Login Button BG">
                                     <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
+                                <connections>
+                                    <action selector="loginButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="CQK-c2-sOl"/>
+                                </connections>
                             </button>
-                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="EMAIL" minimumFontSize="17" background="pw" translatesAutoresizingMaskIntoConstraints="NO" id="0gc-VO-JwQ">
-                                <rect key="frame" x="35" y="292" width="304" height="30"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="emailAddress" keyboardAppearance="alert" returnKeyType="done"/>
-                            </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="SERVER ADRESS" minimumFontSize="17" background="pw" translatesAutoresizingMaskIntoConstraints="NO" id="T7m-uh-Vjk">
                                 <rect key="frame" x="35" y="406" width="304" height="30"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
@@ -48,25 +45,187 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="done" secureTextEntry="YES"/>
                             </textField>
+                            <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="USER" minimumFontSize="17" background="pw" translatesAutoresizingMaskIntoConstraints="NO" id="0gc-VO-JwQ">
+                                <rect key="frame" x="35" y="292" width="304" height="30"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="done"/>
+                            </textField>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
+                    <navigationItem key="navigationItem" id="g9S-Lw-RF9"/>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                     <connections>
-                        <outlet property="EmailTextField" destination="0gc-VO-JwQ" id="4tP-34-sHo"/>
                         <outlet property="PWTextField" destination="Z3c-Ql-ZEz" id="JUw-0i-A9I"/>
                         <outlet property="ServerAdressTextField" destination="T7m-uh-Vjk" id="y7v-8Z-Y2Q"/>
+                        <outlet property="UserTextField" destination="0gc-VO-JwQ" id="kS4-RT-vNe"/>
+                        <segue destination="1o0-ki-CGl" kind="show" identifier="showDashboardSegue" id="gAG-Oz-vco"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="304.5" y="429.5"/>
+            <point key="canvasLocation" x="1052.5" y="429.5"/>
+        </scene>
+        <!--Dashboard View Controller-->
+        <scene sceneID="7aU-Pa-qra">
+            <objects>
+                <viewController id="1o0-ki-CGl" customClass="DashboardViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="piE-jf-p05"/>
+                        <viewControllerLayoutGuide type="bottom" id="8IZ-nh-gUp"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="bjx-i0-LMo">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="BG" translatesAutoresizingMaskIntoConstraints="NO" id="aIz-v5-aiT">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="JIRA Control" translatesAutoresizingMaskIntoConstraints="NO" id="RHc-kk-tN5">
+                                <rect key="frame" x="67" y="105" width="240" height="128"/>
+                            </imageView>
+                            <button opaque="NO" contentMode="center" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kmr-Dj-ilG">
+                                <rect key="frame" x="194" y="293" width="139" height="139"/>
+                                <state key="normal" image="Waage"/>
+                                <connections>
+                                    <segue destination="H9J-jJ-1O2" kind="show" id="8E7-1Y-jq2"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="center" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Hj-0u-SAx">
+                                <rect key="frame" x="194" y="446" width="139" height="139"/>
+                                <state key="normal" image="Hammer"/>
+                                <connections>
+                                    <segue destination="2UT-7w-9L0" kind="show" id="7TM-cQ-aiT"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="center" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pxZ-qq-XzW">
+                                <rect key="frame" x="42" y="447" width="138" height="138"/>
+                                <state key="normal" image="CHRAT"/>
+                                <connections>
+                                    <segue destination="f3P-Bx-i4I" kind="show" id="4Fw-ju-AAN"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="center" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9xR-RB-L7Q">
+                                <rect key="frame" x="42" y="294" width="138" height="138"/>
+                                <state key="normal" image="Settings"/>
+                                <connections>
+                                    <segue destination="lz3-WM-5EG" kind="show" id="JVJ-Ui-FiE"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="AOl-WA-FEg"/>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="7S4-gC-tg3" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1762.5" y="429.5"/>
+        </scene>
+        <!--Pressure Weight View Controller-->
+        <scene sceneID="h4q-ko-H0I">
+            <objects>
+                <viewController id="H9J-jJ-1O2" customClass="PressureWeightViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="cCG-Mo-SYq"/>
+                        <viewControllerLayoutGuide type="bottom" id="Vjs-6J-DLg"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="pdh-gT-N2d">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HPW-ft-KS7" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3273.5" y="51.5"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="59J-Hw-0dT">
+            <objects>
+                <viewController id="lz3-WM-5EG" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9tK-VP-EyX"/>
+                        <viewControllerLayoutGuide type="bottom" id="SnS-ds-u6N"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="2ny-8g-Rcc">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="WTQ-2y-hUk" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="792.5" y="1242.5"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="dqt-W3-t74">
+            <objects>
+                <viewController id="2UT-7w-9L0" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="wwz-GD-rSp"/>
+                        <viewControllerLayoutGuide type="bottom" id="02J-hG-ylA"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="JuW-OE-uf9">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="KaV-1D-7VK" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3328.5" y="984.5"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="zYY-jS-ZnF">
+            <objects>
+                <viewController id="f3P-Bx-i4I" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="rBJ-3J-Pf5"/>
+                        <viewControllerLayoutGuide type="bottom" id="4JF-SE-Esm"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="fat-C5-ICZ">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Pr2-gA-kw4" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3773.5" y="536.5"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="x5q-yc-3Q8">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xEh-UB-a1I" sceneMemberID="viewController">
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="X5x-vC-qNQ">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="O7t-kn-8vO"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="hxS-Hj-rM2" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="240" y="429"/>
         </scene>
     </scenes>
     <resources>
         <image name="BG" width="2164" height="1440"/>
+        <image name="CHRAT" width="285" height="285"/>
+        <image name="Hammer" width="285" height="285"/>
         <image name="JIRA Control" width="450" height="253"/>
         <image name="Login Button BG" width="750" height="141"/>
+        <image name="Settings" width="285" height="285"/>
+        <image name="Waage" width="285" height="285"/>
         <image name="pw" width="640" height="48"/>
     </resources>
 </document>
