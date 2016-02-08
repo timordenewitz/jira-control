@@ -89,7 +89,7 @@
                                 <rect key="frame" x="194" y="293" width="139" height="139"/>
                                 <state key="normal" image="Waage"/>
                                 <connections>
-                                    <segue destination="H9J-jJ-1O2" kind="show" id="8E7-1Y-jq2"/>
+                                    <segue destination="d5Q-Qi-hRT" kind="show" identifier="PressureWeight" id="MYN-o7-cht"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="center" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9Hj-0u-SAx">
@@ -123,10 +123,68 @@
             </objects>
             <point key="canvasLocation" x="1762.5" y="429.5"/>
         </scene>
-        <!--Pressure Weight View Controller-->
+        <!--PRESSURE ISSUE-->
+        <scene sceneID="Ghf-Qv-sum">
+            <objects>
+                <tableViewController title="PRESSURE ISSUE" id="d5Q-Qi-hRT" customClass="PressureWeightViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="PRESSURE ISSUE" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="55" sectionHeaderHeight="28" sectionFooterHeight="28" id="GRh-k0-hFa">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <prototypes>
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="issueCell" id="OMN-RD-R2M" customClass="IssueTableViewCell" customModule="JIRA_Commander" customModuleProvider="target">
+                                <rect key="frame" x="0.0" y="92" width="375" height="55"/>
+                                <autoresizingMask key="autoresizingMask"/>
+                                <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OMN-RD-R2M" id="baq-Pn-caZ">
+                                    <rect key="frame" x="0.0" y="0.0" width="375" height="54"/>
+                                    <autoresizingMask key="autoresizingMask"/>
+                                    <subviews>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nQm-rk-7BM">
+                                            <rect key="frame" x="20" y="8" width="225" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" weight="medium" pointSize="16"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Szi-Lq-aEM">
+                                            <rect key="frame" x="20" y="27" width="210" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="CRITICAL" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ugC-9c-BM2">
+                                            <rect key="frame" x="253" y="17" width="74" height="21"/>
+                                            <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
+                                            <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                            <nil key="highlightedColor"/>
+                                        </label>
+                                        <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="TAG Green" translatesAutoresizingMaskIntoConstraints="NO" id="K80-Yu-u1F">
+                                            <rect key="frame" x="335" y="18" width="19" height="19"/>
+                                        </imageView>
+                                    </subviews>
+                                </tableViewCellContentView>
+                                <connections>
+                                    <outlet property="iconImageView" destination="K80-Yu-u1F" id="jwv-kH-hmM"/>
+                                    <outlet property="statusLabel" destination="ugC-9c-BM2" id="SyC-Jz-LC9"/>
+                                    <outlet property="subtitleLabel" destination="Szi-Lq-aEM" id="reo-1c-pas"/>
+                                    <outlet property="titleLabel" destination="nQm-rk-7BM" id="sXu-41-NXT"/>
+                                </connections>
+                            </tableViewCell>
+                        </prototypes>
+                        <connections>
+                            <outlet property="dataSource" destination="d5Q-Qi-hRT" id="6Lm-Hd-cnb"/>
+                            <outlet property="delegate" destination="d5Q-Qi-hRT" id="Etv-te-eQj"/>
+                        </connections>
+                    </tableView>
+                    <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="P51-5A-xRu" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1786.5" y="-305.5"/>
+        </scene>
+        <!--PRESSURE ISSUE-->
         <scene sceneID="h4q-ko-H0I">
             <objects>
-                <viewController id="H9J-jJ-1O2" customClass="PressureWeightViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="PRESSURE ISSUE" id="H9J-jJ-1O2" customClass="PressureWeightViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="cCG-Mo-SYq"/>
                         <viewControllerLayoutGuide type="bottom" id="Vjs-6J-DLg"/>
@@ -134,18 +192,25 @@
                     <view key="view" contentMode="scaleToFill" id="pdh-gT-N2d">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="55" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="5Uh-XC-unQ">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="666"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <sections/>
+                            </tableView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="HPW-ft-KS7" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3273.5" y="51.5"/>
+            <point key="canvasLocation" x="2252.5" y="58.5"/>
         </scene>
-        <!--View Controller-->
+        <!--Settings-->
         <scene sceneID="59J-Hw-0dT">
             <objects>
-                <viewController id="lz3-WM-5EG" sceneMemberID="viewController">
+                <viewController title="Settings" id="lz3-WM-5EG" customClass="SettingsViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9tK-VP-EyX"/>
                         <viewControllerLayoutGuide type="bottom" id="SnS-ds-u6N"/>
@@ -159,12 +224,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="WTQ-2y-hUk" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="792.5" y="1242.5"/>
+            <point key="canvasLocation" x="2258.5" y="848.5"/>
         </scene>
-        <!--View Controller-->
+        <!--Stress Ticket-->
         <scene sceneID="dqt-W3-t74">
             <objects>
-                <viewController id="2UT-7w-9L0" sceneMemberID="viewController">
+                <viewController title="Stress Ticket" id="2UT-7w-9L0" customClass="StressTicketViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wwz-GD-rSp"/>
                         <viewControllerLayoutGuide type="bottom" id="02J-hG-ylA"/>
@@ -178,12 +243,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="KaV-1D-7VK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3328.5" y="984.5"/>
+            <point key="canvasLocation" x="2698.5" y="848.5"/>
         </scene>
-        <!--View Controller-->
+        <!--Diagrams-->
         <scene sceneID="zYY-jS-ZnF">
             <objects>
-                <viewController id="f3P-Bx-i4I" sceneMemberID="viewController">
+                <viewController title="Diagrams" id="f3P-Bx-i4I" customClass="DiagramViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rBJ-3J-Pf5"/>
                         <viewControllerLayoutGuide type="bottom" id="4JF-SE-Esm"/>
@@ -197,7 +262,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pr2-gA-kw4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3773.5" y="536.5"/>
+            <point key="canvasLocation" x="2698.5" y="58.5"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="x5q-yc-3Q8">
@@ -225,6 +290,7 @@
         <image name="JIRA Control" width="450" height="253"/>
         <image name="Login Button BG" width="750" height="141"/>
         <image name="Settings" width="285" height="285"/>
+        <image name="TAG Green" width="21" height="17"/>
         <image name="Waage" width="285" height="285"/>
         <image name="pw" width="640" height="48"/>
     </resources>

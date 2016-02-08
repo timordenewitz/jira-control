@@ -9,6 +9,10 @@
 /* Begin PBXBuildFile section */
 		A53D21DF1C64DF6E00746526 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53D21DE1C64DF6E00746526 /* DashboardViewController.swift */; };
 		A53D21E31C64FCC200746526 /* PressureWeightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53D21E21C64FCC200746526 /* PressureWeightViewController.swift */; };
+		A56F51C01C68A38E00B3FB2C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56F51BF1C68A38E00B3FB2C /* SettingsViewController.swift */; };
+		A56F51C21C68A39800B3FB2C /* StressTicketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56F51C11C68A39800B3FB2C /* StressTicketViewController.swift */; };
+		A56F51C41C68A3A000B3FB2C /* DiagramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56F51C31C68A3A000B3FB2C /* DiagramViewController.swift */; };
+		A56F51C81C68B43C00B3FB2C /* IssueTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56F51C71C68B43C00B3FB2C /* IssueTableViewCell.swift */; };
 		A596C3541C64AF6D00943FCF /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A596C3531C64AF6D00943FCF /* AppDelegate.swift */; };
 		A596C3561C64AF6D00943FCF /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A596C3551C64AF6D00943FCF /* ViewController.swift */; };
 		A596C3591C64AF6D00943FCF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A596C3571C64AF6D00943FCF /* Main.storyboard */; };
@@ -20,6 +24,10 @@
 /* Begin PBXFileReference section */
 		A53D21DE1C64DF6E00746526 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		A53D21E21C64FCC200746526 /* PressureWeightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PressureWeightViewController.swift; sourceTree = "<group>"; };
+		A56F51BF1C68A38E00B3FB2C /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		A56F51C11C68A39800B3FB2C /* StressTicketViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StressTicketViewController.swift; sourceTree = "<group>"; };
+		A56F51C31C68A3A000B3FB2C /* DiagramViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagramViewController.swift; sourceTree = "<group>"; };
+		A56F51C71C68B43C00B3FB2C /* IssueTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueTableViewCell.swift; sourceTree = "<group>"; };
 		A596C3501C64AF6D00943FCF /* JIRA Commander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JIRA Commander.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A596C3531C64AF6D00943FCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A596C3551C64AF6D00943FCF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -86,6 +94,10 @@
 				A596C3551C64AF6D00943FCF /* ViewController.swift */,
 				A53D21DE1C64DF6E00746526 /* DashboardViewController.swift */,
 				A53D21E21C64FCC200746526 /* PressureWeightViewController.swift */,
+				A56F51BF1C68A38E00B3FB2C /* SettingsViewController.swift */,
+				A56F51C11C68A39800B3FB2C /* StressTicketViewController.swift */,
+				A56F51C31C68A3A000B3FB2C /* DiagramViewController.swift */,
+				A56F51C71C68B43C00B3FB2C /* IssueTableViewCell.swift */,
 				A596C3571C64AF6D00943FCF /* Main.storyboard */,
 				A596C35A1C64AF6D00943FCF /* Assets.xcassets */,
 				A596C35C1C64AF6D00943FCF /* LaunchScreen.storyboard */,
@@ -216,10 +228,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A56F51C21C68A39800B3FB2C /* StressTicketViewController.swift in Sources */,
 				A596C3561C64AF6D00943FCF /* ViewController.swift in Sources */,
+				A56F51C41C68A3A000B3FB2C /* DiagramViewController.swift in Sources */,
 				A53D21E31C64FCC200746526 /* PressureWeightViewController.swift in Sources */,
 				A53D21DF1C64DF6E00746526 /* DashboardViewController.swift in Sources */,
+				A56F51C01C68A38E00B3FB2C /* SettingsViewController.swift in Sources */,
 				A596C3541C64AF6D00943FCF /* AppDelegate.swift in Sources */,
+				A56F51C81C68B43C00B3FB2C /* IssueTableViewCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

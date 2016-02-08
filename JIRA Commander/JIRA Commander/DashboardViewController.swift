@@ -10,8 +10,9 @@ import UIKit
 
 class DashboardViewController: UIViewController {
     
-    var userName :String = ""
-    var userPW :String = ""
+    var authBase64 :String = ""
+    var serverAdress : String = ""
+    var username : String = ""
 
     
     override func viewDidLoad() {
@@ -31,9 +32,24 @@ class DashboardViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-
     }
 
+    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+        let backItem = UIBarButtonItem()
+        backItem.title = ""
+        UINavigationBar.appearance().tintColor = UIColor.blackColor()
+        navigationItem.backBarButtonItem = backItem
+        
+    
+        if (segue.identifier == "PressureWeight"){
+            let theDestination = (segue.destinationViewController as! PressureWeightViewController)
+            theDestination.authBase64 =  authBase64
+            theDestination.serverAdress =  serverAdress
+            theDestination.username =  username
+
+        }
+    }
+    
     /*
     // MARK: - Navigation
 

@@ -14,6 +14,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var UserTextField: UITextField!
     @IBOutlet var PWTextField: UITextField!
     @IBOutlet var ServerAdressTextField: UITextField!
+    
+    var base64EncodedAuth :String = ""
+    var username :String = ""
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,41 +60,38 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func loginButtonClicked(sender: AnyObject) {
         let pw = PWTextField.text
-        let username = UserTextField.text
-        let auth = pw! + ":" + username!
+        username = UserTextField.text!
+        let auth = pw! + ":" + username
         let utf8auth = auth.dataUsingEncoding(NSUTF8StringEncoding)
-        let base64EncodedAuth = utf8auth?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
+        base64EncodedAuth = (utf8auth?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)))!
         
         //Send Request
-        Alamofire.request(.GET, "http://46.101.221.171:8080/rest/api/latest/search?jql=reporter=" + username!, headers: ["Authorization" : "Basic " + base64EncodedAuth!])
+        Alamofire.request(.GET, "http://46.101.221.171:8080/rest/api/latest/search?jql=reporter=" + username, headers: ["Authorization" : "Basic " + base64EncodedAuth])
             .responseJSON { response in
-                print(response.request)  // original URL request
-                print(response.response) // URL response
-                print(response.result)   // result of response serialization
-                
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         for var index = 0; index < issues!.count; ++index{
-                           print(issues![index]["key"])
                         }
                     }
                 }
                 
-                if let statusCode = response.response?.statusCode {
-                    if (statusCode == 200) {
-                        self.performDashboardSegue()
-                    }
-                }
+//                if let statusCode = response.response?.statusCode {
+//                    if (statusCode == 200) {
+//                        self.performDashboardSegue()
+//                    }
+//                }
+                self.performDashboardSegue()
         }
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let theDestination = (segue.destinationViewController as! DashboardViewController)
-        theDestination.userName = UserTextField.text!
-        theDestination.userPW =  PWTextField.text!
+        theDestination.authBase64 =  base64EncodedAuth
+        theDestination.serverAdress =  ServerAdressTextField.text!
+        theDestination.username =  username
+        
     }
-    
     
     func performDashboardSegue() {
         performSegueWithIdentifier("showDashboardSegue", sender: self)
