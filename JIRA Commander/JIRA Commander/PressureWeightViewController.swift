@@ -18,9 +18,11 @@ class PressureWeightViewController: UITableViewController{
     var username :String = ""
     
     enum status: String{
-        case CRITICAL
-        case TRIVIAL
-        case NORMAL
+        case Highest
+        case High
+        case Medium
+        case Low
+        case Lowest
     }
     
     struct issue {
@@ -31,14 +33,21 @@ class PressureWeightViewController: UITableViewController{
     
     var issuesArray = [issue]()
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
+        self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         loadIssues()
     }
     
+    func handleRefresh(refreshControl: UIRefreshControl) {
+        loadIssues()
+        reloadIssueTable()
+        refreshControl.endRefreshing()
+    }
+    
     func loadIssues() {
+        issuesArray.removeAll()
         Alamofire.request(.GET, "http://46.101.221.171:8080/rest/api/latest/search?jql=reporter=" + "admin", headers: ["Authorization" : "Basic " + "YWRtaW46YWRtaW4="])
             .responseJSON { response in
                 print(response.request)  // original URL request
@@ -57,15 +66,18 @@ class PressureWeightViewController: UITableViewController{
                                 }
                             }
                         }
-                        dispatch_async(dispatch_get_main_queue(), { () -> Void in
-                            self.tableView.reloadData()
-                        })
+                        self.reloadIssueTable()
                     }
                 }
         }
     }
     
-
+    func reloadIssueTable() {
+        dispatch_async(dispatch_get_main_queue(), { () -> Void in
+            self.tableView.reloadData()
+        })
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -84,8 +96,19 @@ class PressureWeightViewController: UITableViewController{
         cell.titleLabel.text = issuesArray[indexPath.row].title
         cell.subtitleLabel.text = issuesArray[indexPath.row].desctiption
         cell.statusLabel.text = issuesArray[indexPath.row].issueStatus.uppercaseString
-        cell.iconImageView.image = UIImage(named: "TAG Green")!
-        return cell
+        
+        if (issuesArray[indexPath.row].issueStatus == status.Highest.rawValue || issuesArray[indexPath.row].issueStatus == status.High.rawValue) {
+            cell.iconImageView.image = UIImage(named: "TAG Red")!
+            return cell
+        }
+        if (issuesArray[indexPath.row].issueStatus == status.Medium.rawValue) {
+            cell.iconImageView.image = UIImage(named: "TAG Yellow")!
+            return cell
+        }
+        else {
+            cell.iconImageView.image = UIImage(named: "TAG Green")!
+            return cell            
+        }
     }
     
     override func viewWillAppear(animated: Bool) {
