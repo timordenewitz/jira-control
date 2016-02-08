@@ -11,7 +11,6 @@ import Alamofire
 
 class PressureWeightViewController: UITableViewController{
 
-    var items: [String] = ["We", "Heart", "Swift"]
     let cellIdentifier = "issueCell"
     var authBase64 :String = ""
     var serverAdress :String = ""
@@ -27,7 +26,7 @@ class PressureWeightViewController: UITableViewController{
     
     struct issue {
         var title :String
-        var desctiption :String
+        var description :String
         var issueStatus :String
     }
     
@@ -60,7 +59,7 @@ class PressureWeightViewController: UITableViewController{
                         for var index = 0; index < issues!.count; ++index{
                             if let fields = issues![index]["fields"] {
                                 if let priority = fields!["priority"] {
-                                    let myIssue = issue(title: issues![index]["key"] as! String, desctiption: fields!["summary"] as! String, issueStatus: priority!["name"] as! String)
+                                    let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, issueStatus: priority!["name"] as! String)
                                     self.issuesArray.append(myIssue)
                                     print(myIssue)
                                 }
@@ -94,7 +93,7 @@ class PressureWeightViewController: UITableViewController{
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
            let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! IssueTableViewCell
         cell.titleLabel.text = issuesArray[indexPath.row].title
-        cell.subtitleLabel.text = issuesArray[indexPath.row].desctiption
+        cell.subtitleLabel.text = issuesArray[indexPath.row].description
         cell.statusLabel.text = issuesArray[indexPath.row].issueStatus.uppercaseString
         
         if (issuesArray[indexPath.row].issueStatus == status.Highest.rawValue || issuesArray[indexPath.row].issueStatus == status.High.rawValue) {
