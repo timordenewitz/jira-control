@@ -17,12 +17,33 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     var authBase64 :String = ""
     var username :String = ""
+    var serverAdress : String = ""
+    
+    let defaults = NSUserDefaults.standardUserDefaults()
+    
+    enum defaultsKeys {
+        static let usernameKey = "de.scandio.jira-commander.username"
+        static let pwKey = "de.scandio.jira-commander.password"
+        static let serverAdressKey = "de.scandio.jira-commander.server"
+    }
+    
+    let testJiraUrl = "http://46.101.221.171:8080"
 
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         prepareTextFields()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
+        if let username = defaults.stringForKey(defaultsKeys.usernameKey) {
+            UserTextField.text = username
+        }
+        
+        if let pw = defaults.stringForKey(defaultsKeys.pwKey) {
+            PWTextField.text = pw
+        }
+        if let serverAdress = defaults.stringForKey(defaultsKeys.serverAdressKey) {
+            ServerAdressTextField.text = serverAdress
+        }
     }
 
     override func didReceiveMemoryWarning() {
@@ -59,22 +80,29 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
     
     @IBAction func loginButtonClicked(sender: AnyObject) {
-        let pw = PWTextField.text
+        let pw = PWTextField.text!
         username = UserTextField.text!
-        let auth = pw! + ":" + username
+        let auth = pw + ":" + username
         let utf8auth = auth.dataUsingEncoding(NSUTF8StringEncoding)
         authBase64 = (utf8auth?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)))!
-        print(authBase64)
+        serverAdress = ServerAdressTextField.text!
+        
+        let parameters = [
+            "username": username,
+            "password" : pw
+        ]
+        
+        
         //Send Request
-        Alamofire.request(.GET, "http://46.101.221.171:8080/rest/api/latest/search?jql=reporter=" + username, headers: ["Authorization" : "Basic " + authBase64])
+        Alamofire.request(.POST, serverAdress + "/rest/auth/1/session" , headers: ["Content-Type" : "application/json"], parameters: parameters, encoding: .JSON)
             .responseJSON { response in
-                if let JSON = response.result.value {
-                    if let issues = JSON["issues"] {
-                        //All Issues Reported by User
-                        for var index = 0; index < issues!.count; ++index{
-                        }
-                    }
-                }
+                print(response.request)
+                print(response.response)
+                
+                self.defaults.setValue(pw, forKey: defaultsKeys.pwKey)
+                self.defaults.setValue(self.username, forKey: defaultsKeys.usernameKey)
+                self.defaults.setValue(self.serverAdress, forKey: defaultsKeys.serverAdressKey)
+                self.defaults.synchronize()
                 
 //                if let statusCode = response.response?.statusCode {
 //                    if (statusCode == 200) {
@@ -88,7 +116,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let theDestination = (segue.destinationViewController as! DashboardViewController)
         theDestination.authBase64 =  authBase64
-        theDestination.serverAdress =  ServerAdressTextField.text!
+        theDestination.serverAdress =  serverAdress
         theDestination.username =  username
         
     }

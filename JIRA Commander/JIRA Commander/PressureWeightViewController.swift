@@ -19,7 +19,9 @@ class PressureWeightViewController: UITableViewController{
     var i: Int = 0
     var activatedPressureWeight = false
 
+
     var authTempBase64 = "YWRtaW46YWRtaW4="
+    let testJiraUrl = "http://46.101.221.171:8080"
     
     enum status: String{
         case Highest
@@ -53,7 +55,7 @@ class PressureWeightViewController: UITableViewController{
     
     func loadIssues() {
         issuesArray.removeAll()
-        Alamofire.request(.GET, "http://46.101.221.171:8080/rest/api/latest/search?jql=reporter=" + "admin", headers: ["Authorization" : "Basic " + authTempBase64])
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=reporter=" + username)
             .responseJSON { response in
                 print(response.request)  // original URL request
                 print(response.response) // URL response
@@ -234,11 +236,11 @@ class PressureWeightViewController: UITableViewController{
                 ]
             ]
         ]
-        Alamofire.request(.PUT, "http://46.101.221.171:8080/rest/api/2/issue/" + issueKey, parameters: parameters, encoding: .JSON, headers: ["Authorization" : "Basic " + authTempBase64])
+        
+        Alamofire.request(.PUT, serverAdress + "/rest/api/2/issue/" + issueKey, parameters: parameters, encoding: .JSON)
             .responseJSON { response in
             }
     }
-
     /*
     // MARK: - Navigation
 
