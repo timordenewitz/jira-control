@@ -15,7 +15,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var PWTextField: UITextField!
     @IBOutlet var ServerAdressTextField: UITextField!
     
-    var base64EncodedAuth :String = ""
+    var authBase64 :String = ""
     var username :String = ""
 
     override func viewDidLoad() {
@@ -63,10 +63,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
         username = UserTextField.text!
         let auth = pw! + ":" + username
         let utf8auth = auth.dataUsingEncoding(NSUTF8StringEncoding)
-        base64EncodedAuth = (utf8auth?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)))!
-        
+        authBase64 = (utf8auth?.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0)))!
+        print(authBase64)
         //Send Request
-        Alamofire.request(.GET, "http://46.101.221.171:8080/rest/api/latest/search?jql=reporter=" + username, headers: ["Authorization" : "Basic " + base64EncodedAuth])
+        Alamofire.request(.GET, "http://46.101.221.171:8080/rest/api/latest/search?jql=reporter=" + username, headers: ["Authorization" : "Basic " + authBase64])
             .responseJSON { response in
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
@@ -87,7 +87,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
         let theDestination = (segue.destinationViewController as! DashboardViewController)
-        theDestination.authBase64 =  base64EncodedAuth
+        theDestination.authBase64 =  authBase64
         theDestination.serverAdress =  ServerAdressTextField.text!
         theDestination.username =  username
         

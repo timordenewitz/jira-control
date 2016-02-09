@@ -63,12 +63,10 @@ class StressTicketViewController: UITableViewController {
                                     if let avatarURLs = assignee!["avatarUrls"] {
                                         let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, assignee: assignee!["name"] as! String?, profilePictureURL:avatarURLs!["48x48"] as! String?)
                                         self.issuesArray.append(myIssue)
-                                        print(myIssue)
                                     }
                                     else {
                                         let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, assignee: nil, profilePictureURL:nil)
                                         self.issuesArray.append(myIssue)
-                                        print(myIssue)
                                     }
                                 }
                             }
@@ -112,7 +110,6 @@ class StressTicketViewController: UITableViewController {
             image.layer.cornerRadius = image.frame.height/2
             image.clipsToBounds = true
         }
-        
         return cell
     }
     
