@@ -40,13 +40,18 @@ class DashboardViewController: UIViewController {
         UINavigationBar.appearance().tintColor = UIColor.blackColor()
         navigationItem.backBarButtonItem = backItem
         
-    
         if (segue.identifier == "PressureWeight"){
             let theDestination = (segue.destinationViewController as! PressureWeightViewController)
             theDestination.authBase64 =  authBase64
             theDestination.serverAdress =  serverAdress
             theDestination.username =  username
-
+        }
+        
+        if (segue.identifier == "StressTicketSegue"){
+            let theDestination = (segue.destinationViewController as! StressTicketViewController)
+            theDestination.authBase64 =  authBase64
+            theDestination.serverAdress =  serverAdress
+            theDestination.username =  username
         }
     }
     

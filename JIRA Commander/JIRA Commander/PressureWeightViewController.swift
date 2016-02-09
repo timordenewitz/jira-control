@@ -19,17 +19,8 @@ class PressureWeightViewController: UITableViewController{
     var i: Int = 0
     var activatedPressureWeight = false
 
-
     var authTempBase64 = "YWRtaW46YWRtaW4="
     let testJiraUrl = "http://46.101.221.171:8080"
-    
-    enum status: String{
-        case Highest
-        case High
-        case Medium
-        case Low
-        case Lowest
-    }
     
     struct issue {
         var title :String
@@ -37,14 +28,22 @@ class PressureWeightViewController: UITableViewController{
         var issueStatus :String
     }
     
+    struct priority {
+        var title : String
+        var id : String
+    }
+    
     var issuesArray = [issue]()
     var touchArray = [CGFloat]()
+    var prioritiesArray = [priority]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        loadPriorities()
         loadIssues()
+        
     }
     
     func handleRefresh(refreshControl: UIRefreshControl) {
@@ -57,10 +56,6 @@ class PressureWeightViewController: UITableViewController{
         issuesArray.removeAll()
         Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=reporter=" + username)
             .responseJSON { response in
-                print(response.request)  // original URL request
-                print(response.response) // URL response
-                print(response.result)   // result of response serialization
-                
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
@@ -73,6 +68,19 @@ class PressureWeightViewController: UITableViewController{
                             }
                         }
                         self.reloadIssueTable()
+                    }
+                }
+        }
+    }
+    
+    func loadPriorities() {
+        prioritiesArray.removeAll()
+        Alamofire.request(.GET, serverAdress + "/rest/api/2/priority")
+            .responseJSON { response in
+                if let JSON = response.result.value {
+                    for var index = 0; index < JSON.count; ++index{
+                        let myPriority = priority(title: JSON[index]["name"] as! String, id: JSON[index]["id"] as! String)
+                        self.prioritiesArray.append(myPriority)
                     }
                 }
         }
@@ -105,11 +113,11 @@ class PressureWeightViewController: UITableViewController{
         cell.subtitleLabel.text = issuesArray[indexPath.row].description
         cell.statusLabel.text = issuesArray[indexPath.row].issueStatus.uppercaseString
         
-        if (issuesArray[indexPath.row].issueStatus == status.Highest.rawValue || issuesArray[indexPath.row].issueStatus == status.High.rawValue) {
+        if (issuesArray[indexPath.row].issueStatus == prioritiesArray[prioritiesArray.count-5].title || issuesArray[indexPath.row].issueStatus == prioritiesArray[prioritiesArray.count-4].title) {
             cell.iconImageView.image = UIImage(named: "TAG Red")!
             return cell
         }
-        if (issuesArray[indexPath.row].issueStatus == status.Medium.rawValue) {
+        if (issuesArray[indexPath.row].issueStatus == prioritiesArray[prioritiesArray.count-3].title) {
             cell.iconImageView.image = UIImage(named: "TAG Yellow")!
             return cell
         }
@@ -180,22 +188,22 @@ class PressureWeightViewController: UITableViewController{
         var ret :String
         switch true {
         case (force < 0.2):
-            ret = status.Lowest.rawValue
+            ret = prioritiesArray[prioritiesArray.count-1].title
             break
         case (force < 0.3):
-            ret = status.Low.rawValue
+            ret = prioritiesArray[prioritiesArray.count-2].title
             break
         case (force < 0.7):
-            ret = status.Medium.rawValue
+            ret = prioritiesArray[prioritiesArray.count-3].title
             break
         case (force < 0.9):
-            ret = status.High.rawValue
+            ret = prioritiesArray[prioritiesArray.count-4].title
             break
         case (force <= 1.0):
-            ret = status.Highest.rawValue
+            ret = prioritiesArray[prioritiesArray.count-5].title
             break
         default:
-            ret = status.Medium.rawValue
+            ret = prioritiesArray[prioritiesArray.count-3].title
             break
         }
         return ret
