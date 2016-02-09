@@ -19,13 +19,16 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
     private var target : UIViewController
     private var _force: CGFloat = 0.0
     private var _maxForce: CGFloat = 0.0
-    
+    let threshold: CGFloat
+
     internal var force: CGFloat {get {return _force}}
 
     
     required init(target: AnyObject?, action: Selector, threshold: CGFloat)
     {
         self.target = target as! UIViewController
+        self.threshold = threshold
+
         super.init(target: target, action: action)
     }
     
@@ -33,7 +36,10 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
     {
         if let touch = touches.first
         {
-            handleTouch(.Began,touch: touch)
+            if (touch.force >= threshold){
+                handleTouch(.Began,touch: touch)
+            }
+
         }
     }
     
@@ -41,7 +47,9 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
     {
         if let touch = touches.first
         {
-            handleTouch(.Changed,touch: touch)
+            if (touch.force >= threshold){
+                handleTouch(.Changed,touch: touch)
+            }
         }
     }
     

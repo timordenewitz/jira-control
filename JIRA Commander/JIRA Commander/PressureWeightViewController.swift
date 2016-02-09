@@ -67,7 +67,6 @@ class PressureWeightViewController: UITableViewController{
                                 if let priority = fields!["priority"] {
                                     let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, issueStatus: priority!["name"] as! String)
                                     self.issuesArray.append(myIssue)
-                                    print(myIssue)
                                 }
                             }
                         }
@@ -98,7 +97,7 @@ class PressureWeightViewController: UITableViewController{
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! IssueTableViewCell
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.7)
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         cell.addGestureRecognizer(deepPressGestureRecognizer)
         cell.titleLabel.text = issuesArray[indexPath.row].title
         cell.subtitleLabel.text = issuesArray[indexPath.row].description
@@ -132,7 +131,6 @@ class PressureWeightViewController: UITableViewController{
                 }
                 
                 if(recognizer.state == .Changed) {
-                    print(recognizer.force)
                     if (recognizer.force == 1.0) {
                         activatedPressureWeight = true
                     }
