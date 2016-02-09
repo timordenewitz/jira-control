@@ -17,7 +17,8 @@ class PressureWeightViewController: UITableViewController{
     var username :String = ""
     var startTime: CFAbsoluteTime!
     var i: Int = 0
-    
+    var activatedPressureWeight = false
+
     var authTempBase64 = "YWRtaW46YWRtaW4="
     
     enum status: String{
@@ -97,7 +98,7 @@ class PressureWeightViewController: UITableViewController{
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! IssueTableViewCell
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.2)
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.7)
         cell.addGestureRecognizer(deepPressGestureRecognizer)
         cell.titleLabel.text = issuesArray[indexPath.row].title
         cell.subtitleLabel.text = issuesArray[indexPath.row].description
@@ -131,35 +132,45 @@ class PressureWeightViewController: UITableViewController{
                 }
                 
                 if(recognizer.state == .Changed) {
-                    touchArray.insert(recognizer.force, atIndex: i)
-                    guard touchArray.count > 7 else {
-                        forcedCell.backgroundColor = UIColor(red: (2.0 * recognizer.force), green: (2.0 * (1 - recognizer.force)), blue: 0, alpha: 1)
-                        forcedCell.statusLabel.text = mapForceToTicketStatus(recognizer.force).uppercaseString
-                        forcedCell.iconImageView.image = mapForceToTicketIcon(recognizer.force)
-                        i++
-                        return
+                    print(recognizer.force)
+                    if (recognizer.force == 1.0) {
+                        activatedPressureWeight = true
                     }
-                    forcedCell.backgroundColor = UIColor(red: (2.0 * touchArray[i-7]), green: (2.0 * (1 - touchArray[i-7])), blue: 0, alpha: 1)
-                    forcedCell.statusLabel.text = mapForceToTicketStatus(touchArray[i-7]).uppercaseString
-                    forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-7])
-                    i++
+                    
+                    if (activatedPressureWeight) {
+                        touchArray.insert(recognizer.force, atIndex: i)
+                        guard touchArray.count > 7 else {
+                            forcedCell.backgroundColor = UIColor(red: (2.0 * recognizer.force), green: (2.0 * (1 - recognizer.force)), blue: 0, alpha: 1)
+                            forcedCell.statusLabel.text = mapForceToTicketStatus(recognizer.force).uppercaseString
+                            forcedCell.iconImageView.image = mapForceToTicketIcon(recognizer.force)
+                            i++
+                            return
+                        }
+                        forcedCell.backgroundColor = UIColor(red: (2.0 * touchArray[i-7]), green: (2.0 * (1 - touchArray[i-7])), blue: 0, alpha: 1)
+                        forcedCell.statusLabel.text = mapForceToTicketStatus(touchArray[i-7]).uppercaseString
+                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-7])
+                        i++
+                    }
                 }
                 
                 if(recognizer.state == .Ended) {
-                    let seconds = 1.0
-                    let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
-                    let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-                    if (touchArray.count < 7) {
-                        forcedCell.statusLabel.text = mapForceToTicketStatus(recognizer.force).uppercaseString
-                        forcedCell.iconImageView.image = mapForceToTicketIcon(recognizer.force)
+                    if (activatedPressureWeight) {
+                        let seconds = 0.25
+                        let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
+                        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                        if (touchArray.count < 7) {
+                            forcedCell.statusLabel.text = mapForceToTicketStatus(recognizer.force).uppercaseString
+                            forcedCell.iconImageView.image = mapForceToTicketIcon(recognizer.force)
+                        }
+                        let status = mapForceToTicketStatus(touchArray[i-7])
+                        forcedCell.statusLabel.text = status.uppercaseString
+                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-7])
+                        sendNewIssueStatusToJira(status, issueKey: forcedCell.titleLabel.text!)
+                        dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+                            forcedCell.backgroundColor = UIColor.whiteColor()
+                            self.activatedPressureWeight = false
+                        })
                     }
-                    let status = mapForceToTicketStatus(touchArray[i-7])
-                    forcedCell.statusLabel.text = status.uppercaseString
-                    forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-7])
-                    sendNewIssueStatusToJira(status, issueKey: forcedCell.titleLabel.text!)
-                    dispatch_after(dispatchTime, dispatch_get_main_queue(), {
-                        forcedCell.backgroundColor = UIColor.whiteColor()
-                    })
                 }
             }
         }
@@ -175,7 +186,7 @@ class PressureWeightViewController: UITableViewController{
             ret = status.Low.rawValue
             break
         case (force < 0.7):
-            ret = status.Highest.rawValue
+            ret = status.Medium.rawValue
             break
         case (force < 0.9):
             ret = status.High.rawValue
@@ -184,7 +195,7 @@ class PressureWeightViewController: UITableViewController{
             ret = status.Highest.rawValue
             break
         default:
-            ret = status.Highest.rawValue
+            ret = status.Medium.rawValue
             break
         }
         return ret
@@ -227,10 +238,7 @@ class PressureWeightViewController: UITableViewController{
         ]
         Alamofire.request(.PUT, "http://46.101.221.171:8080/rest/api/2/issue/" + issueKey, parameters: parameters, encoding: .JSON, headers: ["Authorization" : "Basic " + authTempBase64])
             .responseJSON { response in
-                print(response.request)  // original URL request
-                print(response.response) // URL response
-                print(response.result)   // result of response serialization
-        }
+            }
     }
 
     /*

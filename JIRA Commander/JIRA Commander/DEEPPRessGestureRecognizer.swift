@@ -18,8 +18,10 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
     
     private var target : UIViewController
     private var _force: CGFloat = 0.0
+    private var _maxForce: CGFloat = 0.0
     
     internal var force: CGFloat {get {return _force}}
+
     
     required init(target: AnyObject?, action: Selector, threshold: CGFloat)
     {
