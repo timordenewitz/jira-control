@@ -8,11 +8,12 @@
 
 import UIKit
 import Alamofire
+import AudioToolbox
 
 class StressTicketViewController: UITableViewController {
     
-    let authBase64 :String = ""
-    let serverAdress :String = ""
+    var authBase64 :String = ""
+    var serverAdress :String = ""
     var username :String = ""
     let cellIdentifier = "stressTicketCell"
     
@@ -21,14 +22,6 @@ class StressTicketViewController: UITableViewController {
         var description :String
         var assignee :String?
         var profilePictureURL : String?
-    }
-    
-    enum status: String{
-        case Highest
-        case High
-        case Medium
-        case Low
-        case Lowest
     }
     
     var issuesArray = [issue]()
@@ -48,7 +41,7 @@ class StressTicketViewController: UITableViewController {
     
     func loadIssues() {
         issuesArray.removeAll()
-        Alamofire.request(.GET, "http://46.101.221.171:8080/rest/api/latest/search?jql=creator=" + "admin", headers: ["Authorization" : "Basic " + "YWRtaW46YWRtaW4="])
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=creator=" + username)
             .responseJSON { response in
                 print(response.request)  // original URL request
                 print(response.response) // URL response
@@ -98,6 +91,8 @@ class StressTicketViewController: UITableViewController {
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! StressTicketTableViewCell
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
+        tableView.addGestureRecognizer(deepPressGestureRecognizer)
         cell.issueTitleLabel.text = issuesArray[indexPath.row].title
         cell.issuesSummaryLabel.text = issuesArray[indexPath.row].description
         cell.assigneeLabel.text = issuesArray[indexPath.row].assignee?.uppercaseString
@@ -113,10 +108,36 @@ class StressTicketViewController: UITableViewController {
         return cell
     }
     
+    func deepPressHandler(recognizer: DeepPressGestureRecognizer)
+    {
+        let forceLocation = recognizer.locationInView(self.tableView)
+        if let forcedIndexPath = tableView.indexPathForRowAtPoint(forceLocation) {
+            if let forcedCell  = self.tableView.cellForRowAtIndexPath(forcedIndexPath) as! StressTicketTableViewCell? {
+                if(recognizer.state == .Changed) {
+                    if (recognizer.force == 1.0 && !forcedCell.stressed) {
+                        forcedCell.backgroundColor = UIColor.redColor()
+                        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+                        forcedCell.stressedImageView.image = UIImage(named: "Stressed-Badge")
+                        forcedCell.stressed = true
+                    }
+                }
+                
+                if(recognizer.state == .Ended) {
+                        let seconds = 0.25
+                        let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
+                        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                        dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+                            forcedCell.backgroundColor = UIColor.whiteColor()
+                        })
+                }
+            }
+        }
+    }
+    
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
-
+    
     /*
     // MARK: - Navigation
 

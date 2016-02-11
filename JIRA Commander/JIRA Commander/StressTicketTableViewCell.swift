@@ -14,6 +14,9 @@ class StressTicketTableViewCell: UITableViewCell {
     @IBOutlet weak var assigneeLabel: UILabel!
     @IBOutlet weak var profilePictureImageView: UIImageView!
     @IBOutlet weak var issueTitleLabel: UILabel!
+    @IBOutlet weak var stressedImageView: UIImageView!
+    
+    var stressed = false
     
     override func awakeFromNib() {
         super.awakeFromNib()

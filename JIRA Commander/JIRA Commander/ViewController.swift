@@ -8,12 +8,14 @@
 
 import UIKit
 import Alamofire
+import OnePasswordExtension
 
 class ViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet var UserTextField: UITextField!
     @IBOutlet var PWTextField: UITextField!
     @IBOutlet var ServerAdressTextField: UITextField!
+    @IBOutlet weak var onePasswordButton: UIButton!
     
     var authBase64 :String = ""
     var username :String = ""
@@ -44,6 +46,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
         if let serverAdress = defaults.stringForKey(defaultsKeys.serverAdressKey) {
             ServerAdressTextField.text = serverAdress
         }
+        onePasswordButton.hidden = true
+        if (OnePasswordExtension.sharedExtension().isAppExtensionAvailable()) {
+            onePasswordButton.hidden = false
+
+        }
+    }
+    
+    @IBAction func passwordButtonClicked(sender: AnyObject) {
+        OnePasswordExtension.sharedExtension().findLoginForURLString("Jira Commander", forViewController: self, sender: sender, completion: { (loginDictionary, error) -> Void in
+            if loginDictionary == nil {
+                if error!.code != Int(AppExtensionErrorCodeCancelledByUser) {
+                    print("Error invoking 1Password App Extension for find login: \(error)")
+                }
+                return
+            }
+            self.UserTextField.text = loginDictionary?[AppExtensionUsernameKey] as? String
+            self.PWTextField.text = loginDictionary?[AppExtensionPasswordKey] as? String
+        })
     }
 
     override func didReceiveMemoryWarning() {
@@ -57,7 +77,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
 
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         UIApplication.sharedApplication().sendAction("resignFirstResponder", to:nil, from:nil, forEvent:nil)
-        
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {
@@ -91,7 +110,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
             "username": username,
             "password" : pw
         ]
-        
         
         //Send Request
         Alamofire.request(.POST, serverAdress + "/rest/auth/1/session" , headers: ["Content-Type" : "application/json"], parameters: parameters, encoding: .JSON)
