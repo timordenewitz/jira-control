@@ -3,6 +3,7 @@
     <dependencies>
         <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -17,14 +18,24 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="BG" translatesAutoresizingMaskIntoConstraints="NO" id="STi-en-FTk">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BG" translatesAutoresizingMaskIntoConstraints="NO" id="STi-en-FTk">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="JIRA Control" translatesAutoresizingMaskIntoConstraints="NO" id="wne-Pl-hEu">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JIRA Control" translatesAutoresizingMaskIntoConstraints="NO" id="wne-Pl-hEu">
                                 <rect key="frame" x="67" y="105" width="240" height="128"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="wne-Pl-hEu" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="51" id="GCE-BN-mJS"/>
+                            <constraint firstItem="STi-en-FTk" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="GP7-Wa-Nbo"/>
+                            <constraint firstItem="STi-en-FTk" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="b24-2u-HEm"/>
+                            <constraint firstItem="STi-en-FTk" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="dFN-qI-sqt"/>
+                            <constraint firstAttribute="trailing" secondItem="STi-en-FTk" secondAttribute="trailing" id="dH0-6Y-HZ4"/>
+                            <constraint firstItem="wne-Pl-hEu" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="85" id="mHP-qb-BIL"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="wne-Pl-hEu" secondAttribute="bottom" constant="434" id="opZ-tO-WY1"/>
+                            <constraint firstItem="STi-en-FTk" firstAttribute="centerX" secondItem="wne-Pl-hEu" secondAttribute="centerX" id="uF4-cE-Gpp"/>
+                        </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </viewController>
@@ -34,7 +45,7 @@
         </scene>
     </scenes>
     <resources>
-        <image name="BG" width="2164" height="1440"/>
+        <image name="BG" width="750" height="1334"/>
         <image name="JIRA Control" width="450" height="253"/>
     </resources>
 </document>

@@ -22,7 +22,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
                             <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JIRA Control" translatesAutoresizingMaskIntoConstraints="NO" id="FaW-sl-km3">
-                                <rect key="frame" x="67" y="105" width="240" height="128"/>
+                                <rect key="frame" x="67" y="61" width="240" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="RSF-ED-ZVx"/>
                                 </constraints>
@@ -41,7 +41,7 @@
                                 </connections>
                             </button>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="SERVER ADRESS" minimumFontSize="17" background="pw" translatesAutoresizingMaskIntoConstraints="NO" id="T7m-uh-Vjk">
-                                <rect key="frame" x="35" y="406" width="304" height="30"/>
+                                <rect key="frame" x="35" y="362" width="304" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Dea-Jd-178"/>
                                 </constraints>
@@ -50,13 +50,13 @@
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardType="URL" keyboardAppearance="alert" returnKeyType="done"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="PASSWORD" minimumFontSize="17" background="pw" translatesAutoresizingMaskIntoConstraints="NO" id="Z3c-Ql-ZEz">
-                                <rect key="frame" x="35" y="347" width="304" height="30"/>
+                                <rect key="frame" x="35" y="303" width="304" height="30"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="done" secureTextEntry="YES"/>
                             </textField>
                             <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" placeholder="USER" minimumFontSize="17" background="pw" translatesAutoresizingMaskIntoConstraints="NO" id="0gc-VO-JwQ">
-                                <rect key="frame" x="35" y="292" width="304" height="30"/>
+                                <rect key="frame" x="35" y="248" width="304" height="30"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="30" id="Cky-Ib-tnm"/>
                                 </constraints>
@@ -65,7 +65,7 @@
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="done"/>
                             </textField>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RTw-aH-Q8d">
-                                <rect key="frame" x="310" y="344" width="27" height="27"/>
+                                <rect key="frame" x="310" y="300" width="27" height="27"/>
                                 <state key="normal" image="onepassword-toolbar-light"/>
                                 <connections>
                                     <action selector="passwordButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Fmb-Zc-t9d"/>
@@ -178,7 +178,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="issueCell" rowHeight="70" id="OMN-RD-R2M" customClass="IssueTableViewCell" customModule="JIRA_Commander" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="375" height="70"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OMN-RD-R2M" id="baq-Pn-caZ">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
@@ -253,10 +253,10 @@
             </objects>
             <point key="canvasLocation" x="1786.5" y="-305.5"/>
         </scene>
-        <!--Settings-->
+        <!--SETTINGS-->
         <scene sceneID="59J-Hw-0dT">
             <objects>
-                <viewController title="Settings" id="lz3-WM-5EG" customClass="SettingsViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="SETTINGS" id="lz3-WM-5EG" customClass="SettingsViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9tK-VP-EyX"/>
                         <viewControllerLayoutGuide type="bottom" id="SnS-ds-u6N"/>
@@ -264,7 +264,40 @@
                     <view key="view" contentMode="scaleToFill" id="2ny-8g-Rcc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BG" translatesAutoresizingMaskIntoConstraints="NO" id="Xzy-QL-j1h">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JIRA Control" translatesAutoresizingMaskIntoConstraints="NO" id="bf4-GU-PjM">
+                                <rect key="frame" x="67" y="61" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="UwZ-Hd-FLw"/>
+                                </constraints>
+                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4kZ-ke-Elq">
+                                <rect key="frame" x="126" y="396" width="122" height="122"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="122" id="YQz-FS-XqL"/>
+                                    <constraint firstAttribute="width" constant="122" id="rtc-Kw-fNt"/>
+                                </constraints>
+                                <state key="normal" backgroundImage="Logout"/>
+                                <connections>
+                                    <segue destination="BYZ-38-t0r" kind="show" id="H5J-E8-8Kj"/>
+                                </connections>
+                            </button>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="SnS-ds-u6N" firstAttribute="top" secondItem="4kZ-ke-Elq" secondAttribute="bottom" constant="149" id="2mt-od-DXq"/>
+                            <constraint firstItem="Xzy-QL-j1h" firstAttribute="top" secondItem="2ny-8g-Rcc" secondAttribute="top" id="2zl-3u-LAk"/>
+                            <constraint firstItem="Xzy-QL-j1h" firstAttribute="bottom" secondItem="SnS-ds-u6N" secondAttribute="top" id="9Ob-J5-8dr"/>
+                            <constraint firstItem="bf4-GU-PjM" firstAttribute="top" secondItem="9tK-VP-EyX" secondAttribute="bottom" constant="41" id="As1-nb-zoN"/>
+                            <constraint firstAttribute="trailing" secondItem="Xzy-QL-j1h" secondAttribute="trailing" id="bBB-pD-onf"/>
+                            <constraint firstItem="bf4-GU-PjM" firstAttribute="centerX" secondItem="4kZ-ke-Elq" secondAttribute="centerX" id="dB8-gA-3dg"/>
+                            <constraint firstItem="bf4-GU-PjM" firstAttribute="leading" secondItem="2ny-8g-Rcc" secondAttribute="leadingMargin" constant="51" id="iQQ-9H-1VP"/>
+                            <constraint firstItem="4kZ-ke-Elq" firstAttribute="centerX" secondItem="Xzy-QL-j1h" secondAttribute="centerX" id="oxi-C5-ZXN"/>
+                            <constraint firstItem="Xzy-QL-j1h" firstAttribute="leading" secondItem="2ny-8g-Rcc" secondAttribute="leading" id="zAO-m1-mnw"/>
+                        </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </viewController>
@@ -282,7 +315,7 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="stressTicketCell" rowHeight="70" id="qRG-Ia-0Bz" customClass="StressTicketTableViewCell" customModule="JIRA_Commander" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="92" width="375" height="70"/>
+                                <rect key="frame" x="0.0" y="28" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qRG-Ia-0Bz" id="1iX-hd-p1N">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
@@ -404,15 +437,19 @@
         </scene>
     </scenes>
     <resources>
-        <image name="BG" width="2164" height="1440"/>
+        <image name="BG" width="750" height="1334"/>
         <image name="CHRAT" width="285" height="285"/>
         <image name="Hammer" width="285" height="285"/>
         <image name="JIRA Control" width="450" height="253"/>
         <image name="Login Button BG" width="750" height="141"/>
+        <image name="Logout" width="285" height="285"/>
         <image name="Settings" width="285" height="285"/>
         <image name="TAG Green" width="21" height="17"/>
         <image name="Waage" width="285" height="285"/>
         <image name="onepassword-toolbar-light" width="27" height="27"/>
         <image name="pw" width="640" height="48"/>
     </resources>
+    <inferredMetricsTieBreakers>
+        <segue reference="H5J-E8-8Kj"/>
+    </inferredMetricsTieBreakers>
 </document>
