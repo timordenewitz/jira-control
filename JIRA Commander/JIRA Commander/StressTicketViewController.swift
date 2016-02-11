@@ -22,6 +22,7 @@ class StressTicketViewController: UITableViewController {
         var description :String
         var assignee :String?
         var profilePictureURL : String?
+        var stressed :Bool
     }
     
     var issuesArray = [issue]()
@@ -43,23 +44,28 @@ class StressTicketViewController: UITableViewController {
         issuesArray.removeAll()
         Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=creator=" + username)
             .responseJSON { response in
-                print(response.request)  // original URL request
-                print(response.response) // URL response
-                print(response.result)   // result of response serialization
-                
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         for var index = 0; index < issues!.count; ++index{
                             if let fields = issues![index]["fields"] {
                                 if let assignee = fields!["assignee"] {
-                                    if let avatarURLs = assignee!["avatarUrls"] {
-                                        let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, assignee: assignee!["name"] as! String?, profilePictureURL:avatarURLs!["48x48"] as! String?)
-                                        self.issuesArray.append(myIssue)
-                                    }
-                                    else {
-                                        let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, assignee: nil, profilePictureURL:nil)
-                                        self.issuesArray.append(myIssue)
+                                    if let labels = fields!["labels"] {
+                                        if let status = fields!["status"] {
+                                            if let statusName = status!["name"] {
+                                                if (!self.checkIfIssueIsClosed(statusName as! String)) {
+                                                    if let avatarURLs = assignee!["avatarUrls"] {
+                                                        let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, assignee: assignee!["name"] as! String?, profilePictureURL:avatarURLs!["48x48"] as! String?, stressed: self.checkIfIssueGotStressed(labels!))
+                                                        self.issuesArray.append(myIssue)
+                                                    }
+                                                    else {
+                                                        let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, assignee: nil, profilePictureURL:nil, stressed: self.checkIfIssueGotStressed(labels!))
+                                                        self.issuesArray.append(myIssue)
+                                                    }
+                                                }
+
+                                            }
+                                        }
                                     }
                                 }
                             }
@@ -68,6 +74,23 @@ class StressTicketViewController: UITableViewController {
                     }
                 }
         }
+    }
+    
+    func checkIfIssueIsClosed(name : String) -> Bool {
+        if (name == "Closed") {
+            return true
+        }
+        return false
+    }
+    
+    
+    func checkIfIssueGotStressed(labels : AnyObject) -> Bool {
+        for var i = 0; i < labels.count; ++i {
+            if (labels[i] == "Stressed") {
+                return true
+            }
+        }
+        return false
     }
     
     func reloadIssueTable() {
@@ -105,6 +128,14 @@ class StressTicketViewController: UITableViewController {
             image.layer.cornerRadius = image.frame.height/2
             image.clipsToBounds = true
         }
+        if (issuesArray[indexPath.row].stressed) {
+            cell.stressedImageView.hidden = false
+            cell.stressedImageView.image = UIImage(named: "Stressed-Badge")
+            cell.stressed = true
+        } else {
+            cell.stressedImageView.hidden = true
+            cell.stressed = false
+        }
         return cell
     }
     
@@ -114,11 +145,13 @@ class StressTicketViewController: UITableViewController {
         if let forcedIndexPath = tableView.indexPathForRowAtPoint(forceLocation) {
             if let forcedCell  = self.tableView.cellForRowAtIndexPath(forcedIndexPath) as! StressTicketTableViewCell? {
                 if(recognizer.state == .Changed) {
-                    if (recognizer.force == 1.0 && !forcedCell.stressed) {
-                        forcedCell.backgroundColor = UIColor.redColor()
-                        AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-                        forcedCell.stressedImageView.image = UIImage(named: "Stressed-Badge")
-                        forcedCell.stressed = true
+                    if (recognizer.force == 1.0) {
+                        if (!forcedCell.stressed) {
+                            forcedCell.backgroundColor = UIColor.redColor()
+                            AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
+                            sendNewStressedStatusToJira("Stressed", issueKey: forcedCell.issueTitleLabel.text!)
+                            loadIssues()
+                        }
                     }
                 }
                 
@@ -131,6 +164,24 @@ class StressTicketViewController: UITableViewController {
                         })
                 }
             }
+        }
+    }
+    
+    func sendNewStressedStatusToJira(status :String, issueKey: String) {
+        let parameters = [
+            "update": [
+                "labels": [[
+                    "add": status
+                    ]
+                ]
+            ]
+        ]
+
+        Alamofire.request(.PUT, serverAdress + "/rest/api/2/issue/" + issueKey, parameters: parameters, encoding: .JSON)
+            .responseJSON { response in
+                print(response.request)
+                print(response.response)
+                print(response.result)
         }
     }
     

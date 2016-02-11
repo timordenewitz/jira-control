@@ -62,8 +62,16 @@ class PressureWeightViewController: UITableViewController{
                         for var index = 0; index < issues!.count; ++index{
                             if let fields = issues![index]["fields"] {
                                 if let priority = fields!["priority"] {
-                                    let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, issueStatus: priority!["name"] as! String)
-                                    self.issuesArray.append(myIssue)
+                                    if let status = fields!["status"] {
+                                        if let statusName = status!["name"] {
+                                            if (!self.checkIfIssueIsClosed(statusName as! String)) {
+                                                let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, issueStatus: priority!["name"] as! String)
+                                                self.issuesArray.append(myIssue)
+                                            }
+                                        }
+                                    }
+                                    
+
                                 }
                             }
                         }
@@ -71,6 +79,13 @@ class PressureWeightViewController: UITableViewController{
                     }
                 }
         }
+    }
+    
+    func checkIfIssueIsClosed(name : String) -> Bool {
+        if (name == "Closed") {
+            return true
+        }
+        return false
     }
     
     func loadPriorities() {
