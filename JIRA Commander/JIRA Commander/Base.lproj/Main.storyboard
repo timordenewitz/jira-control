@@ -52,9 +52,13 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="13"/>
                                 <textInputTraits key="textInputTraits" autocorrectionType="no" spellCheckingType="no" keyboardAppearance="alert" returnKeyType="done"/>
                             </textField>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="onepassword-toolbar-light" translatesAutoresizingMaskIntoConstraints="NO" id="oXY-Pq-M9A">
-                                <rect key="frame" x="316" y="350" width="23" height="23"/>
-                            </imageView>
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RTw-aH-Q8d">
+                                <rect key="frame" x="310" y="344" width="27" height="27"/>
+                                <state key="normal" image="onepassword-toolbar-light"/>
+                                <connections>
+                                    <action selector="passwordButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Fmb-Zc-t9d"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                     </view>
@@ -64,7 +68,7 @@
                         <outlet property="PWTextField" destination="Z3c-Ql-ZEz" id="JUw-0i-A9I"/>
                         <outlet property="ServerAdressTextField" destination="T7m-uh-Vjk" id="y7v-8Z-Y2Q"/>
                         <outlet property="UserTextField" destination="0gc-VO-JwQ" id="kS4-RT-vNe"/>
-                        <outlet property="onePasswordButton" destination="oXY-Pq-M9A" id="CSF-Jt-SLT"/>
+                        <outlet property="onePasswordButton" destination="RTw-aH-Q8d" id="cMV-ym-hlP"/>
                         <segue destination="1o0-ki-CGl" kind="show" identifier="showDashboardSegue" id="gAG-Oz-vco"/>
                     </connections>
                 </viewController>

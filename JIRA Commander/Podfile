@@ -6,5 +6,5 @@ target 'JIRA Commander' do
   pod 'QorumLogs'
   pod 'Alamofire', '~> 3.0'
   pod '1PasswordExtension', :git => 'https://github.com/AgileBits/onepassword-app-extension.git'
-end
 
+end

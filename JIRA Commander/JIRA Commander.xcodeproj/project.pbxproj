@@ -24,6 +24,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A518D7A41C6CBA4A00022EB8 /* B-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "B-Header.h"; sourceTree = "<group>"; };
 		A51BC81E1C69E856007357E0 /* DEEPPRessGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DEEPPRessGestureRecognizer.swift; sourceTree = "<group>"; };
 		A53D21DE1C64DF6E00746526 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		A53D21E21C64FCC200746526 /* PressureWeightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PressureWeightViewController.swift; sourceTree = "<group>"; };
@@ -112,6 +113,7 @@
 				A56F51C11C68A39800B3FB2C /* StressTicketViewController.swift */,
 				A56F51CB1C68E09C00B3FB2C /* StressTicketTableViewCell.swift */,
 				A56F51C31C68A3A000B3FB2C /* DiagramViewController.swift */,
+				A518D7A41C6CBA4A00022EB8 /* B-Header.h */,
 				A596C3571C64AF6D00943FCF /* Main.storyboard */,
 				A596C35A1C64AF6D00943FCF /* Assets.xcassets */,
 				A596C35C1C64AF6D00943FCF /* LaunchScreen.storyboard */,
@@ -363,10 +365,14 @@
 			baseConfigurationReference = E52FC5C35D10C99E05E08F36 /* Pods-JIRA Commander.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "JIRA Commander/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.scandio.JIRA-Commander";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Jira Commander/B-Header.h";
+				USER_HEADER_SEARCH_PATHS = "Pods/**";
 			};
 			name = Debug;
 		};
@@ -375,10 +381,14 @@
 			baseConfigurationReference = B8DB6F015A97EA905FA57737 /* Pods-JIRA Commander.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
+				FRAMEWORK_SEARCH_PATHS = "";
 				INFOPLIST_FILE = "JIRA Commander/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.scandio.JIRA-Commander";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "Jira Commander/B-Header.h";
+				USER_HEADER_SEARCH_PATHS = "Pods/**";
 			};
 			name = Release;
 		};
