@@ -148,7 +148,7 @@
                                 <rect key="frame" x="42" y="447" width="138" height="138"/>
                                 <state key="normal" image="CHRAT"/>
                                 <connections>
-                                    <segue destination="f3P-Bx-i4I" kind="show" id="4Fw-ju-AAN"/>
+                                    <segue destination="f3P-Bx-i4I" kind="show" identifier="DiagramSegue" id="4Fw-ju-AAN"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="center" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="9xR-RB-L7Q">
@@ -398,10 +398,10 @@
             </objects>
             <point key="canvasLocation" x="2258.5" y="9.5"/>
         </scene>
-        <!--Diagrams-->
+        <!--DIAGRAMS-->
         <scene sceneID="zYY-jS-ZnF">
             <objects>
-                <viewController title="Diagrams" id="f3P-Bx-i4I" customClass="DiagramViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="DIAGRAMS" id="f3P-Bx-i4I" customClass="DiagramViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rBJ-3J-Pf5"/>
                         <viewControllerLayoutGuide type="bottom" id="4JF-SE-Esm"/>
@@ -409,9 +409,38 @@
                     <view key="view" contentMode="scaleToFill" id="fat-C5-ICZ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hGD-Mt-8T5" customClass="LineChartView" customModule="Charts">
+                                <rect key="frame" x="10" y="85" width="355" height="409"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
+                            <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gHE-E5-Qc0">
+                                <rect key="frame" x="0.0" y="522" width="375" height="145"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="145" id="HhV-nO-QLl"/>
+                                </constraints>
+                                <connections>
+                                    <outlet property="dataSource" destination="f3P-Bx-i4I" id="3kS-SA-jfF"/>
+                                    <outlet property="delegate" destination="f3P-Bx-i4I" id="XiW-hk-ujm"/>
+                                </connections>
+                            </pickerView>
+                        </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <constraints>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="bottom" secondItem="4JF-SE-Esm" secondAttribute="top" id="0vv-fs-LgB"/>
+                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leadingMargin" constant="-6" id="1qz-di-oAE"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leading" id="ACS-Fp-jnQ"/>
+                            <constraint firstAttribute="trailing" secondItem="gHE-E5-Qc0" secondAttribute="trailing" id="hsk-PL-APt"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="centerX" secondItem="hGD-Mt-8T5" secondAttribute="centerX" id="jgQ-Qd-XnY"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="top" secondItem="hGD-Mt-8T5" secondAttribute="bottom" constant="28" id="poi-ff-iYP"/>
+                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="top" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" constant="65" id="wFa-BL-60U"/>
+                        </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
+                    <connections>
+                        <outlet property="lineChartView" destination="hGD-Mt-8T5" id="NV3-pr-XPG"/>
+                        <outlet property="pickerViewOutlet" destination="gHE-E5-Qc0" id="3ZE-2x-21w"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Pr2-gA-kw4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

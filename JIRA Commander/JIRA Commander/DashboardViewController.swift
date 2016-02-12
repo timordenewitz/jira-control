@@ -53,6 +53,12 @@ class DashboardViewController: UIViewController {
             theDestination.serverAdress =  serverAdress
             theDestination.username =  username
         }
+        
+        if (segue.identifier == "DiagramSegue"){
+            let theDestination = (segue.destinationViewController as! DiagramViewController)
+            theDestination.authBase64 =  authBase64
+            theDestination.serverAdress =  serverAdress
+        }
     }
     
     /*
