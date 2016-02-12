@@ -17,6 +17,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     var serverAdress :String = ""
     var projects = Set<Project>()
     var storyPointCount = 0
+    var currentProject : String = ""
     
     let storyPointKey = "customfield_10002"
     var issuesArray = [issue]()
@@ -48,7 +49,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         
         let lineChartDataSet = LineChartDataSet(yVals: dataEntries, label: "Story Points Remaining")
         let lineChartData = LineChartData(xVals: dataPoints, dataSet: lineChartDataSet)
-        lineChartView.animate(xAxisDuration: 2.0, yAxisDuration: 2.0)
+        lineChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0)
         lineChartView.data = lineChartData
     }
     
@@ -66,39 +67,43 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
                         for var index = 0; index < issues!.count; ++index{
                             if let fields = issues![index]["fields"] {
                                 if let projectArray = fields!["project"] {
-                                        self.projects.insert(Project(title: projectArray!["name"] as! String, key: projectArray!["key"] as! String, issues: nil))
-                                }
-                                if let storyPointsJSON = fields![self.storyPointKey] {
-                                    if (!(storyPointsJSON is NSNull)) {
-                                        self.storyPointCount = self.storyPointCount + (storyPointsJSON?.integerValue!)!
-                                        if let resolutionDateJSON = fields!["resolutiondate"] {
-                                            if (!(resolutionDateJSON is NSNull)) {
-                                                var myStringArr = resolutionDateJSON!.componentsSeparatedByString("T")
-                                                let dateFormatter = NSDateFormatter()
-                                                dateFormatter.timeZone =  NSTimeZone(name: "UTC")
-                                                dateFormatter.dateFormat = "yyyy-MM-dd"
-                                                let date = dateFormatter.dateFromString(myStringArr[0])
-                                                self.resolvedIssues.append(ResolvedIssue(date: date!, numberOfStorypoints: storyPointsJSON!.integerValue!))
+                                    let tmpProject = Project(title: projectArray!["name"] as! String, key: projectArray!["key"] as! String, issues: nil)
+                                        self.projects.insert(tmpProject)
+                                    if let storyPointsJSON = fields![self.storyPointKey] {
+                                        if (!(storyPointsJSON is NSNull)) {
+                                            self.storyPointCount = self.storyPointCount + (storyPointsJSON?.integerValue!)!
+                                            if let resolutionDateJSON = fields!["resolutiondate"] {
+                                                if (!(resolutionDateJSON is NSNull)) {
+                                                    var myStringArr = resolutionDateJSON!.componentsSeparatedByString("T")
+                                                    let dateFormatter = NSDateFormatter()
+                                                    dateFormatter.timeZone =  NSTimeZone(name: "UTC")
+                                                    dateFormatter.dateFormat = "yyyy-MM-dd"
+                                                    let date = dateFormatter.dateFromString(myStringArr[0])
+                                                    self.resolvedIssues.append(ResolvedIssue(date: date!, numberOfStorypoints: storyPointsJSON!.integerValue!, project: tmpProject ))
+                                                }
                                             }
                                         }
                                     }
+
                                 }
                             }
                         }
                     }
                 }
-                self.buildDiagramDataValues(self.resolvedIssues)
-//                self.setChart(["1", "2", "3", "4"], values: )
-//                self.pickerViewOutlet.reloadAllComponents()
+                self.pickerViewOutlet.reloadAllComponents()
+                self.buildDiagramDataValues(self.resolvedIssues, project: self.currentProject)
         }
 
     }
     
-    func buildDiagramDataValues(resolvedIssues : [ResolvedIssue]) {
-        let orderedResolvedIssues = orderByDate(resolvedIssues)
+    func buildDiagramDataValues(resolvedIssues : [ResolvedIssue], project : String) {
+        let filteredIssues = filterIssuesByProject(resolvedIssues, project: project)
+        let orderedResolvedIssues = orderByDate(filteredIssues)
         print(orderedResolvedIssues)
         let xAxisDataSet = buildXAxisDataSet(orderedResolvedIssues)
-        buildValueDataSet(orderedResolvedIssues)
+        let valueDataSet = buildValueDataSet(orderedResolvedIssues)
+        setChart(xAxisDataSet, values: valueDataSet)
+        
     }
     
     func buildXAxisDataSet(orderedResolvedIssues : [ResolvedIssue]) -> [String] {
@@ -155,6 +160,15 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         return buffer
     }
 
+    func filterIssuesByProject(resolvedIssues :[ResolvedIssue], project: String) -> [ResolvedIssue]{
+        var tmpArray: [ResolvedIssue] = []
+        for var index = 0; index < resolvedIssues.count; ++index {
+            if(project == resolvedIssues[index].project.title) {
+                tmpArray.append(resolvedIssues[index])
+            }
+        }
+        return tmpArray
+    }
     
     //Picker View Stuff
     func pickerView(pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -162,6 +176,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        buildDiagramDataValues(resolvedIssues, project: currentProject)
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
@@ -169,6 +184,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         for project in projects {
             tmpArray.append(project.title)
         }
+        currentProject = tmpArray[row]
         return tmpArray[row]
     }
     
@@ -180,6 +196,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
 struct ResolvedIssue {
     var date :NSDate
     var numberOfStorypoints :Int
+    var project : Project
 }
 
 struct Project {
