@@ -16,20 +16,26 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     var authBase64 :String = ""
     var serverAdress :String = ""
     var projects = Set<Project>()
-    var storyPointCount = 0
+    var sprints = Set<Sprint>()
+
     var currentProject : String = ""
     
     let storyPointKey = "customfield_10002"
-    var issuesArray = [issue]()
+    let sprintInfoField = "customfield_10005"
+    var issuesArray = [Issue]()
     var resolvedIssues = [ResolvedIssue]()
     
+    let searchQuery="(sprint%20in%20openSprints%20())"
+    let maxResultsParameters = "&maxResults=5000"
+    
+    var projectTitles :[String] = []
     
     @IBOutlet weak var lineChartView: LineChartView!
     @IBOutlet weak var pickerViewOutlet: UIPickerView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadIssues()
+        loadProjects()
         // Do any additional setup after loading the view.
     }
 
@@ -57,49 +63,264 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    func loadIssues() {
-        print(serverAdress)
-        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=" + "project%20in%20projectsWhereUserHasRole(Developers)%20AND%20sprint%20in%20openSprints%20()%20AND%20(type=%20Aufgabe%20OR%20Type=%20Bug)")
+    func loadProjects() {
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=" + searchQuery + maxResultsParameters)
             .responseJSON { response in
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
+                        for var index = 0; index < issues!.count; ++index {
+                            var tmpProject : Project
+                            if let fields = issues![index]["fields"] {
+                                if let projectArray = fields!["project"] {
+                                    tmpProject = Project(title: projectArray!["name"] as! String, key: projectArray!["key"] as! String)
+                                    self.projects.insert(tmpProject)
+                                
+                                    if let sprintInfo = fields![self.sprintInfoField] {
+                                        for var index = 0; index < sprintInfo!.count; ++index {
+                                            var myTempStrArray = sprintInfo![index].componentsSeparatedByString(",")
+                                            let sprintName = myTempStrArray[3].componentsSeparatedByString("=")[1]
+                                            let sprintStartDate = self.getDateFromObject(myTempStrArray[4].componentsSeparatedByString("=")[1])
+                                            let sprintEndDate = self.getDateFromObject(myTempStrArray[5].componentsSeparatedByString("=")[1])
+                                            self.sprints.insert(Sprint(name: sprintName, startDate: sprintStartDate, endDate: sprintEndDate, maxStoryPoints: 0, project: tmpProject))
+                                        }
+                                    }
+                                }
+                            }
+                        }
                         for var index = 0; index < issues!.count; ++index{
                             if let fields = issues![index]["fields"] {
                                 if let projectArray = fields!["project"] {
-                                    let tmpProject = Project(title: projectArray!["name"] as! String, key: projectArray!["key"] as! String, issues: nil)
-                                        self.projects.insert(tmpProject)
                                     if let storyPointsJSON = fields![self.storyPointKey] {
                                         if (!(storyPointsJSON is NSNull)) {
-                                            self.storyPointCount = self.storyPointCount + (storyPointsJSON?.integerValue!)!
                                             if let resolutionDateJSON = fields!["resolutiondate"] {
                                                 if (!(resolutionDateJSON is NSNull)) {
-                                                    var myStringArr = resolutionDateJSON!.componentsSeparatedByString("T")
-                                                    let dateFormatter = NSDateFormatter()
-                                                    dateFormatter.timeZone =  NSTimeZone(name: "UTC")
-                                                    dateFormatter.dateFormat = "yyyy-MM-dd"
-                                                    let date = dateFormatter.dateFromString(myStringArr[0])
-                                                    self.resolvedIssues.append(ResolvedIssue(date: date!, numberOfStorypoints: storyPointsJSON!.integerValue!, project: tmpProject ))
+                                                    let date = self.getDateFromObject(resolutionDateJSON! as! String)
+                                                    if let sprintInfo = fields![self.sprintInfoField] {
+                                                        for var index = 0; index < sprintInfo!.count; ++index {
+                                                            var myTempStrArray = sprintInfo![index].componentsSeparatedByString(",")
+                                                            let sprintName = myTempStrArray[3].componentsSeparatedByString("=")[1]
+                                                            for sprintObject in self.sprints {
+                                                                if (sprintObject.name == sprintName) {
+                                                                    self.resolvedIssues.append(ResolvedIssue(date: date, numberOfStorypoints: storyPointsJSON!.integerValue!, project: self.getProjectByName(projectArray!["name"] as! String)!, sprintName: sprintName))
+                                                                }
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
                                     }
-
+                                    
                                 }
                             }
                         }
+                        self.computeMaxStorypointForSprint()
+                        self.createProjectsArray()
+                        self.pickerViewOutlet.reloadAllComponents()
+                        self.buildDiagramDataValues(self.resolvedIssues, project: (self.projects.first?.title)!)
                     }
                 }
-                self.pickerViewOutlet.reloadAllComponents()
-                self.buildDiagramDataValues(self.resolvedIssues, project: self.currentProject)
         }
+    }
+    
+    func computeMaxStorypointForSprint() {
+        for issueObject in resolvedIssues {
+            for sprintObject in sprints {
+                if (sprintObject.name == issueObject.sprintName) {
+                    var tmpSprint = sprintObject
+                    sprints.remove(sprintObject)
+                    tmpSprint.maxStoryPoints = tmpSprint.maxStoryPoints! + issueObject.numberOfStorypoints
+                    sprints.insert(tmpSprint)
+                }
+            }
+        }
+    }
+    
+    
+//
+//    func getIssueKeysPerProject() {
+//        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=" + searchQuery + maxResultsParameters)
+//            .responseJSON { response in
+//                if let JSON = response.result.value {
+//                    if let issues = JSON["issues"] {
+//                        //All Issues Reported by User
+//                        for var index = 0; index < issues!.count; ++index{
+//                            if let fields = issues![index]["fields"] {
+//                                if let projectArray = fields!["project"] {
+//                                    for project in self.projects {
+//                                        if(project.title == (projectArray!["name"] as! String)) {
+//                                            var tmpProject = project
+//                                            self.projects.remove(project)
+//                                            tmpProject.issueKeys.append(issues![index]["key"] as! String)
+//                                            self.projects.insert(tmpProject)
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                    self.getSprintsPerProject()
+//                }
+//        }
+//    }
 
+//    func getSprintsPerProject() {
+//        for project in projects {
+//            for key in project.issueKeys {
+//                Alamofire.request(.GET, serverAdress + "/rest/agile/1.0/issue/" + key)
+//                    .responseJSON { response in
+//                        if let JSON = response.result.value {
+//                            if let fields = JSON["fields"] {
+//                                //All Issues Reported by User
+//                                if let sprint = fields!["sprint"] {
+//                                    let tmpSprint = Sprint(id: sprint!["id"]!!.stringValue, startDate: self.getDateFromObject(sprint!["startDate"] as! String), endDate: self.getDateFromObject(sprint!["endDate"] as! String), issues:[], issueKeys : [])
+//                                    self.sprints.insert(tmpSprint)
+//                                    
+//                                }
+//                            }
+//                        }
+//                }
+//            }
+//        }
+//        self.getIssuesForSprint()
+//    }
+//    
+//    func getIssuesForSprint() {
+//        
+//        
+//        for project in projects {
+//            for key in project.issueKeys {
+//                Alamofire.request(.GET, serverAdress + "/rest/agile/1.0/issue/" + key)
+//                    .responseJSON { response in
+//                        if let JSON = response.result.value {
+//                            if let fields = JSON["fields"] {
+//                                //All Issues Reported by User
+//                                if let sprint = fields!["sprint"] {
+//                                    for sprintObject in self.sprints {
+//                                        if(sprintObject.id == (sprint!["id"]!!.stringValue)) {
+//                                            var tmpSprint = sprintObject
+//                                            self.sprints.remove(sprintObject)
+//                                            tmpSprint.issueKeys.append(key)
+//                                            self.sprints.insert(tmpSprint)
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                }
+//            }
+//        }
+//    }
+    
+    
+
+    
+//    func getStorypointsPerProject() {
+//        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=" + searchQuery + maxResultsParameters)
+//            .responseJSON { response in
+//                if let JSON = response.result.value {
+//                    if let issues = JSON["issues"] {
+//                        //All Issues Reported by User
+//                        for var index = 0; index < issues!.count; ++index{
+//                            if let fields = issues![index]["fields"] {
+//                                if let projectArray = fields!["project"] {
+//                                    if let storyPointsJSON = fields![self.storyPointKey] {
+//                                        if (!(storyPointsJSON is NSNull)) {
+//                                            for project in self.projects {
+//                                                if(project.title == (projectArray!["name"] as! String)) {
+//                                                    var tmpProject = project
+//                                                    self.projects.remove(project)
+//                                                    tmpProject.maxStoryPoints = (tmpProject.maxStoryPoints! + (storyPointsJSON?.integerValue!)!)
+//                                                    self.projects.insert(tmpProject)
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//                                    
+//                                }
+//                            }
+//                        }
+//                    }
+//                   self.loadIssues()
+//                }
+//        }
+//    }
+    
+    
+    
+
+
+    
+//    func loadIssues() {
+//        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=" + searchQuery + maxResultsParameters)
+//            .responseJSON { response in
+//                if let JSON = response.result.value {
+//                    if let issues = JSON["issues"] {
+//                        //All Issues Reported by User
+//                        for var index = 0; index < issues!.count; ++index{
+//                            if let fields = issues![index]["fields"] {
+//                                if let projectArray = fields!["project"] {
+//                                    if let storyPointsJSON = fields![self.storyPointKey] {
+//                                        if (!(storyPointsJSON is NSNull)) {
+//                                            if let resolutionDateJSON = fields!["resolutiondate"] {
+//                                                if (!(resolutionDateJSON is NSNull)) {
+//                                                    let date = self.getDateFromObject(resolutionDateJSON! as! String)
+//                                                    self.resolvedIssues.append(ResolvedIssue(date: date, numberOfStorypoints: storyPointsJSON!.integerValue!, project: self.getProjectByName(projectArray!["name"] as! String)!) )
+//                                                }
+//                                            }
+//                                        }
+//                                    }
+//
+//                                }
+//                            }
+//                        }
+//                    }
+//                    self.pickerViewOutlet.reloadAllComponents()
+//                    self.buildDiagramDataValues(self.resolvedIssues, project: (self.projects.first?.title)!)
+//            }
+//        }
+//    }
+    
+    func getDateFromObject(dateObject : String) -> NSDate {
+        var myStringArr = dateObject.componentsSeparatedByString("T")
+        let dateFormatter = NSDateFormatter()
+        dateFormatter.timeZone =  NSTimeZone(name: "UTC")
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        return dateFormatter.dateFromString(myStringArr[0])!
+    }
+    
+//    func getSprintForIssue(key : String) -> Sprint {
+//        Alamofire.request(.GET, serverAdress + "rest/agile/1.0/issue/" + key)
+//            .responseJSON { response in
+//                if let JSON = response.result.value {
+//                    if let fields = JSON["fields"] {
+//                        if let sprint = fields!["sprint"] {
+//                            Sprint(id: sprint!["id"] as! String, startDate: self.getDateFromObject(sprint!["startDate"]) , endDate:  self.getDateFromObject(sprint!["startDate"]), issues: [])
+//                        }
+//                    }
+//                }
+//        }
+//    }
+    
+    func createProjectsArray() {
+        for project in projects {
+            projectTitles.append(project.title)
+        }
+    }
+    
+    func getProjectByName(name :String) -> Project? {
+        for project in self.projects {
+            if(project.title == name) {
+                return project
+            }
+        }
+        return nil
     }
     
     func buildDiagramDataValues(resolvedIssues : [ResolvedIssue], project : String) {
         let filteredIssues = filterIssuesByProject(resolvedIssues, project: project)
         let orderedResolvedIssues = orderByDate(filteredIssues)
-        print(orderedResolvedIssues)
         let xAxisDataSet = buildXAxisDataSet(orderedResolvedIssues)
         let valueDataSet = buildValueDataSet(orderedResolvedIssues)
         setChart(xAxisDataSet, values: valueDataSet)
@@ -120,13 +341,24 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     func buildValueDataSet(orderedResolvedIssues : [ResolvedIssue]) -> [Double] {
         var tmpDoubleArray : [Double] = []
         var tmpStringArray : [String] = []
+        var tmpMaxStoryPoints = 0.0
+        
+        guard orderedResolvedIssues.count != 0 else {
+            return [0.0]
+        }
         
         for var index = 0; index < orderedResolvedIssues.count; ++index {
             tmpStringArray.append(String(orderedResolvedIssues[index].date))
         }
         tmpStringArray = uniq(tmpStringArray)
-        tmpDoubleArray.append(Double(storyPointCount))
-
+        
+        for sprintObject in sprints {
+            if (sprintObject.name == orderedResolvedIssues[0].sprintName) {
+                tmpMaxStoryPoints = Double(sprintObject.maxStoryPoints!)
+                tmpDoubleArray.append(tmpMaxStoryPoints)
+            }
+        }
+        
         
         for var index = 0; index < tmpStringArray.count; ++index {
             var tmpInt = 0
@@ -135,9 +367,8 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
                     tmpInt = tmpInt + orderedResolvedIssues[index2].numberOfStorypoints
                 }
             }
-            tmpDoubleArray.append(Double((storyPointCount - tmpInt)))
+            tmpDoubleArray.append(tmpMaxStoryPoints - Double(tmpInt))
         }
-        print(tmpDoubleArray)
         return tmpDoubleArray
     }
     
@@ -176,16 +407,12 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     }
     
     func pickerView(pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        currentProject = projectTitles[row]
         buildDiagramDataValues(resolvedIssues, project: currentProject)
     }
     
     func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        var tmpArray :[String] = []
-        for project in projects {
-            tmpArray.append(project.title)
-        }
-        currentProject = tmpArray[row]
-        return tmpArray[row]
+        return projectTitles[row]
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {
@@ -194,21 +421,41 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
 }
 
 struct ResolvedIssue {
-    var date :NSDate
-    var numberOfStorypoints :Int
+    var date : NSDate
+    var numberOfStorypoints : Int
     var project : Project
+    var sprintName : String
 }
 
 struct Project {
-    var title :String
-    var key :String
-    var issues: [issue]?
+    var title : String
+    var key : String
 }
 
-struct issue {
-    var storyPoints :String
+struct Issue {
+    var storyPoints : String
     var project : String
     var doneDate :String
+}
+
+struct Sprint {
+    var name : String
+    var startDate : NSDate
+    var endDate : NSDate
+    var maxStoryPoints : Int?
+    var project : Project
+
+}
+// MARK: Hashable
+extension Sprint: Hashable {
+    var hashValue: Int {
+        return name.hashValue ^ project.hashValue
+    }
+}
+
+// MARK: Equatable
+func ==(lhs: Sprint, rhs: Sprint) -> Bool {
+    return lhs.name == rhs.name && lhs.project == rhs.project
 }
 
 // MARK: Hashable
