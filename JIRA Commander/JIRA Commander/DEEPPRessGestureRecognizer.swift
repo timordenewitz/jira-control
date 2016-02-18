@@ -18,10 +18,18 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
     
     private var target : UIViewController
     private var _force: CGFloat = 0.0
+    private var _xTouch: CGFloat = 0.0
+    private var _yTouch: CGFloat = 00.0
+    private var _point :CGPoint? = nil
+
     private var _maxForce: CGFloat = 0.0
     let threshold: CGFloat
 
     internal var force: CGFloat {get {return _force}}
+    internal var xTouch: CGFloat {get {return _xTouch }}
+    internal var yTouch: CGFloat {get {return _yTouch}}
+    internal var point: CGPoint? {get {return _point}}
+
 
     
     required init(target: AnyObject?, action: Selector, threshold: CGFloat)
@@ -67,6 +75,9 @@ class DeepPressGestureRecognizer: UIGestureRecognizer
         self.state = state
         
         _force = touch.force / touch.maximumPossibleForce
+        _point = touch.locationInView(nil)
+        _xTouch = (_point?.x)!
+        _yTouch = _point!.y
     }
     
     
