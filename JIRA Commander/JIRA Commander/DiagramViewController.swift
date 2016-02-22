@@ -23,7 +23,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     var issuesArray = [Issue]()
     var resolvedIssues = [Issue]()
     
-    let searchQuery="(sprint%20in%20openSprints%20())" + "AND%20project%20in%20projectsWhereUserHasRole(Developers)"
+    let searchQuery="sprint%20in%20openSprints()%20AND%20project%20in%20projectsWhereUserHasRole(Developers)"
     let maxResultsParameters = "&maxResults=5000"
     
     var projectTitles :[String] = []
@@ -59,9 +59,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
             let dataEntry = ChartDataEntry(value: values[i], xIndex: i)
             dataEntries.append(dataEntry)
         }
-        
 
-        
         let lineChartDataSet = LineChartDataSet(yVals: dataEntries, label: "Story Points Remaining")
         let lineChartData = LineChartData(xVals: dataPoints, dataSet: lineChartDataSet)
         lineChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0)
@@ -83,15 +81,18 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
                             var tmpProject : Project
                             if let fields = issues![index]["fields"] {
                                 if let projectArray = fields!["project"] {
-                                    tmpProject = Project(title: projectArray!["name"] as! String, key: projectArray!["key"] as! String)
+                                    tmpProject = Project(title: projectArray!["name"] as! String, key: projectArray!["key"] as! String, sprints: nil)
                                     self.projects.insert(tmpProject)
                                     if let sprintInfo = fields![self.sprintInfoField] {
                                         for var index = 0; index < sprintInfo!.count; ++index {
                                             var myTempStrArray = sprintInfo![index].componentsSeparatedByString(",")
-                                            let sprintName = myTempStrArray[3].componentsSeparatedByString("=")[1]
-                                            let sprintStartDate = self.getDateFromObject(myTempStrArray[4].componentsSeparatedByString("=")[1])
-                                            let sprintEndDate = self.getDateFromObject(myTempStrArray[5].componentsSeparatedByString("=")[1])
-                                            self.sprints.insert(Sprint(name: sprintName, startDate: sprintStartDate, endDate: sprintEndDate, maxStoryPoints: 0, project: tmpProject))
+                                            if (self.checkSprintObjectForNullValues(myTempStrArray)) {
+                                                let sprintName = myTempStrArray[3].componentsSeparatedByString("=")[1]
+                                                let sprintStartDate = self.getDateFromObject(myTempStrArray[4].componentsSeparatedByString("=")[1])
+                                                let sprintEndDate = self.getDateFromObject(myTempStrArray[5].componentsSeparatedByString("=")[1])
+                                                self.sprints.insert(Sprint(name: sprintName, startDate: sprintStartDate, endDate: sprintEndDate, maxStoryPoints: 0, project: tmpProject))
+
+                                            }
                                         }
                                     }
                                 }
@@ -136,6 +137,17 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         }
     }
     
+    func checkSprintObjectForNullValues(myTempStrArray : [String]) -> Bool {
+        var ret = true
+        
+        if (myTempStrArray[4].componentsSeparatedByString("=")[1] == "<null>" || myTempStrArray[5].componentsSeparatedByString("=")[1] == "<null>" ) {
+            ret = false
+        }
+        return ret
+    }
+    
+
+    
     func computeMaxStorypointForSprint() {
         for issueObject in issuesArray {
             for sprintObject in sprints {
@@ -170,6 +182,14 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     
     func createProjectsArray() {
         for project in projects {
+            var tmpProject = project
+            projects.remove(project)
+            for sprint in sprints {
+                if (sprint.project == project) {
+                    tmpProject.sprints?.append(sprint)
+                }
+            }
+            projects.insert(tmpProject)
             projectTitles.append(project.title)
         }
     }
@@ -194,6 +214,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
 
     func buildXAxisDataSet(burndownDates : [burndownDate]) -> [String] {
         var tmpArray :[String] = []
+        tmpArray.append("START")
         for date in burndownDates {
             tmpArray.append((date.date?.dateStringWithFormat("yyyy-MM-dd"))!)
         }
@@ -209,6 +230,8 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
                 tmpMaxStoryPoints = Double(sprintObject.maxStoryPoints!)
             }
         }
+        
+        tmpDoubleArray.append(tmpMaxStoryPoints)
         
         for date in burndownDates {
             var tmpStoryPoints = 0
@@ -315,6 +338,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
 struct Project {
     var title : String
     var key : String
+    var sprints : [Sprint]?
 }
 
 struct burndownDate {

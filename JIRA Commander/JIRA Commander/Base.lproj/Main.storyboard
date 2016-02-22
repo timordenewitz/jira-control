@@ -410,14 +410,14 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hGD-Mt-8T5" customClass="LineChartView" customModule="Charts">
+                            <view contentMode="scaleToFill" ambiguous="YES" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hGD-Mt-8T5" customClass="LineChartView" customModule="Charts">
                                 <rect key="frame" x="10" y="85" width="355" height="409"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gHE-E5-Qc0">
                                 <rect key="frame" x="0.0" y="522" width="375" height="145"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="145" id="HhV-nO-QLl"/>
+                                    <constraint firstAttribute="height" constant="145" id="MwG-hm-zug"/>
                                 </constraints>
                                 <connections>
                                     <outlet property="dataSource" destination="f3P-Bx-i4I" id="3kS-SA-jfF"/>
@@ -427,13 +427,12 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="bottom" secondItem="4JF-SE-Esm" secondAttribute="top" id="0vv-fs-LgB"/>
-                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leadingMargin" constant="-6" id="1qz-di-oAE"/>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leading" id="ACS-Fp-jnQ"/>
-                            <constraint firstAttribute="trailing" secondItem="gHE-E5-Qc0" secondAttribute="trailing" id="hsk-PL-APt"/>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="centerX" secondItem="hGD-Mt-8T5" secondAttribute="centerX" id="jgQ-Qd-XnY"/>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="top" secondItem="hGD-Mt-8T5" secondAttribute="bottom" constant="28" id="poi-ff-iYP"/>
-                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="top" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" constant="65" id="wFa-BL-60U"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="centerX" secondItem="hGD-Mt-8T5" secondAttribute="centerX" id="3eP-Gu-fLL"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="bottom" secondItem="4JF-SE-Esm" secondAttribute="top" id="8TI-HE-mtC"/>
+                            <constraint firstAttribute="trailing" secondItem="gHE-E5-Qc0" secondAttribute="trailing" id="IjT-PK-NIL"/>
+                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leadingMargin" constant="-6" id="U3B-IA-8sW"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leading" id="htC-SM-Tug"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="top" secondItem="hGD-Mt-8T5" secondAttribute="bottom" constant="28" id="vrO-Lb-hJO"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>

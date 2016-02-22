@@ -21,6 +21,8 @@ class PressureWeightViewController: UITableViewController{
 
     var authTempBase64 = "YWRtaW46YWRtaW4="
     let testJiraUrl = "http://46.101.221.171:8080"
+    var additionalStatusQuery = "%20AND%20(status='to%20do'%20%20OR%20status='in%20progress')"
+
     
     struct issue {
         var title :String
@@ -54,7 +56,7 @@ class PressureWeightViewController: UITableViewController{
     
     func loadIssues() {
         issuesArray.removeAll()
-        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=reporter=" + username)
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=reporter=" + username + additionalStatusQuery)
             .responseJSON { response in
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {

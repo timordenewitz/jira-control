@@ -16,6 +16,7 @@ class StressTicketViewController: UITableViewController {
     var serverAdress :String = ""
     var username :String = ""
     let cellIdentifier = "stressTicketCell"
+    var additionalStatusQuery = "%20AND%20(status='to%20do'%20%20OR%20status='in%20progress')"
     
     struct issue {
         var title :String
@@ -42,7 +43,7 @@ class StressTicketViewController: UITableViewController {
     
     func loadIssues() {
         issuesArray.removeAll()
-        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=creator=" + username)
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=creator=" + username + additionalStatusQuery)
             .responseJSON { response in
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
