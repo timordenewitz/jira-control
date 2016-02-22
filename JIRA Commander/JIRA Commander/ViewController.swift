@@ -122,12 +122,11 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 self.defaults.setValue(self.serverAdress, forKey: defaultsKeys.serverAdressKey)
                 self.defaults.synchronize()
                 
-//                if let statusCode = response.response?.statusCode {
-//                    if (statusCode == 200) {
-//                        self.performDashboardSegue()
-//                    }
-//                }
-                self.performDashboardSegue()
+                if let statusCode = response.response?.statusCode {
+                    if (statusCode == 200) {
+                        self.performDashboardSegue()
+                    }
+                }
         }
     }
     
