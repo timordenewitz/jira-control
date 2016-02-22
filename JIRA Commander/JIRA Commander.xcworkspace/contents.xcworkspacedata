@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:JIRA Commander.xcodeproj">
+      location = "group:/Users/timordenewitz/Scandio/Repositories/JIRA Commander/JIRA Commander/JIRA Control.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
