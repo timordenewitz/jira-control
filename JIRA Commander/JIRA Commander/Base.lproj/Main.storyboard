@@ -410,8 +410,11 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BG_cut_blur" translatesAutoresizingMaskIntoConstraints="NO" id="Ypz-YT-3Ow">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                            </imageView>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="hGD-Mt-8T5" customClass="LineChartView" customModule="Charts">
-                                <rect key="frame" x="10" y="79" width="355" height="435"/>
+                                <rect key="frame" x="6" y="79" width="355" height="435"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                             </view>
                             <pickerView contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="gHE-E5-Qc0">
@@ -424,14 +427,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="bottom" secondItem="4JF-SE-Esm" secondAttribute="top" id="JV6-4r-VzP"/>
-                            <constraint firstItem="4JF-SE-Esm" firstAttribute="top" secondItem="hGD-Mt-8T5" secondAttribute="bottom" constant="153" id="JhU-0g-Fap"/>
-                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leadingMargin" constant="-6" id="dn6-R3-K8S"/>
-                            <constraint firstAttribute="trailing" secondItem="gHE-E5-Qc0" secondAttribute="trailing" id="mRl-gl-ZoV"/>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leading" id="pFJ-MD-CYF"/>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="top" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" constant="492" id="tfx-x2-z5b"/>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="centerX" secondItem="hGD-Mt-8T5" secondAttribute="centerX" id="ymo-Ku-w2z"/>
-                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="top" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" constant="59" id="zE1-KX-MVM"/>
+                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="top" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" constant="59" id="AcF-i5-TNc"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="leading" secondItem="Ypz-YT-3Ow" secondAttribute="leading" id="Csu-e4-srn"/>
+                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="top" secondItem="fat-C5-ICZ" secondAttribute="top" id="JaB-Of-dlY"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="top" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" constant="492" id="LVM-a0-s7O"/>
+                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="trailing" secondItem="gHE-E5-Qc0" secondAttribute="trailing" id="Lyj-BD-mbG"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hGD-Mt-8T5" secondAttribute="trailing" constant="-2" id="S0c-xN-lcQ"/>
+                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leadingMargin" constant="-10" id="SlI-yu-mVl"/>
+                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="bottom" secondItem="4JF-SE-Esm" secondAttribute="top" id="cZX-ke-JaB"/>
+                            <constraint firstAttribute="trailing" secondItem="Ypz-YT-3Ow" secondAttribute="trailing" id="s33-iy-kn7"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="bottom" secondItem="4JF-SE-Esm" secondAttribute="top" id="tOR-9Y-Mrc"/>
+                            <constraint firstItem="4JF-SE-Esm" firstAttribute="top" secondItem="hGD-Mt-8T5" secondAttribute="bottom" constant="153" id="xJD-eR-aib"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leading" id="yPC-59-L1O"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
@@ -465,6 +472,7 @@
     </scenes>
     <resources>
         <image name="BG" width="750" height="1334"/>
+        <image name="BG_cut_blur" width="750" height="1334"/>
         <image name="CHRAT" width="285" height="285"/>
         <image name="Hammer" width="285" height="285"/>
         <image name="JIRA Control" width="450" height="253"/>

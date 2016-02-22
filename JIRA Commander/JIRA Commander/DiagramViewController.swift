@@ -30,6 +30,8 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     var touchArray = [CGFloat]()
     var index = 0
     let zoomThresehold :CGFloat = 0.95
+    
+    let jiraCommanderBlue = UIColor(red: 74/255, green: 157/255, blue: 218/255, alpha: 0.9)
 
     
     @IBOutlet weak var lineChartView: LineChartView!
@@ -40,11 +42,8 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         loadProjects()
         let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         lineChartView.addGestureRecognizer(deepPressGestureRecognizer)
-
-
-        // Do any additional setup after loading the view.
     }
-
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
@@ -52,6 +51,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
+        configureLineChartView()
     }
     
     func loadProjects() {
@@ -119,8 +119,6 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
                 }
         }
     }
-    
-    
     
     func checkSprintObjectForNullValues(myTempStrArray : [String]) -> Bool {
         var ret = true
@@ -288,25 +286,42 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         dataSets.append(lineChartDataSet2)
         
         let lineChartData = LineChartData(xVals: dataPoints, dataSets: dataSets)
+        lineChartView.data = lineChartData
+    }
+    
+    func configureLineChartView() {
         lineChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0)
         lineChartView.xAxis.labelPosition = .Bottom
-        let yAxis = lineChartView.getAxis(ChartYAxis.AxisDependency.Right)
-        yAxis.drawLabelsEnabled = false
-        lineChartView.data = lineChartData
+        let yAxisRight = lineChartView.getAxis(ChartYAxis.AxisDependency.Right)
+        let yAxisLeft = lineChartView.getAxis(ChartYAxis.AxisDependency.Left)
+        yAxisRight.drawLabelsEnabled = false
+        lineChartView.opaque = false
+        lineChartView.backgroundColor = UIColor.clearColor()
+        lineChartView.xAxis.axisLineColor = UIColor.whiteColor()
+        lineChartView.xAxis.axisLineWidth = 2.0
+        yAxisLeft.axisLineColor = UIColor.whiteColor()
+        yAxisLeft.axisLineWidth = 2.0
+        lineChartView.xAxis.labelTextColor = UIColor.whiteColor()
+        yAxisLeft.labelTextColor = UIColor.whiteColor()
+        yAxisLeft.gridColor = UIColor.whiteColor()
+        lineChartView.xAxis.gridColor = UIColor.whiteColor()
+        lineChartView.infoTextColor = UIColor.whiteColor()
+        lineChartView.descriptionTextColor = UIColor.whiteColor()
+        lineChartView.gridBackgroundColor = UIColor.redColor()
+        lineChartView.legend.textColor = UIColor.whiteColor()
     }
     
     func buildDataSet(dataEntries : [ChartDataEntry]) -> LineChartDataSet{
         let lineChartDataSet = LineChartDataSet(yVals: dataEntries, label: "Story Points Remaining")
         lineChartDataSet.axisDependency = .Left // Line will correlate with left axis values
-        lineChartDataSet.setColor(UIColor.redColor().colorWithAlphaComponent(0.5))
-        lineChartDataSet.setCircleColor(UIColor.redColor())
+        lineChartDataSet.setColor(jiraCommanderBlue)
+        lineChartDataSet.setCircleColor(jiraCommanderBlue)
         lineChartDataSet.lineWidth = 8.0
         lineChartDataSet.circleRadius = 8.0
         lineChartDataSet.fillAlpha = 65 / 255.0
-        lineChartDataSet.fillColor = UIColor.redColor()
-        lineChartDataSet.highlightColor = UIColor.whiteColor()
+        lineChartDataSet.fillColor = jiraCommanderBlue
+        lineChartDataSet.highlightColor = jiraCommanderBlue
         lineChartDataSet.drawCircleHoleEnabled = true
-        lineChartDataSet.valueColors = [UIColor.blackColor()]
         lineChartDataSet.valueFont = UIFont(descriptor: UIFontDescriptor(name: "Helvetica", size: 0.0), size: 0.0)
         return lineChartDataSet
     }
@@ -314,15 +329,14 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     func buildBurndownGuidlineDataSet(dataEntries : [ChartDataEntry]) -> LineChartDataSet{
         let lineChartDataSet2 = LineChartDataSet(yVals: dataEntries, label: "Guidline")
         lineChartDataSet2.axisDependency = .Left // Line will correlate with left axis values
-        lineChartDataSet2.setColor(UIColor.grayColor().colorWithAlphaComponent(0.5))
-        lineChartDataSet2.setCircleColor(UIColor.grayColor())
+        lineChartDataSet2.setColor(UIColor.whiteColor().colorWithAlphaComponent(0.5))
+        lineChartDataSet2.setCircleColor(UIColor.whiteColor())
         lineChartDataSet2.lineWidth = 2.0
         lineChartDataSet2.circleRadius = 0.0
         lineChartDataSet2.fillAlpha = 65 / 255.0
-        lineChartDataSet2.fillColor = UIColor.grayColor()
+        lineChartDataSet2.fillColor = UIColor.whiteColor()
         lineChartDataSet2.highlightColor = UIColor.whiteColor()
         lineChartDataSet2.drawCircleHoleEnabled = true
-        lineChartDataSet2.valueColors = [UIColor.whiteColor()]
         lineChartDataSet2.valueFont = UIFont(descriptor: UIFontDescriptor(name: "Helvetica", size: 0.0), size: 0.0)
         return lineChartDataSet2
     }
@@ -378,8 +392,9 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         }
     }
     
-    func pickerView(pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-        return projectTitles[row]
+    func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
+        let attributedString = NSAttributedString(string: projectTitles[row], attributes: [NSForegroundColorAttributeName : UIColor.whiteColor()])
+        return attributedString
     }
     
     func numberOfComponentsInPickerView(pickerView: UIPickerView) -> Int {

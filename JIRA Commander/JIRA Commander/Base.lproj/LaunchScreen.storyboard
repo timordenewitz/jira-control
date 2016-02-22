@@ -18,23 +18,23 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BG" translatesAutoresizingMaskIntoConstraints="NO" id="STi-en-FTk">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BG" translatesAutoresizingMaskIntoConstraints="NO" id="Xhs-lf-MXc">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JIRA Control" translatesAutoresizingMaskIntoConstraints="NO" id="wne-Pl-hEu">
-                                <rect key="frame" x="67" y="105" width="240" height="128"/>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JIRA Control" translatesAutoresizingMaskIntoConstraints="NO" id="kDe-Oh-psu">
+                                <rect key="frame" x="67" y="61" width="240" height="128"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="wne-Pl-hEu" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="51" id="GCE-BN-mJS"/>
-                            <constraint firstItem="STi-en-FTk" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="GP7-Wa-Nbo"/>
-                            <constraint firstItem="STi-en-FTk" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="b24-2u-HEm"/>
-                            <constraint firstItem="STi-en-FTk" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="dFN-qI-sqt"/>
-                            <constraint firstAttribute="trailing" secondItem="STi-en-FTk" secondAttribute="trailing" id="dH0-6Y-HZ4"/>
-                            <constraint firstItem="wne-Pl-hEu" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="85" id="mHP-qb-BIL"/>
-                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="wne-Pl-hEu" secondAttribute="bottom" constant="434" id="opZ-tO-WY1"/>
-                            <constraint firstItem="STi-en-FTk" firstAttribute="centerX" secondItem="wne-Pl-hEu" secondAttribute="centerX" id="uF4-cE-Gpp"/>
+                            <constraint firstItem="kDe-Oh-psu" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leadingMargin" constant="51" id="8Uc-Rw-mjU"/>
+                            <constraint firstItem="kDe-Oh-psu" firstAttribute="top" secondItem="Llm-lL-Icb" secondAttribute="bottom" constant="41" id="KC1-j6-IRG"/>
+                            <constraint firstAttribute="trailing" secondItem="Xhs-lf-MXc" secondAttribute="trailing" id="MjI-HW-L9W"/>
+                            <constraint firstItem="Xhs-lf-MXc" firstAttribute="leading" secondItem="Ze5-6b-2t3" secondAttribute="leading" id="Wf7-Hf-A37"/>
+                            <constraint firstItem="xb3-aO-Qok" firstAttribute="top" secondItem="kDe-Oh-psu" secondAttribute="bottom" constant="478" id="cXh-Iv-tIl"/>
+                            <constraint firstItem="Xhs-lf-MXc" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="ekG-V6-wok"/>
+                            <constraint firstItem="Xhs-lf-MXc" firstAttribute="bottom" secondItem="xb3-aO-Qok" secondAttribute="top" id="krj-g7-qFH"/>
+                            <constraint firstItem="kDe-Oh-psu" firstAttribute="centerX" secondItem="Xhs-lf-MXc" secondAttribute="centerX" id="yMb-ZA-GTA"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
