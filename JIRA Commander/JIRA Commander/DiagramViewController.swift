@@ -51,17 +51,42 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         // Dispose of any resources that can be recreated.
     }
     
-    func setChart(dataPoints: [String], values: [Double]) {
+    func setChart(dataPoints: [String], values: [Double], sprintLength : Int) {
         lineChartView.noDataText = "You need to provide data for the chart."
         var dataEntries: [ChartDataEntry] = []
-        
+        var dataEntriesBurndownMean: [ChartDataEntry] = []
+
         for i in 0..<dataPoints.count {
             let dataEntry = ChartDataEntry(value: values[i], xIndex: i)
             dataEntries.append(dataEntry)
         }
+        let burndownMeanValues = buildBurndownMeanLine(values[0], nrOfDataPoints: dataPoints.count, sprintLength : sprintLength)
+
+
+        for i in 0..<dataPoints.count {
+            let dataEntry = ChartDataEntry(value: burndownMeanValues[i], xIndex: i)
+            dataEntriesBurndownMean.append(dataEntry)
+        }
 
         let lineChartDataSet = LineChartDataSet(yVals: dataEntries, label: "Story Points Remaining")
-        let lineChartData = LineChartData(xVals: dataPoints, dataSet: lineChartDataSet)
+        let lineChartDataSet2 = LineChartDataSet(yVals: dataEntriesBurndownMean, label: "Guidline")
+        lineChartDataSet2.axisDependency = .Left // Line will correlate with left axis values
+        lineChartDataSet2.setColor(UIColor.greenColor().colorWithAlphaComponent(0.5))
+        lineChartDataSet2.setCircleColor(UIColor.greenColor())
+        lineChartDataSet2.lineWidth = 2.0
+        lineChartDataSet2.circleRadius = 0.0
+        lineChartDataSet2.fillAlpha = 65 / 255.0
+        lineChartDataSet2.fillColor = UIColor.greenColor()
+        lineChartDataSet2.highlightColor = UIColor.whiteColor()
+        lineChartDataSet2.drawCircleHoleEnabled = true
+        lineChartDataSet2.valueColors = [UIColor.whiteColor()]
+        
+        var dataSets : [LineChartDataSet] = [LineChartDataSet]()
+        dataSets.append(lineChartDataSet)
+        dataSets.append(lineChartDataSet2)
+        
+        
+        let lineChartData = LineChartData(xVals: dataPoints, dataSets: dataSets)
         lineChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0)
         lineChartView.xAxis.labelPosition = .Bottom
         lineChartView.data = lineChartData
@@ -137,6 +162,15 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         }
     }
     
+    func buildBurndownMeanLine(maxSP : Double, nrOfDataPoints : Int, sprintLength : Int) -> [Double]{
+        var ret : [Double] = []
+        let storyPointsPerDay = maxSP/Double(sprintLength)
+        for var i = 0; i < nrOfDataPoints; ++i {
+            ret.append(maxSP - Double(i) * storyPointsPerDay)
+        }
+        return ret
+    }
+    
     func checkSprintObjectForNullValues(myTempStrArray : [String]) -> Bool {
         var ret = true
         
@@ -206,10 +240,11 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     func buildDiagramDataValues(resolvedIssues : [Issue], project : Project) {
         let filteredResolvedIssues = filterIssuesByProject(resolvedIssues, project: project.title)
         let orderedResolvedIssues = orderByDate(filteredResolvedIssues)
-        let burndownDates = getDatesInSprint(project)
+        let burndownDates = getDatesInSprintTillToday(project)
+        let nrOfDatesInSprint = getDatesInSprintTillEnd(project).count
         let xAxisDataSet = buildXAxisDataSet(burndownDates)
         let valueDataSet = buildValueDataSet(orderedResolvedIssues, burndownDates: burndownDates, project: project)
-        setChart(xAxisDataSet, values: valueDataSet)
+        setChart(xAxisDataSet, values: valueDataSet, sprintLength: nrOfDatesInSprint)
     }
 
     func buildXAxisDataSet(burndownDates : [burndownDate]) -> [String] {
@@ -249,18 +284,33 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         return tmpDoubleArray
     }
     
-    func getDatesInSprint(project : Project) ->[burndownDate]{
+    func getDatesInSprintTillToday(project : Project) ->[burndownDate]{
         var ret : [burndownDate] = []
         for sprint in sprints {
             if(sprint.project == project) {
                 for var date = sprint.startDate; date.isLessThanDate(NSDate()); date = date.addDays(1) {
-                    ret.append(burndownDate(date: date, numberOfStorypoints: 0))
+                    if(!date.inWeekend) {
+                        ret.append(burndownDate(date: date, numberOfStorypoints: 0))
+                    }
                 }
             }
         }
         return ret
     }
     
+    func getDatesInSprintTillEnd(project : Project) ->[burndownDate]{
+        var ret : [burndownDate] = []
+        for sprint in sprints {
+            if(sprint.project == project) {
+                for var date = sprint.startDate; date.isLessThanDate(sprint.endDate); date = date.addDays(1) {
+                    if(!date.inWeekend) {
+                        ret.append(burndownDate(date: date, numberOfStorypoints: 0))
+                    }
+                }
+            }
+        }
+        return ret
+    }
     
     func orderByDate(resolvedIssues : [Issue]) -> [Issue] {
         let tmpArray = resolvedIssues.sort { (res1, res2) -> Bool in
@@ -458,5 +508,10 @@ extension NSDate {
         let dateFormatter = NSDateFormatter()
         dateFormatter.dateFormat = format
         return dateFormatter.stringFromDate(self)
+    }
+    
+    var inWeekend: Bool {
+        let calendar = NSCalendar.currentCalendar()
+        return calendar.isDateInWeekend(self)
     }
 }
