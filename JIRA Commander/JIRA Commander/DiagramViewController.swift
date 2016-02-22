@@ -38,7 +38,6 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     override func viewDidLoad() {
         super.viewDidLoad()
         loadProjects()
-        
         let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         lineChartView.addGestureRecognizer(deepPressGestureRecognizer)
 
@@ -49,47 +48,6 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
-    }
-    
-    func setChart(dataPoints: [String], values: [Double], sprintLength : Int) {
-        lineChartView.noDataText = "You need to provide data for the chart."
-        var dataEntries: [ChartDataEntry] = []
-        var dataEntriesBurndownMean: [ChartDataEntry] = []
-
-        for i in 0..<dataPoints.count {
-            let dataEntry = ChartDataEntry(value: values[i], xIndex: i)
-            dataEntries.append(dataEntry)
-        }
-        let burndownMeanValues = buildBurndownMeanLine(values[0], nrOfDataPoints: dataPoints.count, sprintLength : sprintLength)
-
-
-        for i in 0..<dataPoints.count {
-            let dataEntry = ChartDataEntry(value: burndownMeanValues[i], xIndex: i)
-            dataEntriesBurndownMean.append(dataEntry)
-        }
-
-        let lineChartDataSet = LineChartDataSet(yVals: dataEntries, label: "Story Points Remaining")
-        let lineChartDataSet2 = LineChartDataSet(yVals: dataEntriesBurndownMean, label: "Guidline")
-        lineChartDataSet2.axisDependency = .Left // Line will correlate with left axis values
-        lineChartDataSet2.setColor(UIColor.greenColor().colorWithAlphaComponent(0.5))
-        lineChartDataSet2.setCircleColor(UIColor.greenColor())
-        lineChartDataSet2.lineWidth = 2.0
-        lineChartDataSet2.circleRadius = 0.0
-        lineChartDataSet2.fillAlpha = 65 / 255.0
-        lineChartDataSet2.fillColor = UIColor.greenColor()
-        lineChartDataSet2.highlightColor = UIColor.whiteColor()
-        lineChartDataSet2.drawCircleHoleEnabled = true
-        lineChartDataSet2.valueColors = [UIColor.whiteColor()]
-        
-        var dataSets : [LineChartDataSet] = [LineChartDataSet]()
-        dataSets.append(lineChartDataSet)
-        dataSets.append(lineChartDataSet2)
-        
-        
-        let lineChartData = LineChartData(xVals: dataPoints, dataSets: dataSets)
-        lineChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0)
-        lineChartView.xAxis.labelPosition = .Bottom
-        lineChartView.data = lineChartData
     }
     
     override func viewWillAppear(animated: Bool) {
@@ -162,14 +120,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         }
     }
     
-    func buildBurndownMeanLine(maxSP : Double, nrOfDataPoints : Int, sprintLength : Int) -> [Double]{
-        var ret : [Double] = []
-        let storyPointsPerDay = maxSP/Double(sprintLength)
-        for var i = 0; i < nrOfDataPoints; ++i {
-            ret.append(maxSP - Double(i) * storyPointsPerDay)
-        }
-        return ret
-    }
+    
     
     func checkSprintObjectForNullValues(myTempStrArray : [String]) -> Bool {
         var ret = true
@@ -179,8 +130,6 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         }
         return ret
     }
-    
-
     
     func computeMaxStorypointForSprint() {
         for issueObject in issuesArray {
@@ -246,7 +195,36 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         let valueDataSet = buildValueDataSet(orderedResolvedIssues, burndownDates: burndownDates, project: project)
         setChart(xAxisDataSet, values: valueDataSet, sprintLength: nrOfDatesInSprint)
     }
-
+    
+    func orderByDate(resolvedIssues : [Issue]) -> [Issue] {
+        let tmpArray = resolvedIssues.sort { (res1, res2) -> Bool in
+            return res2.date!.isGreaterThanDate(res1.date!)
+        }
+        return tmpArray
+    }
+    
+    func uniq<S : SequenceType, T : Hashable where S.Generator.Element == T>(source: S) -> [T] {
+        var buffer = [T]()
+        var added = Set<T>()
+        for elem in source {
+            if !added.contains(elem) {
+                buffer.append(elem)
+                added.insert(elem)
+            }
+        }
+        return buffer
+    }
+    
+    func filterIssuesByProject(resolvedIssues :[Issue], project: String) -> [Issue]{
+        var tmpArray: [Issue] = []
+        for var index = 0; index < resolvedIssues.count; ++index {
+            if(project == resolvedIssues[index].project.title) {
+                tmpArray.append(resolvedIssues[index])
+            }
+        }
+        return tmpArray
+    }
+    
     func buildXAxisDataSet(burndownDates : [burndownDate]) -> [String] {
         var tmpArray :[String] = []
         tmpArray.append("START")
@@ -255,7 +233,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         }
         return tmpArray
     }
-
+    
     func buildValueDataSet(orderedResolvedIssues : [Issue], burndownDates: [burndownDate], project : Project) -> [Double] {
         var tmpDoubleArray : [Double] = []
         var tmpMaxStoryPoints = 0.0
@@ -283,6 +261,81 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         }
         return tmpDoubleArray
     }
+
+    
+    func setChart(dataPoints: [String], values: [Double], sprintLength : Int) {
+        lineChartView.noDataText = "You need to provide data for the chart."
+        var dataEntries: [ChartDataEntry] = []
+        var dataEntriesBurndownMean: [ChartDataEntry] = []
+        
+        for i in 0..<dataPoints.count {
+            let dataEntry = ChartDataEntry(value: values[i], xIndex: i)
+            dataEntries.append(dataEntry)
+        }
+        let burndownMeanValues = buildBurndownMeanLine(values[0], nrOfDataPoints: dataPoints.count, sprintLength : sprintLength)
+        
+        
+        for i in 0..<dataPoints.count {
+            let dataEntry = ChartDataEntry(value: burndownMeanValues[i], xIndex: i)
+            dataEntriesBurndownMean.append(dataEntry)
+        }
+        
+        let lineChartDataSet = buildDataSet(dataEntries)
+        let lineChartDataSet2 = buildBurndownGuidlineDataSet(dataEntriesBurndownMean)
+        
+        var dataSets : [LineChartDataSet] = [LineChartDataSet]()
+        dataSets.append(lineChartDataSet)
+        dataSets.append(lineChartDataSet2)
+        
+        let lineChartData = LineChartData(xVals: dataPoints, dataSets: dataSets)
+        lineChartView.animate(xAxisDuration: 1.0, yAxisDuration: 1.0)
+        lineChartView.xAxis.labelPosition = .Bottom
+        let yAxis = lineChartView.getAxis(ChartYAxis.AxisDependency.Right)
+        yAxis.drawLabelsEnabled = false
+        lineChartView.data = lineChartData
+    }
+    
+    func buildDataSet(dataEntries : [ChartDataEntry]) -> LineChartDataSet{
+        let lineChartDataSet = LineChartDataSet(yVals: dataEntries, label: "Story Points Remaining")
+        lineChartDataSet.axisDependency = .Left // Line will correlate with left axis values
+        lineChartDataSet.setColor(UIColor.redColor().colorWithAlphaComponent(0.5))
+        lineChartDataSet.setCircleColor(UIColor.redColor())
+        lineChartDataSet.lineWidth = 8.0
+        lineChartDataSet.circleRadius = 8.0
+        lineChartDataSet.fillAlpha = 65 / 255.0
+        lineChartDataSet.fillColor = UIColor.redColor()
+        lineChartDataSet.highlightColor = UIColor.whiteColor()
+        lineChartDataSet.drawCircleHoleEnabled = true
+        lineChartDataSet.valueColors = [UIColor.blackColor()]
+        lineChartDataSet.valueFont = UIFont(descriptor: UIFontDescriptor(name: "Helvetica", size: 0.0), size: 0.0)
+        return lineChartDataSet
+    }
+    
+    func buildBurndownGuidlineDataSet(dataEntries : [ChartDataEntry]) -> LineChartDataSet{
+        let lineChartDataSet2 = LineChartDataSet(yVals: dataEntries, label: "Guidline")
+        lineChartDataSet2.axisDependency = .Left // Line will correlate with left axis values
+        lineChartDataSet2.setColor(UIColor.grayColor().colorWithAlphaComponent(0.5))
+        lineChartDataSet2.setCircleColor(UIColor.grayColor())
+        lineChartDataSet2.lineWidth = 2.0
+        lineChartDataSet2.circleRadius = 0.0
+        lineChartDataSet2.fillAlpha = 65 / 255.0
+        lineChartDataSet2.fillColor = UIColor.grayColor()
+        lineChartDataSet2.highlightColor = UIColor.whiteColor()
+        lineChartDataSet2.drawCircleHoleEnabled = true
+        lineChartDataSet2.valueColors = [UIColor.whiteColor()]
+        lineChartDataSet2.valueFont = UIFont(descriptor: UIFontDescriptor(name: "Helvetica", size: 0.0), size: 0.0)
+        return lineChartDataSet2
+    }
+    
+    func buildBurndownMeanLine(maxSP : Double, nrOfDataPoints : Int, sprintLength : Int) -> [Double]{
+        var ret : [Double] = []
+        let storyPointsPerDay = maxSP/Double(sprintLength)
+        for var i = 0; i < nrOfDataPoints; ++i {
+            ret.append(maxSP - Double(i) * storyPointsPerDay)
+        }
+        return ret
+    }
+
     
     func getDatesInSprintTillToday(project : Project) ->[burndownDate]{
         var ret : [burndownDate] = []
@@ -310,35 +363,6 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
             }
         }
         return ret
-    }
-    
-    func orderByDate(resolvedIssues : [Issue]) -> [Issue] {
-        let tmpArray = resolvedIssues.sort { (res1, res2) -> Bool in
-            return res2.date!.isGreaterThanDate(res1.date!)
-        }
-        return tmpArray
-    }
-    
-    func uniq<S : SequenceType, T : Hashable where S.Generator.Element == T>(source: S) -> [T] {
-        var buffer = [T]()
-        var added = Set<T>()
-        for elem in source {
-            if !added.contains(elem) {
-                buffer.append(elem)
-                added.insert(elem)
-            }
-        }
-        return buffer
-    }
-
-    func filterIssuesByProject(resolvedIssues :[Issue], project: String) -> [Issue]{
-        var tmpArray: [Issue] = []
-        for var index = 0; index < resolvedIssues.count; ++index {
-            if(project == resolvedIssues[index].project.title) {
-                tmpArray.append(resolvedIssues[index])
-            }
-        }
-        return tmpArray
     }
     
     //Picker View Stuff
