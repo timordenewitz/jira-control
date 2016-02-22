@@ -25,10 +25,6 @@ class SettingsViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.navigationController?.navigationBar.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.5)
-
-        self.navigationController?.navigationBar.translucent = true
-
     }
     
 
