@@ -21,7 +21,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BG" translatesAutoresizingMaskIntoConstraints="NO" id="TwG-eJ-uqw">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JIRA Control" translatesAutoresizingMaskIntoConstraints="NO" id="bu6-eH-kkW">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JIRA Control-2" translatesAutoresizingMaskIntoConstraints="NO" id="bu6-eH-kkW">
                                 <rect key="frame" x="67" y="105" width="240" height="128"/>
                             </imageView>
                         </subviews>
@@ -46,6 +46,6 @@
     </scenes>
     <resources>
         <image name="BG" width="750" height="1334"/>
-        <image name="JIRA Control" width="450" height="253"/>
+        <image name="JIRA Control-2" width="465" height="253"/>
     </resources>
 </document>

@@ -392,6 +392,10 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         }
     }
     
+    func pickerView(pickerView: UIPickerView, rowHeightForComponent component: Int) -> CGFloat {
+        return 25.0
+    }
+    
     func pickerView(pickerView: UIPickerView, attributedTitleForRow row: Int, forComponent component: Int) -> NSAttributedString? {
         let attributedString = NSAttributedString(string: projectTitles[row], attributes: [NSForegroundColorAttributeName : UIColor.whiteColor()])
         return attributedString

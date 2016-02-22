@@ -15,7 +15,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
-        // Override point for customization after application launch.
+        // Override point for customization after application launch.    UINavigationBar.appearance().setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        UINavigationBar.appearance().setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        // Sets shadow (line below the bar) to a blank image
+        UINavigationBar.appearance().shadowImage = UIImage()
+        // Sets the translucent background color
+        UINavigationBar.appearance().backgroundColor = UIColor.whiteColor().colorWithAlphaComponent(0.9)
+        UINavigationBar.appearance().barTintColor = UIColor.whiteColor().colorWithAlphaComponent(0.9)
+        
+        // Set translucent. (Default value is already true, so this can be removed if desired.)
+        UINavigationBar.appearance().translucent = false
         return true
     }
 

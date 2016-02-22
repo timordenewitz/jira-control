@@ -45,7 +45,7 @@ class PressureWeightViewController: UITableViewController{
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         loadPriorities()
         loadIssues()
-        
+        self.navigationController?.navigationBar.translucent = false
     }
     
     func handleRefresh(refreshControl: UIRefreshControl) {

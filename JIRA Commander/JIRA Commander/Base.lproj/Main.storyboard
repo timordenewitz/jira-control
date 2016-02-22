@@ -9,7 +9,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -21,7 +21,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BG" translatesAutoresizingMaskIntoConstraints="NO" id="EfX-73-lJd">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JIRA Control" translatesAutoresizingMaskIntoConstraints="NO" id="FaW-sl-km3">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JIRA Control-2" translatesAutoresizingMaskIntoConstraints="NO" id="FaW-sl-km3">
                                 <rect key="frame" x="67" y="105" width="240" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="9iN-WG-7c7"/>
@@ -115,7 +115,7 @@
         <!--Dashboard View Controller-->
         <scene sceneID="7aU-Pa-qra">
             <objects>
-                <viewController id="1o0-ki-CGl" customClass="DashboardViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="1o0-ki-CGl" customClass="DashboardViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="piE-jf-p05"/>
                         <viewControllerLayoutGuide type="bottom" id="8IZ-nh-gUp"/>
@@ -127,7 +127,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="BG" translatesAutoresizingMaskIntoConstraints="NO" id="aIz-v5-aiT">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="JIRA Control" translatesAutoresizingMaskIntoConstraints="NO" id="RHc-kk-tN5">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="JIRA Control-2" translatesAutoresizingMaskIntoConstraints="NO" id="RHc-kk-tN5">
                                 <rect key="frame" x="67" y="105" width="240" height="128"/>
                             </imageView>
                             <button opaque="NO" contentMode="center" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Kmr-Dj-ilG">
@@ -171,13 +171,13 @@
         <!--PRESSURE ISSUE-->
         <scene sceneID="Ghf-Qv-sum">
             <objects>
-                <tableViewController title="PRESSURE ISSUE" id="d5Q-Qi-hRT" customClass="PressureWeightViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="PRESSURE ISSUE" id="d5Q-Qi-hRT" customClass="PressureWeightViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="PRESSURE ISSUE" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" sectionHeaderHeight="28" sectionFooterHeight="28" id="GRh-k0-hFa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="issueCell" rowHeight="70" id="OMN-RD-R2M" customClass="IssueTableViewCell" customModule="JIRA_Commander" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="issueCell" rowHeight="70" id="OMN-RD-R2M" customClass="IssueTableViewCell" customModule="JIRA_Control" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OMN-RD-R2M" id="baq-Pn-caZ">
@@ -251,12 +251,12 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="P51-5A-xRu" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1786.5" y="-305.5"/>
+            <point key="canvasLocation" x="1786.5" y="-302.5"/>
         </scene>
         <!--SETTINGS-->
         <scene sceneID="59J-Hw-0dT">
             <objects>
-                <viewController title="SETTINGS" id="lz3-WM-5EG" customClass="SettingsViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="SETTINGS" id="lz3-WM-5EG" customClass="SettingsViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9tK-VP-EyX"/>
                         <viewControllerLayoutGuide type="bottom" id="SnS-ds-u6N"/>
@@ -268,7 +268,7 @@
                             <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BG" translatesAutoresizingMaskIntoConstraints="NO" id="Xzy-QL-j1h">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JIRA Control" translatesAutoresizingMaskIntoConstraints="NO" id="bf4-GU-PjM">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JIRA Control-2" translatesAutoresizingMaskIntoConstraints="NO" id="bf4-GU-PjM">
                                 <rect key="frame" x="67" y="105" width="240" height="128"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="128" id="nwE-f0-fMr"/>
@@ -308,13 +308,13 @@
         <!--STRESS TICKET-->
         <scene sceneID="sfB-EV-0Ot">
             <objects>
-                <tableViewController title="STRESS TICKET" id="rBz-kb-Okx" customClass="StressTicketViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="STRESS TICKET" id="rBz-kb-Okx" customClass="StressTicketViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" sectionHeaderHeight="28" sectionFooterHeight="28" id="GLg-Ot-VZJ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="stressTicketCell" rowHeight="70" id="qRG-Ia-0Bz" customClass="StressTicketTableViewCell" customModule="JIRA_Commander" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="stressTicketCell" rowHeight="70" id="qRG-Ia-0Bz" customClass="StressTicketTableViewCell" customModule="JIRA_Control" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="28" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qRG-Ia-0Bz" id="1iX-hd-p1N">
@@ -401,7 +401,7 @@
         <!--DIAGRAMS-->
         <scene sceneID="zYY-jS-ZnF">
             <objects>
-                <viewController title="DIAGRAMS" id="f3P-Bx-i4I" customClass="DiagramViewController" customModule="JIRA_Commander" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="DIAGRAMS" id="f3P-Bx-i4I" customClass="DiagramViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rBJ-3J-Pf5"/>
                         <viewControllerLayoutGuide type="bottom" id="4JF-SE-Esm"/>
@@ -424,21 +424,29 @@
                                     <outlet property="delegate" destination="f3P-Bx-i4I" id="XiW-hk-ujm"/>
                                 </connections>
                             </pickerView>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="ocl-lR-394">
+                                <rect key="frame" x="0.0" y="0.0" width="380" height="20"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="top" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" constant="59" id="AcF-i5-TNc"/>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="leading" secondItem="Ypz-YT-3Ow" secondAttribute="leading" id="Csu-e4-srn"/>
-                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="top" secondItem="fat-C5-ICZ" secondAttribute="top" id="JaB-Of-dlY"/>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="top" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" constant="492" id="LVM-a0-s7O"/>
-                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="trailing" secondItem="gHE-E5-Qc0" secondAttribute="trailing" id="Lyj-BD-mbG"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="hGD-Mt-8T5" secondAttribute="trailing" constant="-2" id="S0c-xN-lcQ"/>
-                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leadingMargin" constant="-10" id="SlI-yu-mVl"/>
-                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="bottom" secondItem="4JF-SE-Esm" secondAttribute="top" id="cZX-ke-JaB"/>
-                            <constraint firstAttribute="trailing" secondItem="Ypz-YT-3Ow" secondAttribute="trailing" id="s33-iy-kn7"/>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="bottom" secondItem="4JF-SE-Esm" secondAttribute="top" id="tOR-9Y-Mrc"/>
-                            <constraint firstItem="4JF-SE-Esm" firstAttribute="top" secondItem="hGD-Mt-8T5" secondAttribute="bottom" constant="153" id="xJD-eR-aib"/>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leading" id="yPC-59-L1O"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hGD-Mt-8T5" secondAttribute="trailing" constant="-2" id="1CB-GL-UHi"/>
+                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leadingMargin" constant="-10" id="2as-Mn-DEA"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="bottom" secondItem="4JF-SE-Esm" secondAttribute="top" id="4Px-ND-bar"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="top" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" constant="492" id="AEv-9X-aFU"/>
+                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="top" secondItem="fat-C5-ICZ" secondAttribute="top" id="Bz0-aS-WGV"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="leading" secondItem="Ypz-YT-3Ow" secondAttribute="leading" id="C0d-8H-dj0"/>
+                            <constraint firstItem="4JF-SE-Esm" firstAttribute="top" secondItem="hGD-Mt-8T5" secondAttribute="bottom" constant="153" id="LPN-7G-X2U"/>
+                            <constraint firstItem="ocl-lR-394" firstAttribute="bottom" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" id="O2O-OR-t6C"/>
+                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="bottom" secondItem="4JF-SE-Esm" secondAttribute="top" id="YvZ-dX-CkY"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="trailing" secondItem="Ypz-YT-3Ow" secondAttribute="trailing" id="aqg-Ei-awS"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ocl-lR-394" secondAttribute="trailing" constant="-21" id="bN9-bv-YDf"/>
+                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="leading" secondItem="ocl-lR-394" secondAttribute="leading" id="o0B-du-GjG"/>
+                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="top" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" constant="59" id="q7f-WK-h8B"/>
+                            <constraint firstAttribute="trailing" secondItem="gHE-E5-Qc0" secondAttribute="trailing" id="sDG-bC-rmR"/>
+                            <constraint firstItem="ocl-lR-394" firstAttribute="top" secondItem="Ypz-YT-3Ow" secondAttribute="top" id="ul9-U1-Waz"/>
+                            <constraint firstItem="ocl-lR-394" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leading" id="ybP-nO-98N"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
@@ -475,7 +483,7 @@
         <image name="BG_cut_blur" width="750" height="1334"/>
         <image name="CHRAT" width="285" height="285"/>
         <image name="Hammer" width="285" height="285"/>
-        <image name="JIRA Control" width="450" height="253"/>
+        <image name="JIRA Control-2" width="465" height="253"/>
         <image name="Login Button BG" width="750" height="141"/>
         <image name="Logout" width="285" height="285"/>
         <image name="Settings" width="285" height="285"/>
