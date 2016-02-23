@@ -22,7 +22,10 @@ class PressureWeightViewController: UITableViewController{
     var authTempBase64 = "YWRtaW46YWRtaW4="
     let testJiraUrl = "http://46.101.221.171:8080"
     var additionalStatusQuery = "%20AND%20(status='to%20do'%20%20OR%20status='in%20progress')"
-
+    
+    var issuesArray = [issue]()
+    var touchArray = [CGFloat]()
+    var prioritiesArray = [priority]()
     
     struct issue {
         var title :String
@@ -35,9 +38,6 @@ class PressureWeightViewController: UITableViewController{
         var id : String
     }
     
-    var issuesArray = [issue]()
-    var touchArray = [CGFloat]()
-    var prioritiesArray = [priority]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,7 +53,7 @@ class PressureWeightViewController: UITableViewController{
         refreshControl.endRefreshing()
     }
     
-    func checkConnection(){
+    func checkConnection() {
         if (serverAdress.isEmpty) {
             let vc = self.storyboard?.instantiateViewControllerWithIdentifier("NavController") as! UINavigationController
             self.presentViewController(vc, animated: false, completion: nil)
@@ -163,8 +163,7 @@ class PressureWeightViewController: UITableViewController{
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    func deepPressHandler(recognizer: DeepPressGestureRecognizer)
-    {
+    func deepPressHandler(recognizer: DeepPressGestureRecognizer) {
         let forceLocation = recognizer.locationInView(self.tableView)
         if let forcedIndexPath = tableView.indexPathForRowAtPoint(forceLocation) {
             if let forcedCell  = self.tableView.cellForRowAtIndexPath(forcedIndexPath) as! IssueTableViewCell? {
@@ -276,19 +275,8 @@ class PressureWeightViewController: UITableViewController{
                 ]
             ]
         ]
-        
         Alamofire.request(.PUT, serverAdress + "/rest/api/2/issue/" + issueKey, parameters: parameters, encoding: .JSON)
             .responseJSON { response in
             }
     }
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
