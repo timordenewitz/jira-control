@@ -115,7 +115,7 @@
         <!--Dashboard View Controller-->
         <scene sceneID="7aU-Pa-qra">
             <objects>
-                <viewController id="1o0-ki-CGl" customClass="DashboardViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController extendedLayoutIncludesOpaqueBars="YES" id="1o0-ki-CGl" customClass="DashboardViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="piE-jf-p05"/>
                         <viewControllerLayoutGuide type="bottom" id="8IZ-nh-gUp"/>
@@ -256,7 +256,7 @@
         <!--SETTINGS-->
         <scene sceneID="59J-Hw-0dT">
             <objects>
-                <viewController title="SETTINGS" id="lz3-WM-5EG" customClass="SettingsViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="SETTINGS" extendedLayoutIncludesOpaqueBars="YES" id="lz3-WM-5EG" customClass="SettingsViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="9tK-VP-EyX"/>
                         <viewControllerLayoutGuide type="bottom" id="SnS-ds-u6N"/>
@@ -265,39 +265,21 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="BG" translatesAutoresizingMaskIntoConstraints="NO" id="Xzy-QL-j1h">
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="BG" translatesAutoresizingMaskIntoConstraints="NO" id="Xzy-QL-j1h">
                                 <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                             </imageView>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="JIRA Control-2" translatesAutoresizingMaskIntoConstraints="NO" id="bf4-GU-PjM">
-                                <rect key="frame" x="67" y="105" width="240" height="128"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="128" id="nwE-f0-fMr"/>
-                                </constraints>
-                            </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4kZ-ke-Elq">
+                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4kZ-ke-Elq">
                                 <rect key="frame" x="126" y="396" width="122" height="122"/>
-                                <constraints>
-                                    <constraint firstAttribute="width" constant="122" id="vkK-yk-MuN"/>
-                                    <constraint firstAttribute="height" constant="122" id="yDW-OM-VCO"/>
-                                </constraints>
                                 <state key="normal" backgroundImage="Logout"/>
                                 <connections>
                                     <segue destination="BYZ-38-t0r" kind="show" id="H5J-E8-8Kj"/>
                                 </connections>
                             </button>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" image="JIRA Control-2" translatesAutoresizingMaskIntoConstraints="NO" id="bf4-GU-PjM">
+                                <rect key="frame" x="67" y="105" width="240" height="128"/>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="bf4-GU-PjM" firstAttribute="top" secondItem="9tK-VP-EyX" secondAttribute="bottom" constant="85" id="576-iX-WC7"/>
-                            <constraint firstItem="SnS-ds-u6N" firstAttribute="top" secondItem="4kZ-ke-Elq" secondAttribute="bottom" constant="149" id="JzU-SM-DaL"/>
-                            <constraint firstItem="Xzy-QL-j1h" firstAttribute="bottom" secondItem="SnS-ds-u6N" secondAttribute="top" id="Psa-xB-qfR"/>
-                            <constraint firstItem="Xzy-QL-j1h" firstAttribute="top" secondItem="2ny-8g-Rcc" secondAttribute="top" id="h6n-Wg-7uu"/>
-                            <constraint firstItem="Xzy-QL-j1h" firstAttribute="leading" secondItem="2ny-8g-Rcc" secondAttribute="leading" id="npF-Xr-DV9"/>
-                            <constraint firstItem="bf4-GU-PjM" firstAttribute="leading" secondItem="2ny-8g-Rcc" secondAttribute="leadingMargin" constant="51" id="sSZ-OR-UF4"/>
-                            <constraint firstItem="4kZ-ke-Elq" firstAttribute="centerX" secondItem="bf4-GU-PjM" secondAttribute="centerX" id="vqh-z6-kLL"/>
-                            <constraint firstItem="4kZ-ke-Elq" firstAttribute="centerX" secondItem="Xzy-QL-j1h" secondAttribute="centerX" id="w5b-cG-45e"/>
-                            <constraint firstAttribute="trailing" secondItem="Xzy-QL-j1h" secondAttribute="trailing" id="xe5-0h-W3U"/>
-                        </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
                 </viewController>

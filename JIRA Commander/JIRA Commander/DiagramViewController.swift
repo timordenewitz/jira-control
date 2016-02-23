@@ -27,10 +27,9 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     let maxResultsParameters = "&maxResults=5000"
     
     var projectTitles :[String] = []
-    var touchArray = [CGFloat]()
+    var touchArray = [DeepPressGestureRecognizer]()
     var index = 0
     let zoomThresehold :CGFloat = 0.95
-    
     let jiraCommanderBlue = UIColor(red: 74/255, green: 157/255, blue: 218/255, alpha: 0.9)
 
     
@@ -406,24 +405,24 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     }
     
     func deepPressHandler(recognizer: DeepPressGestureRecognizer) {
-        
+
         if(recognizer.state == .Began) {
         }
         
         if(recognizer.state == .Changed) {
-            touchArray.insert(recognizer.force, atIndex: index)
+            touchArray.append(recognizer)
             guard touchArray.count > 7 else {
                 lineChartView.zoom((zoomThresehold + recognizer.force / 10), scaleY: (zoomThresehold + recognizer.force / 10) , x: recognizer.xTouch, y: recognizer.yTouch)
                 index++
                 return
             }
-            let point1 = lineChartView.getEntryByTouchPoint(recognizer.point!)
+            let point1 = lineChartView.getEntryByTouchPoint(touchArray[0].point!)
             let point2 = lineChartView.getPosition(point1, axis: ChartYAxis.AxisDependency.Left)
-            lineChartView.zoom((zoomThresehold + touchArray[index - 7] / 10), scaleY: (zoomThresehold + touchArray[index - 7] / 10) , x: point2.x, y: (lineChartView.getYAxisMaxWidth(ChartYAxis.AxisDependency.Left)/2) + 100)
-            index++
+            lineChartView.zoom((zoomThresehold + touchArray[touchArray.count - 7].force / 12), scaleY: (zoomThresehold + touchArray[touchArray.count - 7].force / 12) , x: point2.x * touchArray[touchArray.count - 7].force, y: point2.y * touchArray[touchArray.count - 7].force * 1.3)
         }
         
         if(recognizer.state == .Ended) {
+            touchArray.removeAll()
         }
     }
 }
