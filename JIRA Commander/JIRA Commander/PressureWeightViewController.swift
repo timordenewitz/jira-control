@@ -62,7 +62,6 @@ class PressureWeightViewController: UITableViewController{
             .responseJSON { response in
                 if let statusCode = response.response?.statusCode {
                     if (statusCode == 200) {
-                        print("200")
                         self.loadPriorities()
                         self.loadIssues()
                     }

@@ -62,7 +62,6 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
             .responseJSON { response in
                 if let statusCode = response.response?.statusCode {
                     if (statusCode == 200) {
-                        print("200")
                         self.loadProjects()
 
                     }
@@ -243,7 +242,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         var tmpArray :[String] = []
         tmpArray.append("START")
         for date in burndownDates {
-            tmpArray.append((date.date?.dateStringWithFormat("yyyy-MM-dd"))!)
+            tmpArray.append((date.date?.dateStringWithFormat("dd/MM/yyyy"))!)
         }
         return tmpArray
     }
