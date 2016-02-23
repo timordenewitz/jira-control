@@ -27,6 +27,9 @@ class SettingsViewController: UIViewController {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
+    @IBAction func logoutButtonClicked(sender: AnyObject) {
+        UIApplication.sharedApplication().shortcutItems?.removeAll()
+    }
 
     /*
     // MARK: - Navigation

@@ -38,7 +38,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        loadProjects()
+        checkConnection()
         let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         lineChartView.addGestureRecognizer(deepPressGestureRecognizer)
     }
@@ -51,6 +51,23 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         configureLineChartView()
+    }
+    
+    func checkConnection(){
+        if (serverAdress.isEmpty) {
+            let vc = self.storyboard?.instantiateViewControllerWithIdentifier("NavController") as! UINavigationController
+            self.presentViewController(vc, animated: false, completion: nil)
+        }
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/myself")
+            .responseJSON { response in
+                if let statusCode = response.response?.statusCode {
+                    if (statusCode == 200) {
+                        print("200")
+                        self.loadProjects()
+
+                    }
+                }
+        }
     }
     
     func loadProjects() {

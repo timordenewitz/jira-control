@@ -10,6 +10,7 @@
 		A51BC81F1C69E856007357E0 /* DEEPPRessGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51BC81E1C69E856007357E0 /* DEEPPRessGestureRecognizer.swift */; };
 		A53D21DF1C64DF6E00746526 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53D21DE1C64DF6E00746526 /* DashboardViewController.swift */; };
 		A53D21E31C64FCC200746526 /* PressureWeightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53D21E21C64FCC200746526 /* PressureWeightViewController.swift */; };
+		A53E05FF1C7CAA1F00D2912F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A53E05FE1C7CAA1F00D2912F /* Default-568h@2x.png */; };
 		A56F51C01C68A38E00B3FB2C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56F51BF1C68A38E00B3FB2C /* SettingsViewController.swift */; };
 		A56F51C21C68A39800B3FB2C /* StressTicketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56F51C11C68A39800B3FB2C /* StressTicketViewController.swift */; };
 		A56F51C41C68A3A000B3FB2C /* DiagramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56F51C31C68A3A000B3FB2C /* DiagramViewController.swift */; };
@@ -28,6 +29,7 @@
 		A51BC81E1C69E856007357E0 /* DEEPPRessGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DEEPPRessGestureRecognizer.swift; sourceTree = "<group>"; };
 		A53D21DE1C64DF6E00746526 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		A53D21E21C64FCC200746526 /* PressureWeightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PressureWeightViewController.swift; sourceTree = "<group>"; };
+		A53E05FE1C7CAA1F00D2912F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		A56F51BF1C68A38E00B3FB2C /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A56F51C11C68A39800B3FB2C /* StressTicketViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StressTicketViewController.swift; sourceTree = "<group>"; };
 		A56F51C31C68A3A000B3FB2C /* DiagramViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagramViewController.swift; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 		A596C3471C64AF6D00943FCF = {
 			isa = PBXGroup;
 			children = (
+				A53E05FE1C7CAA1F00D2912F /* Default-568h@2x.png */,
 				A596C3521C64AF6D00943FCF /* JIRA Commander */,
 				A596C3511C64AF6D00943FCF /* Products */,
 				1925932767B5C336DB822951 /* Pods */,
@@ -184,6 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A596C35E1C64AF6D00943FCF /* LaunchScreen.storyboard in Resources */,
+				A53E05FF1C7CAA1F00D2912F /* Default-568h@2x.png in Resources */,
 				A596C35B1C64AF6D00943FCF /* Assets.xcassets in Resources */,
 				A596C3591C64AF6D00943FCF /* Main.storyboard in Resources */,
 			);

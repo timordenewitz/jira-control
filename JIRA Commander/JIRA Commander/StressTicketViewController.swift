@@ -32,8 +32,25 @@ class StressTicketViewController: UITableViewController {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
-        loadIssues()
+        checkConnection()
     }
+    
+    func checkConnection(){
+        if (serverAdress.isEmpty) {
+            let vc = self.storyboard?.instantiateViewControllerWithIdentifier("NavController") as! UINavigationController
+            self.presentViewController(vc, animated: false, completion: nil)
+        }
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/myself")
+            .responseJSON { response in
+                if let statusCode = response.response?.statusCode {
+                    if (statusCode == 200) {
+                        print("200")
+                        self.loadIssues()
+                    }
+                }
+        }
+    }
+
     
     func handleRefresh(refreshControl: UIRefreshControl) {
         loadIssues()

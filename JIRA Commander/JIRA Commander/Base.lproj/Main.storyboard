@@ -9,7 +9,7 @@
         <!--View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Login" useStoryboardIdentifierAsRestorationIdentifier="YES" id="BYZ-38-t0r" customClass="ViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
                         <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
@@ -115,7 +115,7 @@
         <!--Dashboard View Controller-->
         <scene sceneID="7aU-Pa-qra">
             <objects>
-                <viewController extendedLayoutIncludesOpaqueBars="YES" id="1o0-ki-CGl" customClass="DashboardViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="Dashboard" extendedLayoutIncludesOpaqueBars="YES" useStoryboardIdentifierAsRestorationIdentifier="YES" id="1o0-ki-CGl" customClass="DashboardViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="piE-jf-p05"/>
                         <viewControllerLayoutGuide type="bottom" id="8IZ-nh-gUp"/>
@@ -171,14 +171,14 @@
         <!--PRESSURE ISSUE-->
         <scene sceneID="Ghf-Qv-sum">
             <objects>
-                <tableViewController title="PRESSURE ISSUE" id="d5Q-Qi-hRT" customClass="PressureWeightViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="PressureWeightViewController" title="PRESSURE ISSUE" useStoryboardIdentifierAsRestorationIdentifier="YES" id="d5Q-Qi-hRT" customClass="PressureWeightViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" restorationIdentifier="PRESSURE ISSUE" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" sectionHeaderHeight="28" sectionFooterHeight="28" id="GRh-k0-hFa">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="issueCell" rowHeight="70" id="OMN-RD-R2M" customClass="IssueTableViewCell" customModule="JIRA_Control" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="70"/>
+                                <rect key="frame" x="0.0" y="92" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="OMN-RD-R2M" id="baq-Pn-caZ">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
@@ -272,6 +272,7 @@
                                 <rect key="frame" x="126" y="396" width="122" height="122"/>
                                 <state key="normal" backgroundImage="Logout"/>
                                 <connections>
+                                    <action selector="logoutButtonClicked:" destination="lz3-WM-5EG" eventType="touchUpInside" id="Zc2-R2-JDe"/>
                                     <segue destination="BYZ-38-t0r" kind="show" id="H5J-E8-8Kj"/>
                                 </connections>
                             </button>
@@ -290,14 +291,14 @@
         <!--STRESS TICKET-->
         <scene sceneID="sfB-EV-0Ot">
             <objects>
-                <tableViewController title="STRESS TICKET" id="rBz-kb-Okx" customClass="StressTicketViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="StressTicketViewController" title="STRESS TICKET" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rBz-kb-Okx" customClass="StressTicketViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" sectionHeaderHeight="28" sectionFooterHeight="28" id="GLg-Ot-VZJ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="none" indentationWidth="10" reuseIdentifier="stressTicketCell" rowHeight="70" id="qRG-Ia-0Bz" customClass="StressTicketTableViewCell" customModule="JIRA_Control" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="28" width="375" height="70"/>
+                                <rect key="frame" x="0.0" y="92" width="375" height="70"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="qRG-Ia-0Bz" id="1iX-hd-p1N">
                                     <rect key="frame" x="0.0" y="0.0" width="375" height="69"/>
@@ -383,7 +384,7 @@
         <!--DIAGRAMS-->
         <scene sceneID="zYY-jS-ZnF">
             <objects>
-                <viewController title="DIAGRAMS" id="f3P-Bx-i4I" customClass="DiagramViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DiagramViewController" title="DIAGRAMS" useStoryboardIdentifierAsRestorationIdentifier="YES" id="f3P-Bx-i4I" customClass="DiagramViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rBJ-3J-Pf5"/>
                         <viewControllerLayoutGuide type="bottom" id="4JF-SE-Esm"/>
@@ -413,22 +414,22 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="hGD-Mt-8T5" secondAttribute="trailing" constant="-2" id="1CB-GL-UHi"/>
-                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leadingMargin" constant="-10" id="2as-Mn-DEA"/>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="bottom" secondItem="4JF-SE-Esm" secondAttribute="top" id="4Px-ND-bar"/>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="top" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" constant="492" id="AEv-9X-aFU"/>
-                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="top" secondItem="fat-C5-ICZ" secondAttribute="top" id="Bz0-aS-WGV"/>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="leading" secondItem="Ypz-YT-3Ow" secondAttribute="leading" id="C0d-8H-dj0"/>
-                            <constraint firstItem="4JF-SE-Esm" firstAttribute="top" secondItem="hGD-Mt-8T5" secondAttribute="bottom" constant="153" id="LPN-7G-X2U"/>
-                            <constraint firstItem="ocl-lR-394" firstAttribute="bottom" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" id="O2O-OR-t6C"/>
-                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="bottom" secondItem="4JF-SE-Esm" secondAttribute="top" id="YvZ-dX-CkY"/>
-                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="trailing" secondItem="Ypz-YT-3Ow" secondAttribute="trailing" id="aqg-Ei-awS"/>
-                            <constraint firstAttribute="trailingMargin" secondItem="ocl-lR-394" secondAttribute="trailing" constant="-21" id="bN9-bv-YDf"/>
-                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="leading" secondItem="ocl-lR-394" secondAttribute="leading" id="o0B-du-GjG"/>
-                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="top" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" constant="59" id="q7f-WK-h8B"/>
-                            <constraint firstAttribute="trailing" secondItem="gHE-E5-Qc0" secondAttribute="trailing" id="sDG-bC-rmR"/>
-                            <constraint firstItem="ocl-lR-394" firstAttribute="top" secondItem="Ypz-YT-3Ow" secondAttribute="top" id="ul9-U1-Waz"/>
-                            <constraint firstItem="ocl-lR-394" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leading" id="ybP-nO-98N"/>
+                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leadingMargin" constant="-10" id="1ym-kR-FgF"/>
+                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="top" secondItem="ocl-lR-394" secondAttribute="top" id="399-gR-EAd"/>
+                            <constraint firstItem="hGD-Mt-8T5" firstAttribute="top" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" constant="15" id="Auu-kB-QUQ"/>
+                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="bottom" secondItem="4JF-SE-Esm" secondAttribute="top" id="BCO-Er-mlK"/>
+                            <constraint firstItem="4JF-SE-Esm" firstAttribute="top" secondItem="hGD-Mt-8T5" secondAttribute="bottom" constant="153" id="F5u-IJ-bQ8"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="trailing" secondItem="Ypz-YT-3Ow" secondAttribute="trailing" id="H8t-o1-WaI"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="hGD-Mt-8T5" secondAttribute="trailing" constant="-2" id="JVq-EE-Gev"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="top" secondItem="rBJ-3J-Pf5" secondAttribute="bottom" constant="448" id="MTt-P7-NkP"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="bottom" secondItem="4JF-SE-Esm" secondAttribute="top" id="TKi-Hb-IfI"/>
+                            <constraint firstItem="ocl-lR-394" firstAttribute="leading" secondItem="gHE-E5-Qc0" secondAttribute="leading" id="Wyj-32-5vr"/>
+                            <constraint firstItem="rBJ-3J-Pf5" firstAttribute="top" secondItem="ocl-lR-394" secondAttribute="bottom" constant="44" id="Y2X-lV-dFJ"/>
+                            <constraint firstItem="Ypz-YT-3Ow" firstAttribute="top" secondItem="fat-C5-ICZ" secondAttribute="top" id="cSv-V3-w4m"/>
+                            <constraint firstItem="gHE-E5-Qc0" firstAttribute="leading" secondItem="fat-C5-ICZ" secondAttribute="leading" id="hUg-fP-swo"/>
+                            <constraint firstItem="ocl-lR-394" firstAttribute="leading" secondItem="Ypz-YT-3Ow" secondAttribute="leading" id="lD7-Ec-R8a"/>
+                            <constraint firstAttribute="trailing" secondItem="Ypz-YT-3Ow" secondAttribute="trailing" id="lYF-LK-PEe"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="ocl-lR-394" secondAttribute="trailing" constant="-21" id="rEy-j8-yUK"/>
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina47"/>
@@ -444,7 +445,7 @@
         <!--Navigation Controller-->
         <scene sceneID="x5q-yc-3Q8">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xEh-UB-a1I" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="NavController" automaticallyAdjustsScrollViewInsets="NO" useStoryboardIdentifierAsRestorationIdentifier="YES" id="xEh-UB-a1I" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="X5x-vC-qNQ">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
@@ -475,6 +476,6 @@
         <image name="pw" width="640" height="48"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="H5J-E8-8Kj"/>
+        <segue reference="O7t-kn-8vO"/>
     </inferredMetricsTieBreakers>
 </document>
