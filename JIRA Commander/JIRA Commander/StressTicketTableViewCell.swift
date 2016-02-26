@@ -7,8 +7,9 @@
 //
 
 import UIKit
+import SWTableViewCell
 
-class StressTicketTableViewCell: UITableViewCell {
+class StressTicketTableViewCell: SWTableViewCell {
 
     @IBOutlet weak var issuesSummaryLabel: UILabel!
     @IBOutlet weak var assigneeLabel: UILabel!

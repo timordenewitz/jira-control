@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		639D3C7E428E90E8924C0BEB /* Pods_JIRA_Control.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B9BBF6432C5B0557B5AA91A /* Pods_JIRA_Control.framework */; };
+		A514E1991C80722D009C588B /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A514E1971C80722D009C588B /* Fabric.framework */; };
+		A514E19C1C8073B0009C588B /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A514E19B1C8073B0009C588B /* Crashlytics.framework */; };
+		A514E19E1C807591009C588B /* Appsee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A514E19D1C807591009C588B /* Appsee.framework */; };
 		A51BC81F1C69E856007357E0 /* DEEPPRessGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51BC81E1C69E856007357E0 /* DEEPPRessGestureRecognizer.swift */; };
 		A53D21DF1C64DF6E00746526 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53D21DE1C64DF6E00746526 /* DashboardViewController.swift */; };
 		A53D21E31C64FCC200746526 /* PressureWeightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53D21E21C64FCC200746526 /* PressureWeightViewController.swift */; };
@@ -25,6 +29,10 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9B9BBF6432C5B0557B5AA91A /* Pods_JIRA_Control.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JIRA_Control.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		A514E1971C80722D009C588B /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = SOURCE_ROOT; };
+		A514E19B1C8073B0009C588B /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = SOURCE_ROOT; };
+		A514E19D1C807591009C588B /* Appsee.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Appsee.framework; sourceTree = SOURCE_ROOT; };
 		A518D7A41C6CBA4A00022EB8 /* B-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "B-Header.h"; sourceTree = "<group>"; };
 		A51BC81E1C69E856007357E0 /* DEEPPRessGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DEEPPRessGestureRecognizer.swift; sourceTree = "<group>"; };
 		A53D21DE1C64DF6E00746526 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
@@ -42,7 +50,9 @@
 		A596C35A1C64AF6D00943FCF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A596C35D1C64AF6D00943FCF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A596C35F1C64AF6D00943FCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AEAB7843A6D22FD33F2D02C9 /* Pods-JIRA Control.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JIRA Control.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JIRA Control/Pods-JIRA Control.debug.xcconfig"; sourceTree = "<group>"; };
 		B8DB6F015A97EA905FA57737 /* Pods-JIRA Commander.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JIRA Commander.release.xcconfig"; path = "Pods/Target Support Files/Pods-JIRA Commander/Pods-JIRA Commander.release.xcconfig"; sourceTree = "<group>"; };
+		CAC4F37C42AB83264EF8B619 /* Pods-JIRA Control.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JIRA Control.release.xcconfig"; path = "Pods/Target Support Files/Pods-JIRA Control/Pods-JIRA Control.release.xcconfig"; sourceTree = "<group>"; };
 		E52FC5C35D10C99E05E08F36 /* Pods-JIRA Commander.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JIRA Commander.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JIRA Commander/Pods-JIRA Commander.debug.xcconfig"; sourceTree = "<group>"; };
 		F319DFF44F06687711E64DCB /* Pods_JIRA_Commander.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JIRA_Commander.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -53,6 +63,10 @@
 			buildActionMask = 2147483647;
 			files = (
 				B0B30BE50C04293EBAE3C036 /* Pods_JIRA_Commander.framework in Frameworks */,
+				A514E19C1C8073B0009C588B /* Crashlytics.framework in Frameworks */,
+				A514E19E1C807591009C588B /* Appsee.framework in Frameworks */,
+				A514E1991C80722D009C588B /* Fabric.framework in Frameworks */,
+				639D3C7E428E90E8924C0BEB /* Pods_JIRA_Control.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -64,6 +78,8 @@
 			children = (
 				E52FC5C35D10C99E05E08F36 /* Pods-JIRA Commander.debug.xcconfig */,
 				B8DB6F015A97EA905FA57737 /* Pods-JIRA Commander.release.xcconfig */,
+				AEAB7843A6D22FD33F2D02C9 /* Pods-JIRA Control.debug.xcconfig */,
+				CAC4F37C42AB83264EF8B619 /* Pods-JIRA Control.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -72,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				F319DFF44F06687711E64DCB /* Pods_JIRA_Commander.framework */,
+				9B9BBF6432C5B0557B5AA91A /* Pods_JIRA_Control.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -121,6 +138,9 @@
 				A596C35A1C64AF6D00943FCF /* Assets.xcassets */,
 				A596C35C1C64AF6D00943FCF /* LaunchScreen.storyboard */,
 				A596C35F1C64AF6D00943FCF /* Info.plist */,
+				A514E19D1C807591009C588B /* Appsee.framework */,
+				A514E19B1C8073B0009C588B /* Crashlytics.framework */,
+				A514E1971C80722D009C588B /* Fabric.framework */,
 			);
 			path = "JIRA Commander";
 			sourceTree = "<group>";
@@ -138,6 +158,7 @@
 				A596C34E1C64AF6D00943FCF /* Resources */,
 				4A18A9344C3B4061D53E947B /* Embed Pods Frameworks */,
 				C867CFCF3EA7C0284A21A4EE /* Copy Pods Resources */,
+				A514E18E1C807145009C588B /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -223,8 +244,21 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JIRA Commander/Pods-JIRA Commander-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JIRA Control/Pods-JIRA Control-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		A514E18E1C807145009C588B /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Fabric.framework/run 7a6dd9bea83c7754d7d6d06c3b3f9ddae0768d33 1a225f347009ca75995b13b14e543e1416505a23b03b215bbf586835058b529f";
 		};
 		C867CFCF3EA7C0284A21A4EE /* Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -238,7 +272,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JIRA Commander/Pods-JIRA Commander-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JIRA Control/Pods-JIRA Control-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -366,11 +400,11 @@
 		};
 		A596C3631C64AF6D00943FCF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E52FC5C35D10C99E05E08F36 /* Pods-JIRA Commander.debug.xcconfig */;
+			baseConfigurationReference = AEAB7843A6D22FD33F2D02C9 /* Pods-JIRA Control.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
 				INFOPLIST_FILE = "JIRA Commander/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.scandio.JIRA-Commander";
@@ -382,11 +416,11 @@
 		};
 		A596C3641C64AF6D00943FCF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B8DB6F015A97EA905FA57737 /* Pods-JIRA Commander.release.xcconfig */;
+			baseConfigurationReference = CAC4F37C42AB83264EF8B619 /* Pods-JIRA Control.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
-				FRAMEWORK_SEARCH_PATHS = "";
+				FRAMEWORK_SEARCH_PATHS = "$(PROJECT_DIR)";
 				INFOPLIST_FILE = "JIRA Commander/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.scandio.JIRA-Commander";

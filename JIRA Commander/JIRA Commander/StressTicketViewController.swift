@@ -9,14 +9,16 @@
 import UIKit
 import Alamofire
 import AudioToolbox
+import SWTableViewCell
 
-class StressTicketViewController: UITableViewController {
+class StressTicketViewController: UITableViewController, SWTableViewCellDelegate{
     
     var authBase64 :String = ""
     var serverAdress :String = ""
     var username :String = ""
     let cellIdentifier = "stressTicketCell"
     var additionalStatusQuery = "%20AND%20(status='to%20do'%20%20OR%20status='in%20progress')"
+    let jiraCommanderRed = UIColor(red: 208/255, green: 69/255, blue: 55/255, alpha: 1)
     
     struct issue {
         var title :String
@@ -49,7 +51,6 @@ class StressTicketViewController: UITableViewController {
                 }
         }
     }
-
     
     func handleRefresh(refreshControl: UIRefreshControl) {
         loadIssues()
@@ -133,6 +134,7 @@ class StressTicketViewController: UITableViewController {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! StressTicketTableViewCell
         let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         tableView.addGestureRecognizer(deepPressGestureRecognizer)
+        cell.delegate = self;
         cell.issueTitleLabel.text = issuesArray[indexPath.row].title
         cell.issuesSummaryLabel.text = issuesArray[indexPath.row].description
         cell.assigneeLabel.text = issuesArray[indexPath.row].assignee?.uppercaseString
@@ -149,9 +151,13 @@ class StressTicketViewController: UITableViewController {
             cell.stressedImageView.hidden = false
             cell.stressedImageView.image = UIImage(named: "Stressed-Badge")
             cell.stressed = true
+            cell.rightUtilityButtons = self.getRightUtilityButtonsToCell() as [AnyObject];
         } else {
             cell.stressedImageView.hidden = true
             cell.stressed = false
+            cell.backgroundColor = UIColor.whiteColor()
+            cell.rightUtilityButtons = []
+            
         }
         return cell
     }
@@ -164,10 +170,10 @@ class StressTicketViewController: UITableViewController {
                 if(recognizer.state == .Changed) {
                     if (recognizer.force == 1.0) {
                         if (!forcedCell.stressed) {
+                            forcedCell.stressed = true
                             forcedCell.backgroundColor = UIColor.redColor()
                             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
                             sendNewStressedStatusToJira("Stressed", issueKey: forcedCell.issueTitleLabel.text!)
-                            loadIssues()
                         }
                     }
                 }
@@ -184,6 +190,32 @@ class StressTicketViewController: UITableViewController {
         }
     }
     
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
+    func getRightUtilityButtonsToCell()-> NSMutableArray{
+        let utilityButtons: NSMutableArray = NSMutableArray()
+        
+        utilityButtons.sw_addUtilityButtonWithColor(jiraCommanderRed, title: NSLocalizedString("Remove", comment: ""))
+        return utilityButtons
+    }
+    
+    func swipeableTableViewCell(cell: SWTableViewCell!, didTriggerRightUtilityButtonWithIndex index: Int) {
+        if index == 0 {
+            handleDeStress(cell as! StressTicketTableViewCell)
+        }
+        cell.hideUtilityButtonsAnimated(true);
+    }
+    
+    func swipeableTableViewCellShouldHideUtilityButtonsOnSwipe(cell: SWTableViewCell!) -> Bool {
+        return true
+    }
+    
+    func handleDeStress(cell : StressTicketTableViewCell) {
+        sendRemoveStressedStatusToJira("Stressed", issueKey: cell.issueTitleLabel.text!)
+    }
+    
     func sendNewStressedStatusToJira(status :String, issueKey: String) {
         let parameters = [
             "update": [
@@ -193,17 +225,26 @@ class StressTicketViewController: UITableViewController {
                 ]
             ]
         ]
-
-        Alamofire.request(.PUT, serverAdress + "/rest/api/2/issue/" + issueKey, parameters: parameters, encoding: .JSON)
-            .responseJSON { response in
-                print(response.request)
-                print(response.response)
-                print(response.result)
-        }
+        sendIssueRequest(issueKey, parameters: parameters)
     }
     
-    override func viewWillAppear(animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    func sendRemoveStressedStatusToJira(status :String, issueKey: String) {
+        let parameters = [
+            "update": [
+                "labels": [[
+                    "remove": status
+                    ]
+                ]
+            ]
+        ]
+        sendIssueRequest(issueKey, parameters: parameters)
+    }
+    
+    func sendIssueRequest(issueKey : String, parameters : [String : Dictionary<String, Array<Dictionary<String, String>>>]) {
+        Alamofire.request(.PUT, serverAdress + "/rest/api/2/issue/" + issueKey, parameters: parameters, encoding: .JSON).responseJSON {
+            response in
+            self.loadIssues()
+        }
     }
 }
 
