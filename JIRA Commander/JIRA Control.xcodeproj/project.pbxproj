@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		A514E1991C80722D009C588B /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A514E1971C80722D009C588B /* Fabric.framework */; };
 		A514E19C1C8073B0009C588B /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A514E19B1C8073B0009C588B /* Crashlytics.framework */; };
+		A514E19E1C807591009C588B /* Appsee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A514E19D1C807591009C588B /* Appsee.framework */; };
 		A51BC81F1C69E856007357E0 /* DEEPPRessGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51BC81E1C69E856007357E0 /* DEEPPRessGestureRecognizer.swift */; };
 		A53D21DF1C64DF6E00746526 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53D21DE1C64DF6E00746526 /* DashboardViewController.swift */; };
 		A53D21E31C64FCC200746526 /* PressureWeightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53D21E21C64FCC200746526 /* PressureWeightViewController.swift */; };
@@ -29,6 +30,7 @@
 /* Begin PBXFileReference section */
 		A514E1971C80722D009C588B /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = SOURCE_ROOT; };
 		A514E19B1C8073B0009C588B /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = SOURCE_ROOT; };
+		A514E19D1C807591009C588B /* Appsee.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Appsee.framework; sourceTree = SOURCE_ROOT; };
 		A518D7A41C6CBA4A00022EB8 /* B-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "B-Header.h"; sourceTree = "<group>"; };
 		A51BC81E1C69E856007357E0 /* DEEPPRessGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DEEPPRessGestureRecognizer.swift; sourceTree = "<group>"; };
 		A53D21DE1C64DF6E00746526 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
@@ -58,6 +60,7 @@
 			files = (
 				B0B30BE50C04293EBAE3C036 /* Pods_JIRA_Commander.framework in Frameworks */,
 				A514E19C1C8073B0009C588B /* Crashlytics.framework in Frameworks */,
+				A514E19E1C807591009C588B /* Appsee.framework in Frameworks */,
 				A514E1991C80722D009C588B /* Fabric.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -127,6 +130,7 @@
 				A596C35A1C64AF6D00943FCF /* Assets.xcassets */,
 				A596C35C1C64AF6D00943FCF /* LaunchScreen.storyboard */,
 				A596C35F1C64AF6D00943FCF /* Info.plist */,
+				A514E19D1C807591009C588B /* Appsee.framework */,
 				A514E19B1C8073B0009C588B /* Crashlytics.framework */,
 				A514E1971C80722D009C588B /* Fabric.framework */,
 			);

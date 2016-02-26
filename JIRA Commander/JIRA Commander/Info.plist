@@ -38,6 +38,15 @@
 				<key>KitName</key>
 				<string>Crashlytics</string>
 			</dict>
+			<dict>
+				<key>KitInfo</key>
+				<dict>
+					<key>apikey</key>
+					<string>dd6c56473f5c49b1a2936ce23b5f50ce</string>
+				</dict>
+				<key>KitName</key>
+				<string>Appsee</string>
+			</dict>
 		</array>
 	</dict>
 	<key>LSApplicationQueriesSchemes</key>
