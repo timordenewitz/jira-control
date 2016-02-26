@@ -25,21 +25,9 @@ class SettingsViewController: UIViewController {
     
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.navigationController?.navigationBar.backgroundColor = UIColor(red: 1.0, green: 0.0, blue: 0.0, alpha: 0.5)
-
-        self.navigationController?.navigationBar.translucent = true
-
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    @IBAction func logoutButtonClicked(sender: AnyObject) {
+        UIApplication.sharedApplication().shortcutItems?.removeAll()
     }
-    */
-
 }

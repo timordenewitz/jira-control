@@ -13,11 +13,15 @@ class DashboardViewController: UIViewController {
     var authBase64 :String = ""
     var serverAdress : String = ""
     var username : String = ""
+    
+    let chartQuickIcon = UIApplicationShortcutIcon(templateImageName: "QuickChartIcon")
+    let stressQuickIcon = UIApplicationShortcutIcon(templateImageName: "QuickStressIcon")
+    let priorityQuickIcon = UIApplicationShortcutIcon(templateImageName: "QuickPriorityIcon")
 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.navigationController?.setNavigationBarHidden(true, animated: false)
         // Do any additional setup after loading the view.
     }
     
@@ -31,7 +35,11 @@ class DashboardViewController: UIViewController {
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(true, animated: false)
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(true, animated: true)
+
     }
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
@@ -53,16 +61,11 @@ class DashboardViewController: UIViewController {
             theDestination.serverAdress =  serverAdress
             theDestination.username =  username
         }
+        
+        if (segue.identifier == "DiagramSegue"){
+            let theDestination = (segue.destinationViewController as! DiagramViewController)
+            theDestination.authBase64 =  authBase64
+            theDestination.serverAdress =  serverAdress
+        }
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

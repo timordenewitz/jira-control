@@ -10,6 +10,7 @@
 		A51BC81F1C69E856007357E0 /* DEEPPRessGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A51BC81E1C69E856007357E0 /* DEEPPRessGestureRecognizer.swift */; };
 		A53D21DF1C64DF6E00746526 /* DashboardViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53D21DE1C64DF6E00746526 /* DashboardViewController.swift */; };
 		A53D21E31C64FCC200746526 /* PressureWeightViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A53D21E21C64FCC200746526 /* PressureWeightViewController.swift */; };
+		A53E05FF1C7CAA1F00D2912F /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = A53E05FE1C7CAA1F00D2912F /* Default-568h@2x.png */; };
 		A56F51C01C68A38E00B3FB2C /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56F51BF1C68A38E00B3FB2C /* SettingsViewController.swift */; };
 		A56F51C21C68A39800B3FB2C /* StressTicketViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56F51C11C68A39800B3FB2C /* StressTicketViewController.swift */; };
 		A56F51C41C68A3A000B3FB2C /* DiagramViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A56F51C31C68A3A000B3FB2C /* DiagramViewController.swift */; };
@@ -28,12 +29,13 @@
 		A51BC81E1C69E856007357E0 /* DEEPPRessGestureRecognizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DEEPPRessGestureRecognizer.swift; sourceTree = "<group>"; };
 		A53D21DE1C64DF6E00746526 /* DashboardViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DashboardViewController.swift; sourceTree = "<group>"; };
 		A53D21E21C64FCC200746526 /* PressureWeightViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PressureWeightViewController.swift; sourceTree = "<group>"; };
+		A53E05FE1C7CAA1F00D2912F /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		A56F51BF1C68A38E00B3FB2C /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		A56F51C11C68A39800B3FB2C /* StressTicketViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StressTicketViewController.swift; sourceTree = "<group>"; };
 		A56F51C31C68A3A000B3FB2C /* DiagramViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DiagramViewController.swift; sourceTree = "<group>"; };
 		A56F51C71C68B43C00B3FB2C /* IssueTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = IssueTableViewCell.swift; sourceTree = "<group>"; };
 		A56F51CB1C68E09C00B3FB2C /* StressTicketTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StressTicketTableViewCell.swift; sourceTree = "<group>"; };
-		A596C3501C64AF6D00943FCF /* JIRA Commander.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JIRA Commander.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A596C3501C64AF6D00943FCF /* JIRA Control.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "JIRA Control.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A596C3531C64AF6D00943FCF /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A596C3551C64AF6D00943FCF /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		A596C3581C64AF6D00943FCF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -85,6 +87,7 @@
 		A596C3471C64AF6D00943FCF = {
 			isa = PBXGroup;
 			children = (
+				A53E05FE1C7CAA1F00D2912F /* Default-568h@2x.png */,
 				A596C3521C64AF6D00943FCF /* JIRA Commander */,
 				A596C3511C64AF6D00943FCF /* Products */,
 				1925932767B5C336DB822951 /* Pods */,
@@ -95,7 +98,7 @@
 		A596C3511C64AF6D00943FCF /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A596C3501C64AF6D00943FCF /* JIRA Commander.app */,
+				A596C3501C64AF6D00943FCF /* JIRA Control.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -125,9 +128,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A596C34F1C64AF6D00943FCF /* JIRA Commander */ = {
+		A596C34F1C64AF6D00943FCF /* JIRA Control */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A596C3621C64AF6D00943FCF /* Build configuration list for PBXNativeTarget "JIRA Commander" */;
+			buildConfigurationList = A596C3621C64AF6D00943FCF /* Build configuration list for PBXNativeTarget "JIRA Control" */;
 			buildPhases = (
 				4514CE54AB85E61D300E6DF6 /* Check Pods Manifest.lock */,
 				A596C34C1C64AF6D00943FCF /* Sources */,
@@ -140,9 +143,9 @@
 			);
 			dependencies = (
 			);
-			name = "JIRA Commander";
+			name = "JIRA Control";
 			productName = "JIRA Commander";
-			productReference = A596C3501C64AF6D00943FCF /* JIRA Commander.app */;
+			productReference = A596C3501C64AF6D00943FCF /* JIRA Control.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -160,7 +163,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A596C34B1C64AF6D00943FCF /* Build configuration list for PBXProject "JIRA Commander" */;
+			buildConfigurationList = A596C34B1C64AF6D00943FCF /* Build configuration list for PBXProject "JIRA Control" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
@@ -173,7 +176,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A596C34F1C64AF6D00943FCF /* JIRA Commander */,
+				A596C34F1C64AF6D00943FCF /* JIRA Control */,
 			);
 		};
 /* End PBXProject section */
@@ -184,6 +187,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A596C35E1C64AF6D00943FCF /* LaunchScreen.storyboard in Resources */,
+				A53E05FF1C7CAA1F00D2912F /* Default-568h@2x.png in Resources */,
 				A596C35B1C64AF6D00943FCF /* Assets.xcassets in Resources */,
 				A596C3591C64AF6D00943FCF /* Main.storyboard in Resources */,
 			);
@@ -370,7 +374,7 @@
 				INFOPLIST_FILE = "JIRA Commander/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.scandio.JIRA-Commander";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "JIRA Control";
 				SWIFT_OBJC_BRIDGING_HEADER = "Jira Commander/B-Header.h";
 				USER_HEADER_SEARCH_PATHS = "Pods/**";
 			};
@@ -386,7 +390,7 @@
 				INFOPLIST_FILE = "JIRA Commander/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.scandio.JIRA-Commander";
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "JIRA Control";
 				SWIFT_OBJC_BRIDGING_HEADER = "Jira Commander/B-Header.h";
 				USER_HEADER_SEARCH_PATHS = "Pods/**";
 			};
@@ -395,7 +399,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A596C34B1C64AF6D00943FCF /* Build configuration list for PBXProject "JIRA Commander" */ = {
+		A596C34B1C64AF6D00943FCF /* Build configuration list for PBXProject "JIRA Control" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A596C3601C64AF6D00943FCF /* Debug */,
@@ -404,7 +408,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A596C3621C64AF6D00943FCF /* Build configuration list for PBXNativeTarget "JIRA Commander" */ = {
+		A596C3621C64AF6D00943FCF /* Build configuration list for PBXNativeTarget "JIRA Control" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A596C3631C64AF6D00943FCF /* Debug */,

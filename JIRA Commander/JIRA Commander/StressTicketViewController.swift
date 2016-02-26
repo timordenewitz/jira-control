@@ -16,6 +16,7 @@ class StressTicketViewController: UITableViewController {
     var serverAdress :String = ""
     var username :String = ""
     let cellIdentifier = "stressTicketCell"
+    var additionalStatusQuery = "%20AND%20(status='to%20do'%20%20OR%20status='in%20progress')"
     
     struct issue {
         var title :String
@@ -31,8 +32,24 @@ class StressTicketViewController: UITableViewController {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
-        loadIssues()
+        checkConnection()
     }
+    
+    func checkConnection(){
+        if (serverAdress.isEmpty) {
+            let vc = self.storyboard?.instantiateViewControllerWithIdentifier("NavController") as! UINavigationController
+            self.presentViewController(vc, animated: false, completion: nil)
+        }
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/myself")
+            .responseJSON { response in
+                if let statusCode = response.response?.statusCode {
+                    if (statusCode == 200) {
+                        self.loadIssues()
+                    }
+                }
+        }
+    }
+
     
     func handleRefresh(refreshControl: UIRefreshControl) {
         loadIssues()
@@ -42,7 +59,7 @@ class StressTicketViewController: UITableViewController {
     
     func loadIssues() {
         issuesArray.removeAll()
-        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=creator=" + username)
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=creator=" + username + additionalStatusQuery)
             .responseJSON { response in
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
@@ -188,17 +205,6 @@ class StressTicketViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 extension UIImageView {
