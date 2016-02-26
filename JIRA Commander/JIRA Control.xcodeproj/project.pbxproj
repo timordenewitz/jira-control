@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		639D3C7E428E90E8924C0BEB /* Pods_JIRA_Control.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9B9BBF6432C5B0557B5AA91A /* Pods_JIRA_Control.framework */; };
 		A514E1991C80722D009C588B /* Fabric.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A514E1971C80722D009C588B /* Fabric.framework */; };
 		A514E19C1C8073B0009C588B /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A514E19B1C8073B0009C588B /* Crashlytics.framework */; };
 		A514E19E1C807591009C588B /* Appsee.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A514E19D1C807591009C588B /* Appsee.framework */; };
@@ -28,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		9B9BBF6432C5B0557B5AA91A /* Pods_JIRA_Control.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JIRA_Control.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		A514E1971C80722D009C588B /* Fabric.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Fabric.framework; sourceTree = SOURCE_ROOT; };
 		A514E19B1C8073B0009C588B /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = SOURCE_ROOT; };
 		A514E19D1C807591009C588B /* Appsee.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Appsee.framework; sourceTree = SOURCE_ROOT; };
@@ -48,7 +50,9 @@
 		A596C35A1C64AF6D00943FCF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A596C35D1C64AF6D00943FCF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A596C35F1C64AF6D00943FCF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		AEAB7843A6D22FD33F2D02C9 /* Pods-JIRA Control.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JIRA Control.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JIRA Control/Pods-JIRA Control.debug.xcconfig"; sourceTree = "<group>"; };
 		B8DB6F015A97EA905FA57737 /* Pods-JIRA Commander.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JIRA Commander.release.xcconfig"; path = "Pods/Target Support Files/Pods-JIRA Commander/Pods-JIRA Commander.release.xcconfig"; sourceTree = "<group>"; };
+		CAC4F37C42AB83264EF8B619 /* Pods-JIRA Control.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JIRA Control.release.xcconfig"; path = "Pods/Target Support Files/Pods-JIRA Control/Pods-JIRA Control.release.xcconfig"; sourceTree = "<group>"; };
 		E52FC5C35D10C99E05E08F36 /* Pods-JIRA Commander.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-JIRA Commander.debug.xcconfig"; path = "Pods/Target Support Files/Pods-JIRA Commander/Pods-JIRA Commander.debug.xcconfig"; sourceTree = "<group>"; };
 		F319DFF44F06687711E64DCB /* Pods_JIRA_Commander.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_JIRA_Commander.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -62,6 +66,7 @@
 				A514E19C1C8073B0009C588B /* Crashlytics.framework in Frameworks */,
 				A514E19E1C807591009C588B /* Appsee.framework in Frameworks */,
 				A514E1991C80722D009C588B /* Fabric.framework in Frameworks */,
+				639D3C7E428E90E8924C0BEB /* Pods_JIRA_Control.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,6 +78,8 @@
 			children = (
 				E52FC5C35D10C99E05E08F36 /* Pods-JIRA Commander.debug.xcconfig */,
 				B8DB6F015A97EA905FA57737 /* Pods-JIRA Commander.release.xcconfig */,
+				AEAB7843A6D22FD33F2D02C9 /* Pods-JIRA Control.debug.xcconfig */,
+				CAC4F37C42AB83264EF8B619 /* Pods-JIRA Control.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -81,6 +88,7 @@
 			isa = PBXGroup;
 			children = (
 				F319DFF44F06687711E64DCB /* Pods_JIRA_Commander.framework */,
+				9B9BBF6432C5B0557B5AA91A /* Pods_JIRA_Control.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -236,7 +244,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JIRA Commander/Pods-JIRA Commander-frameworks.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JIRA Control/Pods-JIRA Control-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A514E18E1C807145009C588B /* ShellScript */ = {
@@ -264,7 +272,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JIRA Commander/Pods-JIRA Commander-resources.sh\"\n";
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-JIRA Control/Pods-JIRA Control-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -392,7 +400,7 @@
 		};
 		A596C3631C64AF6D00943FCF /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = E52FC5C35D10C99E05E08F36 /* Pods-JIRA Commander.debug.xcconfig */;
+			baseConfigurationReference = AEAB7843A6D22FD33F2D02C9 /* Pods-JIRA Control.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
@@ -408,7 +416,7 @@
 		};
 		A596C3641C64AF6D00943FCF /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B8DB6F015A97EA905FA57737 /* Pods-JIRA Commander.release.xcconfig */;
+			baseConfigurationReference = CAC4F37C42AB83264EF8B619 /* Pods-JIRA Control.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ALLOW_NON_MODULAR_INCLUDES_IN_FRAMEWORK_MODULES = YES;
