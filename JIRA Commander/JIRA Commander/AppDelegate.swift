@@ -7,6 +7,9 @@
 //
 
 import UIKit
+import Fabric
+import Crashlytics
+
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -14,6 +17,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.    UINavigationBar.appearance().setBackgroundImage(UIImage(), forBarMetrics: .Default)
+        Fabric.sharedSDK().debug = true
+        Fabric.with([Answers.self, Crashlytics.self])
         return true
     }
 

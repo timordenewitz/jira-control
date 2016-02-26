@@ -31,7 +31,6 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     var index = 0
     let zoomThresehold :CGFloat = 0.95
     let jiraCommanderBlue = UIColor(red: 74/255, green: 157/255, blue: 218/255, alpha: 0.9)
-
     
     @IBOutlet weak var lineChartView: LineChartView!
     @IBOutlet weak var pickerViewOutlet: UIPickerView!

@@ -205,6 +205,26 @@ class StressTicketViewController: UITableViewController {
     override func viewWillAppear(animated: Bool) {
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
+    
+    override func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+        // the cells you would like the actions to appear needs to be editable
+        return true
+    }
+    
+    override func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) {
+        // you need to implement this method too or you can't swipe to display the actions
+    }
+    
+    override func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
+        let deStress = UITableViewRowAction(style: .Normal, title: "deStress") { action, index in
+            print("more button tapped")
+        }
+        deStress.backgroundColor = UIColor.redColor()
+        
+        return [deStress]
+    }
+    
+
 }
 
 extension UIImageView {
