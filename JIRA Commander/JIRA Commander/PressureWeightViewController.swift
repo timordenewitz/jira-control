@@ -41,10 +41,13 @@ class PressureWeightViewController: UITableViewController{
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        checkConnection()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         self.navigationController?.navigationBar.translucent = false
+    }
+    
+    override func viewDidAppear(animated: Bool) {
+        checkConnection()
     }
     
     func handleRefresh(refreshControl: UIRefreshControl) {

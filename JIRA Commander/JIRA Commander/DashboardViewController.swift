@@ -22,10 +22,6 @@ class DashboardViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(true, animated: false)
-        let shortcutItem1 = UIApplicationShortcutItem(type: "ChartQuickAction", localizedTitle: "Burndown Charts", localizedSubtitle: "", icon: chartQuickIcon, userInfo: nil)
-        let shortcutItem2 = UIApplicationShortcutItem(type: "StressQuickAction", localizedTitle: "Stress Issues", localizedSubtitle: "", icon: stressQuickIcon, userInfo: nil)
-        let shortcutItem3 = UIApplicationShortcutItem(type: "PriorityQuickAction", localizedTitle: "Proritize Issues", localizedSubtitle: "" , icon: priorityQuickIcon, userInfo: nil)
-        UIApplication.sharedApplication().shortcutItems = [shortcutItem1,shortcutItem2,shortcutItem3]
         // Do any additional setup after loading the view.
     }
     

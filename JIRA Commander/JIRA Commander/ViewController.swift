@@ -136,6 +136,24 @@ class ViewController: UIViewController, UITextFieldDelegate {
         theDestination.serverAdress =  serverAdress
         theDestination.username =  username
         
+        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("PressureWeightViewController") as! PressureWeightViewController
+        vc.authBase64 =  authBase64
+        vc.serverAdress =  serverAdress
+        vc.username =  username
+        if (segue.identifier == "StressTicketSegue"){
+            let theDestination = (segue.destinationViewController as! StressTicketViewController)
+            theDestination.authBase64 =  authBase64
+            theDestination.serverAdress =  serverAdress
+            theDestination.username =  username
+        }
+        
+        if (segue.identifier == "DiagramSegue"){
+            let theDestination = (segue.destinationViewController as! DiagramViewController)
+            theDestination.authBase64 =  authBase64
+            theDestination.serverAdress =  serverAdress
+        }
+        
+        
     }
     
     func performDashboardSegue() {

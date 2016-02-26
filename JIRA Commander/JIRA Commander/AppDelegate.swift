@@ -12,12 +12,6 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    enum ShortcutIdentifier: String {
-        case ChartQuickAction
-        case StressQuickAction
-        case PriorityQuickAction
-    }
-
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.    UINavigationBar.appearance().setBackgroundImage(UIImage(), forBarMetrics: .Default)
         return true
@@ -44,42 +38,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillTerminate(application: UIApplication) {
         // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
     }
-
-    func application(application: UIApplication,
-        performActionForShortcutItem shortcutItem: UIApplicationShortcutItem,
-        completionHandler: (Bool) -> Void) {
-            completionHandler(handleShortcut(shortcutItem))
-    }
-
-    private func handleShortcut(shortcutItem: UIApplicationShortcutItem) -> Bool {
-        let shortcutType = shortcutItem.type
-        return performQuickActionSegue(shortcutType)
-    }
-
-    func performQuickActionSegue(shortcutType : String) -> Bool {
-        let mainSB = UIStoryboard(name: "Main", bundle: nil)
-        switch shortcutType {
-        case ShortcutIdentifier.PriorityQuickAction.rawValue:
-            let vc = mainSB.instantiateViewControllerWithIdentifier("PressureWeightViewController") as! PressureWeightViewController
-            let navVC = self.window?.rootViewController as! UINavigationController
-            navVC.pushViewController(vc, animated: true)
-            return true
-        case ShortcutIdentifier.StressQuickAction.rawValue:
-            let vc = mainSB.instantiateViewControllerWithIdentifier("StressTicketViewController") as! StressTicketViewController
-            let navVC = self.window?.rootViewController as! UINavigationController
-            navVC.pushViewController(vc, animated: true)
-            return true
-        case ShortcutIdentifier.ChartQuickAction.rawValue:
-            let vc = mainSB.instantiateViewControllerWithIdentifier("DiagramViewController") as! DiagramViewController
-            let navVC = self.window?.rootViewController as! UINavigationController
-            navVC.pushViewController(vc, animated: true)
-            return true
-        default:
-            break
-        }
-        
-        return true
-    }
-
 }
 

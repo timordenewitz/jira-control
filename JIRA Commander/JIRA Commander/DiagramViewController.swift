@@ -72,6 +72,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     func loadProjects() {
         Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=" + searchQuery + maxResultsParameters)
             .responseJSON { response in
+
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
@@ -85,11 +86,14 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
                                         for var index = 0; index < sprintInfo!.count; ++index {
                                             var myTempStrArray = sprintInfo![index].componentsSeparatedByString(",")
                                             if (self.checkSprintObjectForNullValues(myTempStrArray)) {
+                                                let sprintState = myTempStrArray[2].componentsSeparatedByString("=")[1]
                                                 let sprintName = myTempStrArray[3].componentsSeparatedByString("=")[1]
                                                 let sprintStartDate = self.getDateFromObject(myTempStrArray[4].componentsSeparatedByString("=")[1])
                                                 let sprintEndDate = self.getDateFromObject(myTempStrArray[5].componentsSeparatedByString("=")[1])
-                                                self.sprints.insert(Sprint(name: sprintName, startDate: sprintStartDate, endDate: sprintEndDate, maxStoryPoints: 0, project: tmpProject))
+                                                if (sprintState == "ACTIVE"){
+                                                    self.sprints.insert(Sprint(name: sprintName, startDate: sprintStartDate, endDate: sprintEndDate, maxStoryPoints: 0, project: tmpProject))
 
+                                                }
                                             }
                                         }
                                     }
@@ -202,7 +206,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     func buildDiagramDataValues(resolvedIssues : [Issue], project : Project) {
         let filteredResolvedIssues = filterIssuesByProject(resolvedIssues, project: project.title)
         let orderedResolvedIssues = orderByDate(filteredResolvedIssues)
-        let burndownDates = getDatesInSprintTillToday(project)
+        let burndownDates = getDatesInSprintTillToday(project, resolvedIssues : orderedResolvedIssues)
         let nrOfDatesInSprint = getDatesInSprintTillEnd(project).count
         let xAxisDataSet = buildXAxisDataSet(burndownDates)
         let valueDataSet = buildValueDataSet(orderedResolvedIssues, burndownDates: burndownDates, project: project)
@@ -261,6 +265,10 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         
         for date in burndownDates {
             var tmpStoryPoints = 0
+            
+            if(burndownDates.count == 1 && orderedResolvedIssues.count == 0) {
+                return(tmpDoubleArray)
+            }
             for resolvedIssue in orderedResolvedIssues {
                 if(date.date!.equalToDate(resolvedIssue.date!)) {
                     tmpStoryPoints = tmpStoryPoints + resolvedIssue.numberOfStorypoints
@@ -366,16 +374,20 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     }
 
     
-    func getDatesInSprintTillToday(project : Project) ->[burndownDate]{
+    func getDatesInSprintTillToday(project : Project, resolvedIssues : [Issue]) ->[burndownDate]{
         var ret : [burndownDate] = []
         for sprint in sprints {
             if(sprint.project == project) {
+                NSCalendar.currentCalendar()
                 for var date = sprint.startDate; date.isLessThanDate(NSDate()); date = date.addDays(1) {
                     if(!date.inWeekend) {
                         ret.append(burndownDate(date: date, numberOfStorypoints: 0))
                     }
                 }
             }
+        }
+        if(ret.count == 1 && resolvedIssues.count == 0) {
+            ret.removeAll()
         }
         return ret
     }
