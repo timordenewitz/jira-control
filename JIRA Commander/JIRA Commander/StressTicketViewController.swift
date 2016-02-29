@@ -130,6 +130,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     }
     
     func reloadIssueTable() {
+        filterContentForSearchText(searchController.searchBar.text!)
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.tableView.reloadData()
         })
@@ -186,7 +187,6 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             cell.stressed = false
             cell.backgroundColor = UIColor.whiteColor()
             cell.rightUtilityButtons = []
-            
         }
         return cell
     }
@@ -208,12 +208,13 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
                 }
                 
                 if(recognizer.state == .Ended) {
-                        let seconds = 0.25
-                        let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
-                        let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-                        dispatch_after(dispatchTime, dispatch_get_main_queue(), {
-                            forcedCell.backgroundColor = UIColor.whiteColor()
-                        })
+                    filterContentForSearchText(searchController.searchBar.text!)
+                    let seconds = 0.25
+                    let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
+                    let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
+                    dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+                        forcedCell.backgroundColor = UIColor.whiteColor()
+                    })
                 }
             }
         }
