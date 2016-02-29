@@ -95,7 +95,6 @@ class PressureWeightViewController: UITableViewController{
         Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=reporter=" + username + additionalStatusQuery)
             .responseJSON { response in
                 if let JSON = response.result.value {
-                    print(JSON)
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         for var index = 0; index < issues!.count; ++index{
