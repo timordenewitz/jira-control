@@ -19,6 +19,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     let cellIdentifier = "stressTicketCell"
     var additionalStatusQuery = "%20AND%20(status='to%20do'%20%20OR%20status='in%20progress')"
     let jiraCommanderRed = UIColor(red: 208/255, green: 69/255, blue: 55/255, alpha: 1)
+    let searchController = UISearchController(searchResultsController: nil)
     
     struct issue {
         var title :String
@@ -29,12 +30,22 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     }
     
     var issuesArray = [issue]()
+    var filteredIssues = [issue]()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         checkConnection()
+        
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+        searchController.dimsBackgroundDuringPresentation = false
+        
+        // Setup the Scope Bar
+        tableView.tableHeaderView = searchController.searchBar
     }
     
     func checkConnection(){
@@ -123,6 +134,9 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.active && searchController.searchBar.text != "" {
+            return filteredIssues.count
+        }
         return self.issuesArray.count;
     }
     
@@ -134,11 +148,19 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! StressTicketTableViewCell
         let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         tableView.addGestureRecognizer(deepPressGestureRecognizer)
+        let issue: StressTicketViewController.issue
+        
+        if searchController.active && searchController.searchBar.text != "" {
+            issue = filteredIssues[indexPath.row]
+        } else {
+            issue = issuesArray[indexPath.row]
+        }
+        
         cell.delegate = self;
-        cell.issueTitleLabel.text = issuesArray[indexPath.row].title
-        cell.issuesSummaryLabel.text = issuesArray[indexPath.row].description
-        cell.assigneeLabel.text = issuesArray[indexPath.row].assignee?.uppercaseString
-        if let url = issuesArray[indexPath.row].profilePictureURL {
+        cell.issueTitleLabel.text = issue.title
+        cell.issuesSummaryLabel.text = issue.description
+        cell.assigneeLabel.text = issue.assignee?.uppercaseString
+        if let url = issue.profilePictureURL {
             cell.profilePictureImageView.imageFromUrl(url)
             let image = cell.profilePictureImageView
             image.layer.borderWidth = 0
@@ -147,7 +169,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             image.layer.cornerRadius = image.frame.height/2
             image.clipsToBounds = true
         }
-        if (issuesArray[indexPath.row].stressed) {
+        if (issue.stressed) {
             cell.stressedImageView.hidden = false
             cell.stressedImageView.image = UIImage(named: "Stressed-Badge")
             cell.stressed = true
@@ -246,6 +268,14 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             self.loadIssues()
         }
     }
+    
+    
+    func filterContentForSearchText(searchText: String) {
+        filteredIssues = issuesArray.filter({( issue : StressTicketViewController.issue) -> Bool in
+            return issue.title.lowercaseString.containsString(searchText.lowercaseString)
+        })
+        tableView.reloadData()
+    }
 }
 
 extension UIImageView {
@@ -259,5 +289,20 @@ extension UIImageView {
                 }
             }
         }
+    }
+}
+
+
+extension StressTicketViewController: UISearchBarDelegate {
+    // MARK: - UISearchBar Delegate
+    func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterContentForSearchText(searchBar.text!)
+    }
+}
+
+extension StressTicketViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
     }
 }
