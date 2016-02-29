@@ -12,6 +12,7 @@ import Alamofire
 class PressureWeightViewController: UITableViewController{
 
     let cellIdentifier = "issueCell"
+    let epicCustomField = "customfield_10900"
     var authBase64 :String = ""
     var serverAdress :String = ""
     var username :String = ""
@@ -94,21 +95,24 @@ class PressureWeightViewController: UITableViewController{
         Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=reporter=" + username + additionalStatusQuery)
             .responseJSON { response in
                 if let JSON = response.result.value {
+                    print(JSON)
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         for var index = 0; index < issues!.count; ++index{
                             if let fields = issues![index]["fields"] {
                                 if let priority = fields!["priority"] {
-                                    if let status = fields!["status"] {
-                                        if let statusName = status!["name"] {
-                                            if (!self.checkIfIssueIsClosed(statusName as! String)) {
-                                                let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, issueStatus: priority!["name"] as! String)
-                                                self.issuesArray.append(myIssue)
+                                    if let epicField = fields![self.epicCustomField]! {
+                                        if let status = fields!["status"] {
+                                            if let statusName = status!["name"] {
+                                                if (!self.checkIfIssueIsClosed(statusName as! String)) {
+                                                    if (!(epicField is NSNull) && epicField as! String != issues![index]["key"] as! String) {
+                                                        let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, issueStatus: priority!["name"] as! String)
+                                                        self.issuesArray.append(myIssue)
+                                                    }
+                                                }
                                             }
                                         }
                                     }
-                                    
-
                                 }
                             }
                         }
