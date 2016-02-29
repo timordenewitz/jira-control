@@ -12,6 +12,7 @@ import Alamofire
 class PressureWeightViewController: UITableViewController{
 
     let cellIdentifier = "issueCell"
+    let epicCustomField = "customfield_10900"
     var authBase64 :String = ""
     var serverAdress :String = ""
     var username :String = ""
@@ -22,8 +23,11 @@ class PressureWeightViewController: UITableViewController{
     var authTempBase64 = "YWRtaW46YWRtaW4="
     let testJiraUrl = "http://46.101.221.171:8080"
     var additionalStatusQuery = "%20AND%20(status='to%20do'%20%20OR%20status='in%20progress')"
+    let searchController = UISearchController(searchResultsController: nil)
     
     var issuesArray = [issue]()
+    var filteredIssues = [issue]()
+
     var touchArray = [CGFloat]()
     var prioritiesArray = [priority]()
     
@@ -38,12 +42,26 @@ class PressureWeightViewController: UITableViewController{
         var id : String
     }
     
-
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
-        self.navigationController?.navigationBar.translucent = false
+        setupSearchBar()
+    }
+    
+    func setupSearchBar() {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+        searchController.dimsBackgroundDuringPresentation = false
+        tableView.tableHeaderView = searchController.searchBar
+    }
+    
+    func filterContentForSearchText(searchText: String) {
+        filteredIssues = issuesArray.filter({( issue : PressureWeightViewController.issue) -> Bool in
+            return issue.title.lowercaseString.containsString(searchText.lowercaseString)
+        })
+        tableView.reloadData()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -80,18 +98,24 @@ class PressureWeightViewController: UITableViewController{
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         for var index = 0; index < issues!.count; ++index{
+                            //Get All Fields
                             if let fields = issues![index]["fields"] {
+                                //Ger The Priority
                                 if let priority = fields!["priority"] {
-                                    if let status = fields!["status"] {
-                                        if let statusName = status!["name"] {
-                                            if (!self.checkIfIssueIsClosed(statusName as! String)) {
-                                                let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, issueStatus: priority!["name"] as! String)
-                                                self.issuesArray.append(myIssue)
+                                    //Get The Epic Custom Field
+                                    if let epicField = fields![self.epicCustomField]! {
+                                        //Get the Status
+                                        if let status = fields!["status"] {
+                                            if let statusName = status!["name"] {
+                                                if (!self.checkIfIssueIsClosed(statusName as! String)) {
+                                                    if (!(epicField is NSNull) && epicField as! String != issues![index]["key"] as! String) {
+                                                        let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, issueStatus: priority!["name"] as! String)
+                                                        self.issuesArray.append(myIssue)
+                                                    }
+                                                }
                                             }
                                         }
                                     }
-                                    
-
                                 }
                             }
                         }
@@ -133,6 +157,9 @@ class PressureWeightViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if searchController.active && searchController.searchBar.text != "" {
+            return filteredIssues.count
+        }
         return self.issuesArray.count;
     }
     
@@ -143,16 +170,25 @@ class PressureWeightViewController: UITableViewController{
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! IssueTableViewCell
         let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
-        cell.addGestureRecognizer(deepPressGestureRecognizer)
-        cell.titleLabel.text = issuesArray[indexPath.row].title
-        cell.subtitleLabel.text = issuesArray[indexPath.row].description
-        cell.statusLabel.text = issuesArray[indexPath.row].issueStatus.uppercaseString
+        let issue: PressureWeightViewController.issue
+
+        if searchController.active && searchController.searchBar.text != "" {
+            issue = filteredIssues[indexPath.row]
+        } else {
+            issue = issuesArray[indexPath.row]
+        }
         
-        if (issuesArray[indexPath.row].issueStatus == prioritiesArray[prioritiesArray.count-5].title || issuesArray[indexPath.row].issueStatus == prioritiesArray[prioritiesArray.count-4].title) {
+        
+        cell.addGestureRecognizer(deepPressGestureRecognizer)
+        cell.titleLabel.text = issue.title
+        cell.subtitleLabel.text = issue.description
+        cell.statusLabel.text = issue.issueStatus.uppercaseString
+        
+        if (issue.issueStatus == prioritiesArray[prioritiesArray.count-5].title || issue.issueStatus == prioritiesArray[prioritiesArray.count-4].title) {
             cell.iconImageView.image = UIImage(named: "TAG Red")!
             return cell
         }
-        if (issuesArray[indexPath.row].issueStatus == prioritiesArray[prioritiesArray.count-3].title) {
+        if (issue.issueStatus == prioritiesArray[prioritiesArray.count-3].title) {
             cell.iconImageView.image = UIImage(named: "TAG Yellow")!
             return cell
         }
@@ -281,5 +317,18 @@ class PressureWeightViewController: UITableViewController{
         Alamofire.request(.PUT, serverAdress + "/rest/api/2/issue/" + issueKey, parameters: parameters, encoding: .JSON)
             .responseJSON { response in
             }
+    }
+}
+extension PressureWeightViewController: UISearchBarDelegate {
+    // MARK: - UISearchBar Delegate
+    func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
+        filterContentForSearchText(searchBar.text!)
+    }
+}
+
+extension PressureWeightViewController: UISearchResultsUpdating {
+    // MARK: - UISearchResultsUpdating Delegate
+    func updateSearchResultsForSearchController(searchController: UISearchController) {
+        filterContentForSearchText(searchController.searchBar.text!)
     }
 }
