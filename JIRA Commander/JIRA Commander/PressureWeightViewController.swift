@@ -12,6 +12,7 @@ import Alamofire
 class PressureWeightViewController: UITableViewController{
 
     let cellIdentifier = "issueCell"
+    let epicCustomField = "customfield_10900"
     var authBase64 :String = ""
     var serverAdress :String = ""
     var username :String = ""
@@ -45,14 +46,22 @@ class PressureWeightViewController: UITableViewController{
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
-        
+        setupSearchBar()
+    }
+    
+    func setupSearchBar() {
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         definesPresentationContext = true
         searchController.dimsBackgroundDuringPresentation = false
-        
-        // Setup the Scope Bar
         tableView.tableHeaderView = searchController.searchBar
+    }
+    
+    func filterContentForSearchText(searchText: String) {
+        filteredIssues = issuesArray.filter({( issue : PressureWeightViewController.issue) -> Bool in
+            return issue.title.lowercaseString.containsString(searchText.lowercaseString)
+        })
+        tableView.reloadData()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -89,18 +98,24 @@ class PressureWeightViewController: UITableViewController{
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         for var index = 0; index < issues!.count; ++index{
+                            //Get All Fields
                             if let fields = issues![index]["fields"] {
+                                //Ger The Priority
                                 if let priority = fields!["priority"] {
-                                    if let status = fields!["status"] {
-                                        if let statusName = status!["name"] {
-                                            if (!self.checkIfIssueIsClosed(statusName as! String)) {
-                                                let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, issueStatus: priority!["name"] as! String)
-                                                self.issuesArray.append(myIssue)
+                                    //Get The Epic Custom Field
+                                    if let epicField = fields![self.epicCustomField]! {
+                                        //Get the Status
+                                        if let status = fields!["status"] {
+                                            if let statusName = status!["name"] {
+                                                if (!self.checkIfIssueIsClosed(statusName as! String)) {
+                                                    if (!(epicField is NSNull) && epicField as! String != issues![index]["key"] as! String) {
+                                                        let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, issueStatus: priority!["name"] as! String)
+                                                        self.issuesArray.append(myIssue)
+                                                    }
+                                                }
                                             }
                                         }
                                     }
-                                    
-
                                 }
                             }
                         }
@@ -302,13 +317,6 @@ class PressureWeightViewController: UITableViewController{
         Alamofire.request(.PUT, serverAdress + "/rest/api/2/issue/" + issueKey, parameters: parameters, encoding: .JSON)
             .responseJSON { response in
             }
-    }
-    
-    func filterContentForSearchText(searchText: String) {
-        filteredIssues = issuesArray.filter({( issue : PressureWeightViewController.issue) -> Bool in
-            return issue.title.lowercaseString.containsString(searchText.lowercaseString)
-        })
-        tableView.reloadData()
     }
 }
 extension PressureWeightViewController: UISearchBarDelegate {
