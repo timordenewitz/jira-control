@@ -45,14 +45,22 @@ class PressureWeightViewController: UITableViewController{
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
-        
+        setupSearchBar()
+    }
+    
+    func setupSearchBar() {
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         definesPresentationContext = true
         searchController.dimsBackgroundDuringPresentation = false
-        
-        // Setup the Scope Bar
         tableView.tableHeaderView = searchController.searchBar
+    }
+    
+    func filterContentForSearchText(searchText: String) {
+        filteredIssues = issuesArray.filter({( issue : PressureWeightViewController.issue) -> Bool in
+            return issue.title.lowercaseString.containsString(searchText.lowercaseString)
+        })
+        tableView.reloadData()
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -302,13 +310,6 @@ class PressureWeightViewController: UITableViewController{
         Alamofire.request(.PUT, serverAdress + "/rest/api/2/issue/" + issueKey, parameters: parameters, encoding: .JSON)
             .responseJSON { response in
             }
-    }
-    
-    func filterContentForSearchText(searchText: String) {
-        filteredIssues = issuesArray.filter({( issue : PressureWeightViewController.issue) -> Bool in
-            return issue.title.lowercaseString.containsString(searchText.lowercaseString)
-        })
-        tableView.reloadData()
     }
 }
 extension PressureWeightViewController: UISearchBarDelegate {

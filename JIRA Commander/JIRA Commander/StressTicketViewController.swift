@@ -32,20 +32,27 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         checkConnection()
-        
+        setupSearchBar()
+    }
+    
+    func setupSearchBar() {
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         definesPresentationContext = true
         searchController.dimsBackgroundDuringPresentation = false
-        
-        // Setup the Scope Bar
         tableView.tableHeaderView = searchController.searchBar
+    }
+    
+    func filterContentForSearchText(searchText: String) {
+        filteredIssues = issuesArray.filter({( issue : StressTicketViewController.issue) -> Bool in
+            return issue.title.lowercaseString.containsString(searchText.lowercaseString)
+        })
+        tableView.reloadData()
     }
     
     func checkConnection(){
@@ -267,14 +274,6 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             response in
             self.loadIssues()
         }
-    }
-    
-    
-    func filterContentForSearchText(searchText: String) {
-        filteredIssues = issuesArray.filter({( issue : StressTicketViewController.issue) -> Bool in
-            return issue.title.lowercaseString.containsString(searchText.lowercaseString)
-        })
-        tableView.reloadData()
     }
 }
 
