@@ -103,16 +103,17 @@ class PressureWeightViewController: UITableViewController{
                                 //Ger The Priority
                                 if let priority = fields!["priority"] {
                                     //Get The Epic Custom Field
-                                    if let epicField = fields![self.epicCustomField]! {
+                                    if let issueType = fields!["issuetype"] {
                                         //Get the Status
                                         if let status = fields!["status"] {
                                             if let statusName = status!["name"] {
-                                                if (!self.checkIfIssueIsClosed(statusName as! String)) {
-                                                    if (!(epicField is NSNull) && epicField as! String != issues![index]["key"] as! String) {
+                                                if let issueTypeName = issueType!["name"] {
+                                                    if (!self.checkIfIssueIsClosed(statusName as! String) && issueTypeName as! String != "Epic") {
                                                         let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, issueStatus: priority!["name"] as! String)
                                                         self.issuesArray.append(myIssue)
                                                     }
                                                 }
+
                                             }
                                         }
                                     }
