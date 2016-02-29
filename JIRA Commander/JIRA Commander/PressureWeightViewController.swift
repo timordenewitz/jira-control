@@ -99,9 +99,13 @@ class PressureWeightViewController: UITableViewController{
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         for var index = 0; index < issues!.count; ++index{
+                            //Get All Fields
                             if let fields = issues![index]["fields"] {
+                                //Ger The Priority
                                 if let priority = fields!["priority"] {
+                                    //Get The Epic Custom Field
                                     if let epicField = fields![self.epicCustomField]! {
+                                        //Get the Status
                                         if let status = fields!["status"] {
                                             if let statusName = status!["name"] {
                                                 if (!self.checkIfIssueIsClosed(statusName as! String)) {
