@@ -17,7 +17,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     var serverAdress :String = ""
     var username :String = ""
     let cellIdentifier = "stressTicketCell"
-    let additionalJQLQuery = " AND (NOT status = 'Closed' AND NOT status = 'resolved')"
+    let additionalJQLQuery = " AND (NOT status = 'Closed' AND NOT status = 'resolved' AND NOT status='done')"
     let searchController = UISearchController(searchResultsController: nil)
     let STRESSED_LABEL_FOR_JIRA = "Stressed"
     
@@ -157,6 +157,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         tableView.addGestureRecognizer(deepPressGestureRecognizer)
         let issue: StressTicketViewController.issue
+        cell.profilePictureImageView.image = nil
         
         if searchController.active && searchController.searchBar.text != "" {
             issue = filteredIssues[indexPath.row]

@@ -19,7 +19,7 @@ class PressureWeightViewController: UITableViewController{
     var startTime: CFAbsoluteTime!
     var i: Int = 0
     var activatedPressureWeight = false
-    let additionalJQLQuery = " AND (NOT status = 'Closed' AND NOT status = 'resolved')"
+    let additionalJQLQuery = " AND (NOT status = 'Closed' AND NOT status = 'resolved' AND NOT status='done')"
     var authTempBase64 = "YWRtaW46YWRtaW4="
     let testJiraUrl = "http://46.101.221.171:8080"
     let searchController = UISearchController(searchResultsController: nil)
