@@ -50,7 +50,12 @@ class PressureWeightViewController: UITableViewController{
         setupSearchBar()
         let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: "performJQL:")
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
+    }
         
+    override func viewWillDisappear(animated: Bool) {
+        navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
+        navigationController!.navigationBar.tintColor = UIColor.blackColor()
+        searchController.searchBar.barTintColor = UIColor.whiteColor()
     }
     
     func performJQL (sender:UIButton) {
@@ -60,11 +65,14 @@ class PressureWeightViewController: UITableViewController{
             loadIssues("jql=reporter=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
             navigationController!.navigationBar.tintColor = UIColor.blackColor()
             searchController.searchBar.barTintColor = UIColor.whiteColor()
+            navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
+
         }else {
             JQL_MODE_ENABLED = true
             searchController.searchBar.placeholder = "Search with JQL"
             navigationController!.navigationBar.tintColor = UIColor.jiraCommanderBlue()
             searchController.searchBar.barTintColor = UIColor.jiraCommanderBlue()
+            navigationController?.navigationBar.backgroundColor = UIColor.jiraCommanderBlue()
         }
     }
     

@@ -41,7 +41,13 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         setupSearchBar()
         let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: "performJQL:")
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
-        
+    }
+    
+    
+    override func viewWillDisappear(animated: Bool) {
+        navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
+        navigationController!.navigationBar.tintColor = UIColor.blackColor()
+        searchController.searchBar.barTintColor = UIColor.whiteColor()
     }
     
     func performJQL (sender:UIButton) {
