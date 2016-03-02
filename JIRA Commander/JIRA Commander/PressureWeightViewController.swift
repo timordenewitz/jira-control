@@ -131,7 +131,7 @@ class PressureWeightViewController: UITableViewController{
     
     func loadIssues(JQLQuery: String) {
         issuesArray.removeAll()
-        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery + maxResultsParameters)
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery.stringByFoldingWithOptions(NSStringCompareOptions.DiacriticInsensitiveSearch, locale: NSLocale.currentLocale()) + maxResultsParameters)
             .responseJSON { response in
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {

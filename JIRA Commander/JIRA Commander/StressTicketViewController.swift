@@ -114,7 +114,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     
     func loadIssues(JQLQuery: String) {
         issuesArray.removeAll()
-        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery)
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery.stringByFoldingWithOptions(NSStringCompareOptions.DiacriticInsensitiveSearch, locale: NSLocale.currentLocale()))
             .responseJSON { response in
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
@@ -208,15 +208,21 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         cell.issueTitleLabel.text = issue.title
         cell.issuesSummaryLabel.text = issue.description
         cell.assigneeLabel.text = issue.assignee?.uppercaseString
+        if (issue.assignee == nil) {
+            cell.assigneeLabel.text = "UNASSIGNED"
+        }
         if let url = issue.profilePictureURL {
             cell.profilePictureImageView.imageFromUrl(url)
-            let image = cell.profilePictureImageView
-            image.layer.borderWidth = 0
-            image.layer.masksToBounds = false
-            image.layer.borderColor = UIColor.whiteColor().CGColor
-            image.layer.cornerRadius = image.frame.height/2
-            image.clipsToBounds = true
+
+        } else {
+            cell.profilePictureImageView.image = UIImage(named: "unassigned")
         }
+        let image = cell.profilePictureImageView
+        image.layer.borderWidth = 0
+        image.layer.masksToBounds = false
+        image.layer.borderColor = UIColor.whiteColor().CGColor
+        image.layer.cornerRadius = image.frame.height/2
+        image.clipsToBounds = true
         if (issue.stressed) {
             cell.stressedImageView.hidden = false
             cell.stressedImageView.image = UIImage(named: "Stressed-Badge")
