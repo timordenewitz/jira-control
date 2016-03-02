@@ -30,7 +30,6 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     var touchArray = [DeepPressGestureRecognizer]()
     var index = 0
     let zoomThresehold :CGFloat = 0.95
-    let jiraCommanderBlue = UIColor(red: 74/255, green: 157/255, blue: 218/255, alpha: 0.9)
     
     @IBOutlet weak var lineChartView: LineChartView!
     @IBOutlet weak var pickerViewOutlet: UIPickerView!
@@ -336,13 +335,13 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     func buildDataSet(dataEntries : [ChartDataEntry]) -> LineChartDataSet{
         let lineChartDataSet = LineChartDataSet(yVals: dataEntries, label: "Story Points Remaining")
         lineChartDataSet.axisDependency = .Left // Line will correlate with left axis values
-        lineChartDataSet.setColor(jiraCommanderBlue)
-        lineChartDataSet.setCircleColor(jiraCommanderBlue)
+        lineChartDataSet.setColor(UIColor.jiraCommanderBlue())
+        lineChartDataSet.setCircleColor(UIColor.jiraCommanderBlue())
         lineChartDataSet.lineWidth = 8.0
         lineChartDataSet.circleRadius = 8.0
         lineChartDataSet.fillAlpha = 65 / 255.0
-        lineChartDataSet.fillColor = jiraCommanderBlue
-        lineChartDataSet.highlightColor = jiraCommanderBlue
+        lineChartDataSet.fillColor = UIColor.jiraCommanderBlue()
+        lineChartDataSet.highlightColor = UIColor.jiraCommanderBlue()
         lineChartDataSet.drawCircleHoleEnabled = true
         lineChartDataSet.valueFont = UIFont(descriptor: UIFontDescriptor(name: "Helvetica", size: 0.0), size: 0.0)
         return lineChartDataSet
@@ -581,5 +580,11 @@ extension NSDate {
     var inWeekend: Bool {
         let calendar = NSCalendar.currentCalendar()
         return calendar.isDateInWeekend(self)
+    }
+}
+
+extension UIColor {
+    static func jiraCommanderBlue() -> UIColor {
+        return UIColor(red: 74/255, green: 157/255, blue: 218/255, alpha: 0.9)
     }
 }

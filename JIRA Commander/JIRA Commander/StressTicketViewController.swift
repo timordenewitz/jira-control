@@ -18,7 +18,6 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     var username :String = ""
     let cellIdentifier = "stressTicketCell"
     let additionalJQLQuery = " AND (NOT status = 'Closed' AND NOT status = 'resolved')"
-    let jiraCommanderRed = UIColor(red: 208/255, green: 69/255, blue: 55/255, alpha: 1)
     let searchController = UISearchController(searchResultsController: nil)
     let STRESSED_LABEL_FOR_JIRA = "Stressed"
     
@@ -123,7 +122,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     
     func checkIfIssueGotStressed(labels : AnyObject) -> Bool {
         for var i = 0; i < labels.count; ++i {
-            if (labels[i] == "Stressed") {
+            if (labels[i] == STRESSED_LABEL_FOR_JIRA) {
                 return true
             }
         }
@@ -227,7 +226,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     func getRightUtilityButtonsToCell()-> NSMutableArray{
         let utilityButtons: NSMutableArray = NSMutableArray()
         
-        utilityButtons.sw_addUtilityButtonWithColor(jiraCommanderRed, title: NSLocalizedString("Remove", comment: ""))
+        utilityButtons.sw_addUtilityButtonWithColor(UIColor.jiraCommanderRed(), title: NSLocalizedString("Remove", comment: ""))
         return utilityButtons
     }
     
@@ -304,5 +303,11 @@ extension StressTicketViewController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         filterContentForSearchText(searchController.searchBar.text!)
+    }
+}
+
+extension UIColor {
+    static func jiraCommanderRed() -> UIColor {
+        return UIColor(red: 208/255, green: 69/255, blue: 55/255, alpha: 1)
     }
 }
