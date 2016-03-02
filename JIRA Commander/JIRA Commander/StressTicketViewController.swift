@@ -20,6 +20,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     let additionalJQLQuery = " AND (NOT status = 'Closed' AND NOT status = 'resolved')"
     let jiraCommanderRed = UIColor(red: 208/255, green: 69/255, blue: 55/255, alpha: 1)
     let searchController = UISearchController(searchResultsController: nil)
+    let STRESSED_LABEL_FOR_JIRA = "Stressed"
     
     struct issue {
         var title :String
@@ -201,7 +202,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
                             forcedCell.stressed = true
                             forcedCell.backgroundColor = UIColor.redColor()
                             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-                            sendNewStressedStatusToJira("Stressed", issueKey: forcedCell.issueTitleLabel.text!)
+                            sendNewStressedStatusToJira(STRESSED_LABEL_FOR_JIRA, issueKey: forcedCell.issueTitleLabel.text!)
                         }
                     }
                 }
@@ -242,7 +243,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     }
     
     func handleDeStress(cell : StressTicketTableViewCell) {
-        sendRemoveStressedStatusToJira("Stressed", issueKey: cell.issueTitleLabel.text!)
+        sendRemoveStressedStatusToJira(STRESSED_LABEL_FOR_JIRA, issueKey: cell.issueTitleLabel.text!)
     }
     
     func sendNewStressedStatusToJira(status :String, issueKey: String) {
