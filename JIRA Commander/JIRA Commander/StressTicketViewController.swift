@@ -17,7 +17,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     var serverAdress :String = ""
     var username :String = ""
     let cellIdentifier = "stressTicketCell"
-    var additionalStatusQuery = "%20AND%20(status='to%20do'%20%20OR%20status='in%20progress')"
+    let additionalJQLQuery = " AND (NOT status = 'Closed' AND NOT status = 'resolved')"
     let jiraCommanderRed = UIColor(red: 208/255, green: 69/255, blue: 55/255, alpha: 1)
     let searchController = UISearchController(searchResultsController: nil)
     
@@ -78,7 +78,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     
     func loadIssues() {
         issuesArray.removeAll()
-        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=creator=" + username + additionalStatusQuery)
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=creator=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
             .responseJSON { response in
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
@@ -191,8 +191,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         return cell
     }
     
-    func deepPressHandler(recognizer: DeepPressGestureRecognizer)
-    {
+    func deepPressHandler(recognizer: DeepPressGestureRecognizer) {
         let forceLocation = recognizer.locationInView(self.tableView)
         if let forcedIndexPath = tableView.indexPathForRowAtPoint(forceLocation) {
             if let forcedCell  = self.tableView.cellForRowAtIndexPath(forcedIndexPath) as! StressTicketTableViewCell? {

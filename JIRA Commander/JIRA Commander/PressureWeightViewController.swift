@@ -19,10 +19,9 @@ class PressureWeightViewController: UITableViewController{
     var startTime: CFAbsoluteTime!
     var i: Int = 0
     var activatedPressureWeight = false
-
+    let additionalJQLQuery = " AND (NOT status = 'Closed' AND NOT status = 'resolved')"
     var authTempBase64 = "YWRtaW46YWRtaW4="
     let testJiraUrl = "http://46.101.221.171:8080"
-    var additionalStatusQuery = "%20AND%20(status='to%20do'%20%20OR%20status='in%20progress')"
     let searchController = UISearchController(searchResultsController: nil)
     
     var issuesArray = [issue]()
@@ -92,7 +91,7 @@ class PressureWeightViewController: UITableViewController{
     
     func loadIssues() {
         issuesArray.removeAll()
-        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=reporter=" + username + additionalStatusQuery)
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=reporter=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
             .responseJSON { response in
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
