@@ -116,6 +116,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
             .responseJSON { response in
                 print(response.request)
                 print(response.response)
+
+                if (response.response == nil) {
+                    self.showLoginAlert(" Please enable your network connection.")
+                }
                 
                 self.defaults.setValue(pw, forKey: defaultsKeys.pwKey)
                 self.defaults.setValue(self.username, forKey: defaultsKeys.usernameKey)
@@ -125,9 +129,18 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 if let statusCode = response.response?.statusCode {
                     if (statusCode == 200) {
                         self.performDashboardSegue()
+                    } else {
+                        self.showLoginAlert(" Status Code: " + String(statusCode))
                     }
                 }
         }
+    }
+    
+    func showLoginAlert(message: String) {
+        let alertController = UIAlertController(title: "Login Failed", message:
+            "Your login has failed." + message, preferredStyle: UIAlertControllerStyle.Alert)
+        alertController.addAction(UIAlertAction(title: "Try Again", style: UIAlertActionStyle.Default,handler: nil))
+        self.presentViewController(alertController, animated: true, completion: nil)
     }
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
