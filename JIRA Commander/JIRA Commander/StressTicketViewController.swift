@@ -272,24 +272,11 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
-    func getLeftUtilityButtonsToCell()-> NSMutableArray{
-        let utilityButtons: NSMutableArray = NSMutableArray()
-        utilityButtons.sw_addUtilityButtonWithColor(UIColor.jiraCommanderRed(), title: NSLocalizedString("Stress", comment: ""))
-        return utilityButtons
-    }
-    
     func getRightUtilityButtonsToCell()-> NSMutableArray{
         let utilityButtons: NSMutableArray = NSMutableArray()
+        
         utilityButtons.sw_addUtilityButtonWithColor(UIColor.jiraCommanderRed(), title: NSLocalizedString("Remove", comment: ""))
         return utilityButtons
-    }
-    
-    func swipeableTableViewCell(cell: SWTableViewCell!, didTriggerLeftUtilityButtonWithIndex index: Int) {
-        if index == 0 {
-            let tmpCell = cell as! StressTicketTableViewCell
-            sendNewStressedStatusToJira(STRESSED_LABEL_FOR_JIRA, issueKey: tmpCell.issueTitleLabel.text!)
-        }
-        cell.hideUtilityButtonsAnimated(true);
     }
     
     func swipeableTableViewCell(cell: SWTableViewCell!, didTriggerRightUtilityButtonWithIndex index: Int) {
