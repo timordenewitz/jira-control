@@ -21,6 +21,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     let searchController = UISearchController(searchResultsController: nil)
     let STRESSED_LABEL_FOR_JIRA = "Stressed"
     var JQL_MODE_ENABLED = false
+    let maxResultsParameters = "&maxResults=500"
     
     struct issue {
         var title :String
@@ -115,13 +116,12 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     
     func loadIssues(JQLQuery: String) {
         issuesArray.removeAll()
-        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery.stringByFoldingWithOptions(NSStringCompareOptions.DiacriticInsensitiveSearch, locale: NSLocale.currentLocale()))
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery.stringByFoldingWithOptions(NSStringCompareOptions.DiacriticInsensitiveSearch, locale: NSLocale.currentLocale()) + maxResultsParameters)
             .responseJSON { response in
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         if (response.response?.statusCode == 200) {
-                            print(response.response)
                             for var index = 0; index < issues!.count; ++index{
                                 if let fields = issues![index]["fields"] {
                                     if let assignee = fields!["assignee"] {
@@ -195,8 +195,8 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! StressTicketTableViewCell
         let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
-        tableView.addGestureRecognizer(deepPressGestureRecognizer)
         let issue: StressTicketViewController.issue
+        tableView.addGestureRecognizer(deepPressGestureRecognizer)
         cell.profilePictureImageView.image = nil
         
         if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
@@ -229,7 +229,9 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             cell.stressedImageView.image = UIImage(named: "Stressed-Badge")
             cell.stressed = true
             cell.rightUtilityButtons = self.getRightUtilityButtonsToCell() as [AnyObject];
+            cell.leftUtilityButtons = []
         } else {
+            cell.leftUtilityButtons = self.getLeftUtilityButtonsToCell() as [AnyObject];
             cell.stressedImageView.hidden = true
             cell.stressed = false
             cell.backgroundColor = UIColor.whiteColor()

@@ -10,8 +10,14 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    let authBase64 :String = ""
-    let serverAdress :String = ""
+    var saveLoginInfo = false
+    let defaults = NSUserDefaults.standardUserDefaults()
+
+    enum defaultsKeys {
+        static let usernameKey = "de.scandio.jira-commander.username"
+        static let pwKey = "de.scandio.jira-commander.password"
+        static let serverAdressKey = "de.scandio.jira-commander.server"
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,6 +34,10 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func logoutButtonClicked(sender: AnyObject) {
-        UIApplication.sharedApplication().shortcutItems?.removeAll()
+        if(!saveLoginInfo){
+            defaults.setValue(nil, forKey: defaultsKeys.pwKey)
+            defaults.setValue(nil, forKey: defaultsKeys.usernameKey)
+            defaults.synchronize()
+        }
     }
 }
