@@ -73,6 +73,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     }
     
     func setupSearchBar() {
+        searchController.searchBar.keyboardType = UIKeyboardType.URL
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         definesPresentationContext = true

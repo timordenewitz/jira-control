@@ -85,6 +85,7 @@ class PressureWeightViewController: UITableViewController{
     
     func setupSearchBar() {
         searchController.searchResultsUpdater = self
+        searchController.searchBar.keyboardType = UIKeyboardType.URL
         searchController.searchBar.delegate = self
         definesPresentationContext = true
         searchController.dimsBackgroundDuringPresentation = false
@@ -216,7 +217,8 @@ class PressureWeightViewController: UITableViewController{
         } else {
             issue = issuesArray[indexPath.row]
         }
-        showAlertWasTapped(tableView, issue: issue)
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! IssueTableViewCell
+        showAlertWasTapped(tableView, issue: issue, cell : cell)
     }
     
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
@@ -239,6 +241,11 @@ class PressureWeightViewController: UITableViewController{
         cell.subtitleLabel.text = issue.description
         cell.statusLabel.text = issue.issueStatus.uppercaseString
         
+        
+        if (issue.issueStatus == prioritiesArray[prioritiesArray.count-6].title) {
+            cell.iconImageView.image = UIImage(named: "blocker")!
+            return cell
+        }
         if (issue.issueStatus == prioritiesArray[prioritiesArray.count-5].title || issue.issueStatus == prioritiesArray[prioritiesArray.count-4].title) {
             cell.iconImageView.image = UIImage(named: "TAG Red")!
             return cell
@@ -318,14 +325,17 @@ class PressureWeightViewController: UITableViewController{
         case (force < 0.3):
             ret = prioritiesArray[prioritiesArray.count-2].title
             break
-        case (force < 0.7):
+        case (force < 0.6):
             ret = prioritiesArray[prioritiesArray.count-3].title
             break
-        case (force < 0.9):
+        case (force < 0.8):
             ret = prioritiesArray[prioritiesArray.count-4].title
             break
-        case (force <= 1.0):
+        case (force < 0.9):
             ret = prioritiesArray[prioritiesArray.count-5].title
+            break
+        case (force <= 1.0):
+            ret = prioritiesArray[prioritiesArray.count-6].title
             break
         default:
             ret = prioritiesArray[prioritiesArray.count-3].title
@@ -343,14 +353,17 @@ class PressureWeightViewController: UITableViewController{
         case (force < 0.3):
             ret =  UIImage(named: "TAG Green")!
             break
-        case (force < 0.7):
+        case (force < 0.6):
             ret =  UIImage(named: "TAG Yellow")!
+            break
+        case (force < 0.8):
+            ret =  UIImage(named: "TAG Red")!
             break
         case (force < 0.9):
             ret =  UIImage(named: "TAG Red")!
             break
         case (force <= 1.0):
-            ret =  UIImage(named: "TAG Red")!
+            ret =  UIImage(named: "blocker")!
             break
         default:
             ret =  UIImage(named: "TAG Yellow")!
@@ -371,17 +384,28 @@ class PressureWeightViewController: UITableViewController{
         ]
         Alamofire.request(.PUT, serverAdress + "/rest/api/2/issue/" + issueKey, parameters: parameters, encoding: .JSON)
             .responseJSON { response in
-                self.refresh()
             }
     }
     
-    func showAlertWasTapped(table : UITableView, issue: PressureWeightViewController.issue) {
+    func showAlertWasTapped(table : UITableView, issue: PressureWeightViewController.issue, cell: IssueTableViewCell) {
         
         let alertController = UIAlertController(title: "Priority", message: "Set the priority for the issue.", preferredStyle: UIAlertControllerStyle.ActionSheet)
-        
         for priority in prioritiesArray {
             let tmpAction = UIAlertAction(title: priority.title, style: UIAlertActionStyle.Default, handler: {(alert :UIAlertAction) in
                 self.sendNewIssueStatusToJira(priority.title, issueKey: issue.title)
+                cell.statusLabel.text = priority.title.uppercaseString
+                if (priority.title == self.prioritiesArray[self.prioritiesArray.count-6].title) {
+                    cell.iconImageView.image = UIImage(named: "blocker")!
+                }
+                if (priority.title == self.prioritiesArray[self.prioritiesArray.count-5].title || priority.title == self.prioritiesArray[self.prioritiesArray.count-4].title) {
+                    cell.iconImageView.image = UIImage(named: "TAG Red")!
+                }
+                if (priority.title == self.prioritiesArray[self.prioritiesArray.count-3].title) {
+                    cell.iconImageView.image = UIImage(named: "TAG Yellow")!
+                }
+                if (priority.title == self.prioritiesArray[self.prioritiesArray.count-2].title || priority.title == self.prioritiesArray[self.prioritiesArray.count-1].title) {
+                    cell.iconImageView.image = UIImage(named: "TAG Green")!
+                }
             })
             alertController.addAction(tmpAction)
         }
