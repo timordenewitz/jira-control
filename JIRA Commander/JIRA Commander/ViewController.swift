@@ -16,6 +16,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     @IBOutlet var PWTextField: UITextField!
     @IBOutlet var ServerAdressTextField: UITextField!
     @IBOutlet weak var onePasswordButton: UIButton!
+    @IBOutlet weak var saveLoginSwitch: UISwitch!
     
     var authBase64 :String = ""
     var username :String = ""
@@ -27,6 +28,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         static let usernameKey = "de.scandio.jira-commander.username"
         static let pwKey = "de.scandio.jira-commander.password"
         static let serverAdressKey = "de.scandio.jira-commander.server"
+        static let saveLogin = "de.scandio.jira-commander.save-login"
     }
     
     let testJiraUrl = "http://46.101.221.171:8080"
@@ -46,6 +48,10 @@ class ViewController: UIViewController, UITextFieldDelegate {
         if let serverAdress = defaults.stringForKey(defaultsKeys.serverAdressKey) {
             ServerAdressTextField.text = serverAdress
         }
+        if let saveLogin = defaults.stringForKey(defaultsKeys.saveLogin) {
+            saveLoginSwitch.on = saveLogin.boolValue
+        }
+        
         onePasswordButton.hidden = true
         if (OnePasswordExtension.sharedExtension().isAppExtensionAvailable()) {
             onePasswordButton.hidden = false
@@ -120,12 +126,14 @@ class ViewController: UIViewController, UITextFieldDelegate {
                 if (response.response == nil) {
                     self.showLoginAlert(" Please enable your network connection.")
                 }
-                
-                self.defaults.setValue(pw, forKey: defaultsKeys.pwKey)
-                self.defaults.setValue(self.username, forKey: defaultsKeys.usernameKey)
+
+                if (self.saveLoginSwitch.on) {
+                    self.defaults.setValue(pw, forKey: defaultsKeys.pwKey)
+                    self.defaults.setValue(self.username, forKey: defaultsKeys.usernameKey)
+                }
                 self.defaults.setValue(self.serverAdress, forKey: defaultsKeys.serverAdressKey)
+                self.defaults.setValue(self.saveLoginSwitch.on, forKey: defaultsKeys.saveLogin)
                 self.defaults.synchronize()
-                
                 if let statusCode = response.response?.statusCode {
                     if (statusCode == 200) {
                         self.performDashboardSegue()
@@ -148,25 +156,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
         theDestination.authBase64 =  authBase64
         theDestination.serverAdress =  serverAdress
         theDestination.username =  username
-        
-        let vc = self.storyboard?.instantiateViewControllerWithIdentifier("PressureWeightViewController") as! PressureWeightViewController
-        vc.authBase64 =  authBase64
-        vc.serverAdress =  serverAdress
-        vc.username =  username
-        if (segue.identifier == "StressTicketSegue"){
-            let theDestination = (segue.destinationViewController as! StressTicketViewController)
-            theDestination.authBase64 =  authBase64
-            theDestination.serverAdress =  serverAdress
-            theDestination.username =  username
-        }
-        
-        if (segue.identifier == "DiagramSegue"){
-            let theDestination = (segue.destinationViewController as! DiagramViewController)
-            theDestination.authBase64 =  authBase64
-            theDestination.serverAdress =  serverAdress
-        }
-        
-        
+        theDestination.saveLoginInfo = saveLoginSwitch.on
     }
     
     func performDashboardSegue() {
@@ -174,3 +164,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
 }
 
+extension String {
+    var boolValue: Bool {
+        return NSString(string: self).boolValue
+    }}
