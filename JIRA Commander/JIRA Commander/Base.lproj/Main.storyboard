@@ -288,10 +288,10 @@
             </objects>
             <point key="canvasLocation" x="2258.5" y="848.5"/>
         </scene>
-        <!--STRESS TICKET-->
+        <!--STRESS ISSUE-->
         <scene sceneID="sfB-EV-0Ot">
             <objects>
-                <tableViewController storyboardIdentifier="StressTicketViewController" title="STRESS TICKET" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rBz-kb-Okx" customClass="StressTicketViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="StressTicketViewController" title="STRESS ISSUE" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rBz-kb-Okx" customClass="StressTicketViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" sectionHeaderHeight="28" sectionFooterHeight="28" id="GLg-Ot-VZJ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
