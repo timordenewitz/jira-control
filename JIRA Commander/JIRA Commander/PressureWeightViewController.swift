@@ -104,13 +104,17 @@ class PressureWeightViewController: UITableViewController{
     }
     
     func handleRefresh(refreshControl: UIRefreshControl) {
+        refresh()
+        refreshControl.endRefreshing()
+    }
+    
+    func refresh() {
         if (JQL_MODE_ENABLED) {
             loadIssuesWithJQL()
         }else {
             loadIssues("jql=reporter=" + self.username + self.additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
         }
         reloadIssueTable()
-        refreshControl.endRefreshing()
     }
     
     func checkConnection() {
@@ -205,13 +209,23 @@ class PressureWeightViewController: UITableViewController{
         return self.issuesArray.count;
     }
     
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let issue: PressureWeightViewController.issue
+        if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
+            issue = filteredIssues[indexPath.row]
+        } else {
+            issue = issuesArray[indexPath.row]
+        }
+        showAlertWasTapped(tableView, issue: issue)
+    }
+    
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return "Reported Issues"
     }
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! IssueTableViewCell
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
+//        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         let issue: PressureWeightViewController.issue
 
         if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
@@ -220,7 +234,7 @@ class PressureWeightViewController: UITableViewController{
             issue = issuesArray[indexPath.row]
         }
         
-        cell.addGestureRecognizer(deepPressGestureRecognizer)
+//        cell.addGestureRecognizer(deepPressGestureRecognizer)
         cell.titleLabel.text = issue.title
         cell.subtitleLabel.text = issue.description
         cell.statusLabel.text = issue.issueStatus.uppercaseString
@@ -357,7 +371,30 @@ class PressureWeightViewController: UITableViewController{
         ]
         Alamofire.request(.PUT, serverAdress + "/rest/api/2/issue/" + issueKey, parameters: parameters, encoding: .JSON)
             .responseJSON { response in
+                self.refresh()
             }
+    }
+    
+    func showAlertWasTapped(table : UITableView, issue: PressureWeightViewController.issue) {
+        
+        let alertController = UIAlertController(title: "Priority", message: "Set the priority for the issue.", preferredStyle: UIAlertControllerStyle.ActionSheet)
+        
+        for priority in prioritiesArray {
+            let tmpAction = UIAlertAction(title: priority.title, style: UIAlertActionStyle.Default, handler: {(alert :UIAlertAction) in
+                self.sendNewIssueStatusToJira(priority.title, issueKey: issue.title)
+            })
+            alertController.addAction(tmpAction)
+        }
+        
+        let cancelAction = UIAlertAction(title: "Cancel", style: UIAlertActionStyle.Destructive, handler: {(alert :UIAlertAction) in
+        })
+        alertController.addAction(cancelAction)
+
+        alertController.popoverPresentationController?.sourceView = view
+        alertController.popoverPresentationController?.sourceRect = table.frame
+        
+        presentViewController(alertController, animated: true, completion: nil)
+        
     }
 }
 extension PressureWeightViewController: UISearchBarDelegate {
