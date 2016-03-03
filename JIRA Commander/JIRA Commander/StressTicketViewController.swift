@@ -229,9 +229,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             cell.stressedImageView.image = UIImage(named: "Stressed-Badge")
             cell.stressed = true
             cell.rightUtilityButtons = self.getRightUtilityButtonsToCell() as [AnyObject];
-            cell.leftUtilityButtons = []
         } else {
-            cell.leftUtilityButtons = self.getLeftUtilityButtonsToCell() as [AnyObject];
             cell.stressedImageView.hidden = true
             cell.stressed = false
             cell.backgroundColor = UIColor.whiteColor()

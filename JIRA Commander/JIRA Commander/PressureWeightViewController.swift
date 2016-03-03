@@ -320,7 +320,7 @@ class PressureWeightViewController: UITableViewController{
         case (force < 0.8):
             ret = prioritiesArray[prioritiesArray.count-4].title
             break
-        case (force < 0.9):
+        case (force < 0.95):
             ret = prioritiesArray[prioritiesArray.count-5].title
             break
         case (force <= 1.0):
@@ -348,7 +348,7 @@ class PressureWeightViewController: UITableViewController{
         case (force < 0.8):
             ret =  UIImage(named: "TAG Red")!
             break
-        case (force < 0.9):
+        case (force < 0.95):
             ret =  UIImage(named: "TAG Red")!
             break
         case (force <= 1.0):
