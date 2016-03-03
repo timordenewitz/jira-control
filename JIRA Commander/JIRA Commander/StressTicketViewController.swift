@@ -21,6 +21,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     let searchController = UISearchController(searchResultsController: nil)
     let STRESSED_LABEL_FOR_JIRA = "Stressed"
     var JQL_MODE_ENABLED = false
+    let maxResultsParameters = "&maxResults=500"
     
     struct issue {
         var title :String
@@ -115,13 +116,12 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     
     func loadIssues(JQLQuery: String) {
         issuesArray.removeAll()
-        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery.stringByFoldingWithOptions(NSStringCompareOptions.DiacriticInsensitiveSearch, locale: NSLocale.currentLocale()))
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery.stringByFoldingWithOptions(NSStringCompareOptions.DiacriticInsensitiveSearch, locale: NSLocale.currentLocale()) + maxResultsParameters)
             .responseJSON { response in
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         if (response.response?.statusCode == 200) {
-                            print(response.response)
                             for var index = 0; index < issues!.count; ++index{
                                 if let fields = issues![index]["fields"] {
                                     if let assignee = fields!["assignee"] {
