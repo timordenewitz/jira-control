@@ -296,7 +296,7 @@ class PressureWeightViewController: UITableViewController{
                 
                 if(recognizer.state == .Ended) {
                     let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
-                    QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: "", numberOfExperimentsPassed: "", matchedTargetValue: "", touchArray: "")
+                    QL2(timeRounding(elapsedTime), force: "alternativePressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: "", numberOfExperimentsPassed: "", matchedTargetValue: "", touchArray: "")
                     if (activatedPressureWeight) {
                         let seconds = 0.25
                         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
