@@ -17,9 +17,11 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     var serverAdress :String = ""
     var username :String = ""
     let cellIdentifier = "stressTicketCell"
-    var additionalStatusQuery = "%20AND%20(status='to%20do'%20%20OR%20status='in%20progress')"
-    let jiraCommanderRed = UIColor(red: 208/255, green: 69/255, blue: 55/255, alpha: 1)
+    let additionalJQLQuery = " AND (NOT status = 'Closed' AND NOT status = 'resolved' AND NOT status='done')"
     let searchController = UISearchController(searchResultsController: nil)
+    let STRESSED_LABEL_FOR_JIRA = "Stressed"
+    var JQL_MODE_ENABLED = false
+    let maxResultsParameters = "&maxResults=500"
     
     struct issue {
         var title :String
@@ -38,9 +40,41 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         checkConnection()
         setupSearchBar()
+        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: "performJQL:")
+        self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
+    }
+    
+    
+    override func viewWillDisappear(animated: Bool) {
+        navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
+        navigationController!.navigationBar.tintColor = UIColor.blackColor()
+        searchController.searchBar.barTintColor = UIColor.whiteColor()
+    }
+    
+    func performJQL (sender:UIButton) {
+        if (JQL_MODE_ENABLED) {
+            JQL_MODE_ENABLED = false
+            searchController.searchBar.placeholder = "Search in Issues"
+            loadIssues("jql=reporter=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+            navigationController!.navigationBar.tintColor = UIColor.blackColor()
+            searchController.searchBar.barTintColor = UIColor.whiteColor()
+        }else {
+            JQL_MODE_ENABLED = true
+            searchController.searchBar.placeholder = "Search with JQL"
+            navigationController!.navigationBar.tintColor = UIColor.jiraCommanderBlue()
+            searchController.searchBar.barTintColor = UIColor.jiraCommanderBlue()
+        }
+    }
+    
+    func loadIssuesWithJQL() {
+        if(searchController.searchBar.text != ""){
+            loadIssues("jql=" + (searchController.searchBar.text?.stringByReplacingOccurrencesOfString(" ", withString: "%20"))!)
+            tableView.reloadData()
+        }
     }
     
     func setupSearchBar() {
+        searchController.searchBar.keyboardType = UIKeyboardType.URL
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
         definesPresentationContext = true
@@ -64,49 +98,55 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             .responseJSON { response in
                 if let statusCode = response.response?.statusCode {
                     if (statusCode == 200) {
-                        self.loadIssues()
+                        self.loadIssues("jql=reporter=" + self.username + self.additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
                     }
                 }
         }
     }
     
     func handleRefresh(refreshControl: UIRefreshControl) {
-        loadIssues()
+        if (JQL_MODE_ENABLED) {
+            loadIssuesWithJQL()
+        }else {
+            loadIssues("jql=creator=" + self.username + self.additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+        }
         reloadIssueTable()
         refreshControl.endRefreshing()
     }
     
-    func loadIssues() {
+    func loadIssues(JQLQuery: String) {
         issuesArray.removeAll()
-        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=creator=" + username + additionalStatusQuery)
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery.stringByFoldingWithOptions(NSStringCompareOptions.DiacriticInsensitiveSearch, locale: NSLocale.currentLocale()) + maxResultsParameters)
             .responseJSON { response in
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
-                        for var index = 0; index < issues!.count; ++index{
-                            if let fields = issues![index]["fields"] {
-                                if let assignee = fields!["assignee"] {
-                                    if let labels = fields!["labels"] {
-                                        if let status = fields!["status"] {
-                                            if let statusName = status!["name"] {
-                                                if (!self.checkIfIssueIsClosed(statusName as! String)) {
-                                                    if let avatarURLs = assignee!["avatarUrls"] {
-                                                        let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, assignee: assignee!["name"] as! String?, profilePictureURL:avatarURLs!["48x48"] as! String?, stressed: self.checkIfIssueGotStressed(labels!))
-                                                        self.issuesArray.append(myIssue)
+                        if (response.response?.statusCode == 200) {
+                            for var index = 0; index < issues!.count; ++index{
+                                if let fields = issues![index]["fields"] {
+                                    if let assignee = fields!["assignee"] {
+                                        if let labels = fields!["labels"] {
+                                            if let status = fields!["status"] {
+                                                if let statusName = status!["name"] {
+                                                    if (!self.checkIfIssueIsClosed(statusName as! String)) {
+                                                        if let avatarURLs = assignee!["avatarUrls"] {
+                                                            let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, assignee: assignee!["name"] as! String?, profilePictureURL:avatarURLs!["48x48"] as! String?, stressed: self.checkIfIssueGotStressed(labels!))
+                                                            self.issuesArray.append(myIssue)
+                                                        }
+                                                        else {
+                                                            let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, assignee: nil, profilePictureURL:nil, stressed: self.checkIfIssueGotStressed(labels!))
+                                                            self.issuesArray.append(myIssue)
+                                                        }
                                                     }
-                                                    else {
-                                                        let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, assignee: nil, profilePictureURL:nil, stressed: self.checkIfIssueGotStressed(labels!))
-                                                        self.issuesArray.append(myIssue)
-                                                    }
+                                                    
                                                 }
-
                                             }
                                         }
                                     }
                                 }
                             }
+                            self.reloadIssueTable()
                         }
-                        self.reloadIssueTable()
                     }
                 }
         }
@@ -122,7 +162,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     
     func checkIfIssueGotStressed(labels : AnyObject) -> Bool {
         for var i = 0; i < labels.count; ++i {
-            if (labels[i] == "Stressed") {
+            if (labels[i] == STRESSED_LABEL_FOR_JIRA) {
                 return true
             }
         }
@@ -142,7 +182,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchController.active && searchController.searchBar.text != "" {
+        if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
             return filteredIssues.count
         }
         return self.issuesArray.count;
@@ -155,10 +195,11 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! StressTicketTableViewCell
         let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
-        tableView.addGestureRecognizer(deepPressGestureRecognizer)
         let issue: StressTicketViewController.issue
+        tableView.addGestureRecognizer(deepPressGestureRecognizer)
+        cell.profilePictureImageView.image = nil
         
-        if searchController.active && searchController.searchBar.text != "" {
+        if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
             issue = filteredIssues[indexPath.row]
         } else {
             issue = issuesArray[indexPath.row]
@@ -168,15 +209,21 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         cell.issueTitleLabel.text = issue.title
         cell.issuesSummaryLabel.text = issue.description
         cell.assigneeLabel.text = issue.assignee?.uppercaseString
+        if (issue.assignee == nil) {
+            cell.assigneeLabel.text = "UNASSIGNED"
+        }
         if let url = issue.profilePictureURL {
             cell.profilePictureImageView.imageFromUrl(url)
-            let image = cell.profilePictureImageView
-            image.layer.borderWidth = 0
-            image.layer.masksToBounds = false
-            image.layer.borderColor = UIColor.whiteColor().CGColor
-            image.layer.cornerRadius = image.frame.height/2
-            image.clipsToBounds = true
+
+        } else {
+            cell.profilePictureImageView.image = UIImage(named: "unassigned")
         }
+        let image = cell.profilePictureImageView
+        image.layer.borderWidth = 0
+        image.layer.masksToBounds = false
+        image.layer.borderColor = UIColor.whiteColor().CGColor
+        image.layer.cornerRadius = image.frame.height/2
+        image.clipsToBounds = true
         if (issue.stressed) {
             cell.stressedImageView.hidden = false
             cell.stressedImageView.image = UIImage(named: "Stressed-Badge")
@@ -191,8 +238,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         return cell
     }
     
-    func deepPressHandler(recognizer: DeepPressGestureRecognizer)
-    {
+    func deepPressHandler(recognizer: DeepPressGestureRecognizer) {
         let forceLocation = recognizer.locationInView(self.tableView)
         if let forcedIndexPath = tableView.indexPathForRowAtPoint(forceLocation) {
             if let forcedCell  = self.tableView.cellForRowAtIndexPath(forcedIndexPath) as! StressTicketTableViewCell? {
@@ -202,7 +248,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
                             forcedCell.stressed = true
                             forcedCell.backgroundColor = UIColor.redColor()
                             AudioServicesPlayAlertSound(SystemSoundID(kSystemSoundID_Vibrate))
-                            sendNewStressedStatusToJira("Stressed", issueKey: forcedCell.issueTitleLabel.text!)
+                            sendNewStressedStatusToJira(STRESSED_LABEL_FOR_JIRA, issueKey: forcedCell.issueTitleLabel.text!)
                         }
                     }
                 }
@@ -227,7 +273,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     func getRightUtilityButtonsToCell()-> NSMutableArray{
         let utilityButtons: NSMutableArray = NSMutableArray()
         
-        utilityButtons.sw_addUtilityButtonWithColor(jiraCommanderRed, title: NSLocalizedString("Remove", comment: ""))
+        utilityButtons.sw_addUtilityButtonWithColor(UIColor.jiraCommanderRed(), title: NSLocalizedString("Remove", comment: ""))
         return utilityButtons
     }
     
@@ -243,7 +289,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     }
     
     func handleDeStress(cell : StressTicketTableViewCell) {
-        sendRemoveStressedStatusToJira("Stressed", issueKey: cell.issueTitleLabel.text!)
+        sendRemoveStressedStatusToJira(STRESSED_LABEL_FOR_JIRA, issueKey: cell.issueTitleLabel.text!)
     }
     
     func sendNewStressedStatusToJira(status :String, issueKey: String) {
@@ -273,7 +319,11 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     func sendIssueRequest(issueKey : String, parameters : [String : Dictionary<String, Array<Dictionary<String, String>>>]) {
         Alamofire.request(.PUT, serverAdress + "/rest/api/2/issue/" + issueKey, parameters: parameters, encoding: .JSON).responseJSON {
             response in
-            self.loadIssues()
+            if (self.JQL_MODE_ENABLED) {
+                self.loadIssuesWithJQL()
+            }else {
+                self.loadIssues("jql=creator=" + self.username + self.additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+            }
         }
     }
 }
@@ -296,13 +346,27 @@ extension UIImageView {
 extension StressTicketViewController: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate
     func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        filterContentForSearchText(searchBar.text!)
+        if (JQL_MODE_ENABLED) {
+            loadIssuesWithJQL()
+        }else {
+            filterContentForSearchText(searchBar.text!)
+        }
     }
 }
 
 extension StressTicketViewController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResultsForSearchController(searchController: UISearchController) {
-        filterContentForSearchText(searchController.searchBar.text!)
+        if (JQL_MODE_ENABLED) {
+            loadIssuesWithJQL()
+        }else {
+            filterContentForSearchText(searchController.searchBar.text!)
+        }
+    }
+}
+
+extension UIColor {
+    static func jiraCommanderRed() -> UIColor {
+        return UIColor(red: 208/255, green: 69/255, blue: 55/255, alpha: 1)
     }
 }

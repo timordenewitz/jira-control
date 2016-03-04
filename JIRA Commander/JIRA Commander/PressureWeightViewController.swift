@@ -19,11 +19,12 @@ class PressureWeightViewController: UITableViewController{
     var startTime: CFAbsoluteTime!
     var i: Int = 0
     var activatedPressureWeight = false
-
+    let additionalJQLQuery = " AND (NOT status = 'Closed' AND NOT status = 'resolved' AND NOT status='done')"
     var authTempBase64 = "YWRtaW46YWRtaW4="
     let testJiraUrl = "http://46.101.221.171:8080"
-    var additionalStatusQuery = "%20AND%20(status='to%20do'%20%20OR%20status='in%20progress')"
+    let maxResultsParameters = "&maxResults=500"
     let searchController = UISearchController(searchResultsController: nil)
+    var JQL_MODE_ENABLED = false
     
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
@@ -47,14 +48,49 @@ class PressureWeightViewController: UITableViewController{
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         setupSearchBar()
+        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: "performJQL:")
+        self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
+    }
+        
+    override func viewWillDisappear(animated: Bool) {
+        navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
+        navigationController!.navigationBar.tintColor = UIColor.blackColor()
+        searchController.searchBar.barTintColor = UIColor.whiteColor()
+    }
+    
+    func performJQL (sender:UIButton) {
+        if (JQL_MODE_ENABLED) {
+            JQL_MODE_ENABLED = false
+            searchController.searchBar.placeholder = "Search in Issues"
+            loadIssues("jql=reporter=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+            navigationController!.navigationBar.tintColor = UIColor.blackColor()
+            searchController.searchBar.barTintColor = UIColor.whiteColor()
+            navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
+
+        }else {
+            JQL_MODE_ENABLED = true
+            searchController.searchBar.placeholder = "Search with JQL"
+            navigationController!.navigationBar.tintColor = UIColor.jiraCommanderBlue()
+            searchController.searchBar.barTintColor = UIColor.jiraCommanderBlue()
+            navigationController?.navigationBar.backgroundColor = UIColor.jiraCommanderBlue()
+        }
+    }
+    
+    func loadIssuesWithJQL() {
+        if(searchController.searchBar.text != ""){
+            loadIssues("jql=" + (searchController.searchBar.text?.stringByReplacingOccurrencesOfString(" ", withString: "%20"))!)
+            tableView.reloadData()
+        }
     }
     
     func setupSearchBar() {
         searchController.searchResultsUpdater = self
+        searchController.searchBar.keyboardType = UIKeyboardType.URL
         searchController.searchBar.delegate = self
         definesPresentationContext = true
         searchController.dimsBackgroundDuringPresentation = false
         tableView.tableHeaderView = searchController.searchBar
+        searchController.searchBar.placeholder = "Search in Issues"
     }
     
     func filterContentForSearchText(searchText: String) {
@@ -69,9 +105,17 @@ class PressureWeightViewController: UITableViewController{
     }
     
     func handleRefresh(refreshControl: UIRefreshControl) {
-        loadIssues()
-        reloadIssueTable()
+        refresh()
         refreshControl.endRefreshing()
+    }
+    
+    func refresh() {
+        if (JQL_MODE_ENABLED) {
+            loadIssuesWithJQL()
+        }else {
+            loadIssues("jql=reporter=" + self.username + self.additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+        }
+        reloadIssueTable()
     }
     
     func checkConnection() {
@@ -84,43 +128,45 @@ class PressureWeightViewController: UITableViewController{
                 if let statusCode = response.response?.statusCode {
                     if (statusCode == 200) {
                         self.loadPriorities()
-                        self.loadIssues()
+                        self.loadIssues("jql=reporter=" + self.username + self.additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
                     }
                 }
         }
     }
     
-    func loadIssues() {
+    func loadIssues(JQLQuery: String) {
         issuesArray.removeAll()
-        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=reporter=" + username + additionalStatusQuery)
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery.stringByFoldingWithOptions(NSStringCompareOptions.DiacriticInsensitiveSearch, locale: NSLocale.currentLocale()) + maxResultsParameters)
             .responseJSON { response in
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
-                        for var index = 0; index < issues!.count; ++index{
-                            //Get All Fields
-                            if let fields = issues![index]["fields"] {
-                                //Ger The Priority
-                                if let priority = fields!["priority"] {
-                                    //Get The Epic Custom Field
-                                    if let issueType = fields!["issuetype"] {
-                                        //Get the Status
-                                        if let status = fields!["status"] {
-                                            if let statusName = status!["name"] {
-                                                if let issueTypeName = issueType!["name"] {
-                                                    if (!self.checkIfIssueIsClosed(statusName as! String) && issueTypeName as! String != "Epic") {
-                                                        let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, issueStatus: priority!["name"] as! String)
-                                                        self.issuesArray.append(myIssue)
+                        if (response.response?.statusCode == 200) {
+                            for var index = 0; index < issues!.count; ++index{
+                                //Get All Fields
+                                if let fields = issues![index]["fields"] {
+                                    //Ger The Priority
+                                    if let priority = fields!["priority"] {
+                                        //Get The Epic Custom Field
+                                        if let issueType = fields!["issuetype"] {
+                                            //Get the Status
+                                            if let status = fields!["status"] {
+                                                if let statusName = status!["name"] {
+                                                    if let issueTypeName = issueType!["name"] {
+                                                        if (!self.checkIfIssueIsClosed(statusName as! String) && issueTypeName as! String != "Epic") {
+                                                            let myIssue = issue(title: issues![index]["key"] as! String, description: fields!["summary"] as! String, issueStatus: priority!["name"] as! String)
+                                                            self.issuesArray.append(myIssue)
+                                                        }
                                                     }
+                                                    
                                                 }
-
                                             }
                                         }
                                     }
                                 }
                             }
+                            self.reloadIssueTable()
                         }
-                        self.reloadIssueTable()
                     }
                 }
         }
@@ -158,7 +204,7 @@ class PressureWeightViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if searchController.active && searchController.searchBar.text != "" {
+        if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
             return filteredIssues.count
         }
         return self.issuesArray.count;
@@ -173,18 +219,22 @@ class PressureWeightViewController: UITableViewController{
         let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         let issue: PressureWeightViewController.issue
 
-        if searchController.active && searchController.searchBar.text != "" {
+        if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
             issue = filteredIssues[indexPath.row]
         } else {
             issue = issuesArray[indexPath.row]
         }
-        
         
         cell.addGestureRecognizer(deepPressGestureRecognizer)
         cell.titleLabel.text = issue.title
         cell.subtitleLabel.text = issue.description
         cell.statusLabel.text = issue.issueStatus.uppercaseString
         
+        
+        if (issue.issueStatus == prioritiesArray[prioritiesArray.count-6].title) {
+            cell.iconImageView.image = UIImage(named: "blocker")!
+            return cell
+        }
         if (issue.issueStatus == prioritiesArray[prioritiesArray.count-5].title || issue.issueStatus == prioritiesArray[prioritiesArray.count-4].title) {
             cell.iconImageView.image = UIImage(named: "TAG Red")!
             return cell
@@ -264,14 +314,17 @@ class PressureWeightViewController: UITableViewController{
         case (force < 0.3):
             ret = prioritiesArray[prioritiesArray.count-2].title
             break
-        case (force < 0.7):
+        case (force < 0.6):
             ret = prioritiesArray[prioritiesArray.count-3].title
             break
-        case (force < 0.9):
+        case (force < 0.8):
             ret = prioritiesArray[prioritiesArray.count-4].title
             break
-        case (force <= 1.0):
+        case (force < 0.95):
             ret = prioritiesArray[prioritiesArray.count-5].title
+            break
+        case (force <= 1.0):
+            ret = prioritiesArray[prioritiesArray.count-6].title
             break
         default:
             ret = prioritiesArray[prioritiesArray.count-3].title
@@ -289,14 +342,17 @@ class PressureWeightViewController: UITableViewController{
         case (force < 0.3):
             ret =  UIImage(named: "TAG Green")!
             break
-        case (force < 0.7):
+        case (force < 0.6):
             ret =  UIImage(named: "TAG Yellow")!
             break
-        case (force < 0.9):
+        case (force < 0.8):
+            ret =  UIImage(named: "TAG Red")!
+            break
+        case (force < 0.95):
             ret =  UIImage(named: "TAG Red")!
             break
         case (force <= 1.0):
-            ret =  UIImage(named: "TAG Red")!
+            ret =  UIImage(named: "blocker")!
             break
         default:
             ret =  UIImage(named: "TAG Yellow")!
@@ -323,13 +379,21 @@ class PressureWeightViewController: UITableViewController{
 extension PressureWeightViewController: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate
     func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
-        filterContentForSearchText(searchBar.text!)
+        if (JQL_MODE_ENABLED) {
+            loadIssuesWithJQL()
+        }else {
+            filterContentForSearchText(searchBar.text!)
+        }
     }
 }
 
 extension PressureWeightViewController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResultsForSearchController(searchController: UISearchController) {
-        filterContentForSearchText(searchController.searchBar.text!)
+        if (JQL_MODE_ENABLED) {
+            loadIssuesWithJQL()
+        }else {
+            filterContentForSearchText(searchController.searchBar.text!)
+        }
     }
 }

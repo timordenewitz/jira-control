@@ -71,6 +71,20 @@
                                     <action selector="passwordButtonClicked:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Fmb-Zc-t9d"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Save Login" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="PZu-Id-2Fe">
+                                <rect key="frame" x="198" y="510" width="84" height="21"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="21" id="2AR-jX-4Di"/>
+                                    <constraint firstAttribute="width" constant="84" id="Y8F-ev-ZPR"/>
+                                </constraints>
+                                <fontDescription key="fontDescription" type="system" weight="light" pointSize="15"/>
+                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="calibratedRGB"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="IFC-O9-b1O">
+                                <rect key="frame" x="290" y="505" width="51" height="31"/>
+                                <color key="onTintColor" red="0.29019607843137252" green="0.61568627450980395" blue="0.85490196078431369" alpha="0.90000000000000002" colorSpace="calibratedRGB"/>
+                            </switch>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <constraints>
@@ -85,13 +99,17 @@
                             <constraint firstItem="0gc-VO-JwQ" firstAttribute="leading" secondItem="Z3c-Ql-ZEz" secondAttribute="leading" id="VXe-mj-cQr"/>
                             <constraint firstItem="T7m-uh-Vjk" firstAttribute="top" secondItem="Z3c-Ql-ZEz" secondAttribute="bottom" constant="32" id="WEN-MT-FoP"/>
                             <constraint firstItem="EfX-73-lJd" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="WwT-U4-tJH"/>
+                            <constraint firstItem="PZu-Id-2Fe" firstAttribute="top" secondItem="T7m-uh-Vjk" secondAttribute="bottom" constant="30" id="Wxd-BF-mc8"/>
                             <constraint firstItem="EfX-73-lJd" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="XFX-IB-e2U"/>
                             <constraint firstAttribute="trailingMargin" secondItem="RTw-aH-Q8d" secondAttribute="trailing" constant="22" id="ZD9-Co-nTE"/>
                             <constraint firstItem="Z3c-Ql-ZEz" firstAttribute="trailing" secondItem="0gc-VO-JwQ" secondAttribute="trailing" id="c7w-IU-APd"/>
                             <constraint firstItem="Z3c-Ql-ZEz" firstAttribute="top" secondItem="0gc-VO-JwQ" secondAttribute="bottom" constant="22" id="cPn-4W-BKS"/>
                             <constraint firstItem="T7m-uh-Vjk" firstAttribute="centerX" secondItem="Jbb-Dq-0pX" secondAttribute="centerX" id="dyD-jq-eEM"/>
+                            <constraint firstItem="PZu-Id-2Fe" firstAttribute="centerY" secondItem="IFC-O9-b1O" secondAttribute="centerY" id="eTc-GM-NMA"/>
+                            <constraint firstItem="IFC-O9-b1O" firstAttribute="leading" secondItem="PZu-Id-2Fe" secondAttribute="trailing" constant="8" symbolic="YES" id="efa-13-Mo5"/>
                             <constraint firstItem="FaW-sl-km3" firstAttribute="centerX" secondItem="0gc-VO-JwQ" secondAttribute="centerX" id="kxS-ab-QQe"/>
                             <constraint firstItem="Z3c-Ql-ZEz" firstAttribute="trailing" secondItem="T7m-uh-Vjk" secondAttribute="trailing" id="nF7-U6-71P"/>
+                            <constraint firstAttribute="trailing" secondItem="PZu-Id-2Fe" secondAttribute="trailing" constant="93" id="pvl-eu-gRr"/>
                             <constraint firstAttribute="trailing" secondItem="EfX-73-lJd" secondAttribute="trailing" id="sDn-ge-7NM"/>
                             <constraint firstItem="0gc-VO-JwQ" firstAttribute="top" secondItem="FaW-sl-km3" secondAttribute="bottom" constant="59" id="tWM-2B-cTB"/>
                             <constraint firstItem="FaW-sl-km3" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="51" id="utw-ZP-jR5"/>
@@ -105,6 +123,7 @@
                         <outlet property="ServerAdressTextField" destination="T7m-uh-Vjk" id="y7v-8Z-Y2Q"/>
                         <outlet property="UserTextField" destination="0gc-VO-JwQ" id="kS4-RT-vNe"/>
                         <outlet property="onePasswordButton" destination="RTw-aH-Q8d" id="cMV-ym-hlP"/>
+                        <outlet property="saveLoginSwitch" destination="IFC-O9-b1O" id="DUQ-oy-M94"/>
                         <segue destination="1o0-ki-CGl" kind="show" identifier="showDashboardSegue" id="gAG-Oz-vco"/>
                     </connections>
                 </viewController>
@@ -155,7 +174,7 @@
                                 <rect key="frame" x="42" y="294" width="138" height="138"/>
                                 <state key="normal" image="Settings"/>
                                 <connections>
-                                    <segue destination="lz3-WM-5EG" kind="show" id="JVJ-Ui-FiE"/>
+                                    <segue destination="lz3-WM-5EG" kind="show" identifier="SettingsSegue" id="JVJ-Ui-FiE"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -288,10 +307,10 @@
             </objects>
             <point key="canvasLocation" x="2258.5" y="848.5"/>
         </scene>
-        <!--STRESS TICKET-->
+        <!--STRESS ISSUE-->
         <scene sceneID="sfB-EV-0Ot">
             <objects>
-                <tableViewController storyboardIdentifier="StressTicketViewController" title="STRESS TICKET" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rBz-kb-Okx" customClass="StressTicketViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController storyboardIdentifier="StressTicketViewController" title="STRESS ISSUE" useStoryboardIdentifierAsRestorationIdentifier="YES" id="rBz-kb-Okx" customClass="StressTicketViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="70" sectionHeaderHeight="28" sectionFooterHeight="28" id="GLg-Ot-VZJ">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

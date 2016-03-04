@@ -14,7 +14,16 @@ import Appsee
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
+    let defaults = NSUserDefaults.standardUserDefaults()
     var window: UIWindow?
+    
+    enum defaultsKeys {
+        static let usernameKey = "de.scandio.jira-commander.username"
+        static let pwKey = "de.scandio.jira-commander.password"
+        static let serverAdressKey = "de.scandio.jira-commander.server"
+        static let saveLogin = "de.scandio.jira-commander.save-login"
+    }
+    
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
         // Override point for customization after application launch.    UINavigationBar.appearance().setBackgroundImage(UIImage(), forBarMetrics: .Default)
         Fabric.with([Crashlytics.self, Appsee.self])
@@ -43,7 +52,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
 
     func applicationWillTerminate(application: UIApplication) {
-        // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+        if let saveLogin = defaults.stringForKey(defaultsKeys.saveLogin) {
+            if(!saveLogin.boolValue) {
+                defaults.setValue(nil, forKey: defaultsKeys.pwKey)
+                defaults.setValue(nil, forKey: defaultsKeys.usernameKey)
+                defaults.synchronize()
+            }
+        }
     }
 }
 
