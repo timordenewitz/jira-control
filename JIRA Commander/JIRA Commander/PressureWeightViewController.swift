@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import QorumLogs
 
 class PressureWeightViewController: UITableViewController{
 
@@ -283,6 +284,8 @@ class PressureWeightViewController: UITableViewController{
                 }
                 
                 if(recognizer.state == .Ended) {
+                    let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
+                    QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: "", numberOfExperimentsPassed: "", matchedTargetValue: "", touchArray: "")
                     if (activatedPressureWeight) {
                         let seconds = 0.25
                         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
@@ -303,6 +306,13 @@ class PressureWeightViewController: UITableViewController{
                 }
             }
         }
+    }
+    
+    func timeRounding(time : Double) -> String {
+        let numberOfPlaces = 2.0
+        let multiplier = pow(10.0, numberOfPlaces)
+        let rounded = round(time * multiplier) / multiplier
+        return String(rounded)
     }
     
     func mapForceToTicketStatus(force :CGFloat) -> String {
