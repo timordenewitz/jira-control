@@ -212,6 +212,7 @@ class PressureWeightViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        startTime = CFAbsoluteTimeGetCurrent()
         let issue: PressureWeightViewController.issue
         if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
             issue = filteredIssues[indexPath.row]
@@ -270,7 +271,6 @@ class PressureWeightViewController: UITableViewController{
         if let forcedIndexPath = tableView.indexPathForRowAtPoint(forceLocation) {
             if let forcedCell  = self.tableView.cellForRowAtIndexPath(forcedIndexPath) as! IssueTableViewCell? {
                 if(recognizer.state == .Began) {
-                    startTime = CFAbsoluteTimeGetCurrent()
                 }
                 
                 if(recognizer.state == .Changed) {
@@ -295,8 +295,6 @@ class PressureWeightViewController: UITableViewController{
                 }
                 
                 if(recognizer.state == .Ended) {
-                    let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
-                    QL2(timeRounding(elapsedTime), force: "alternativePressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: "", numberOfExperimentsPassed: "", matchedTargetValue: "", touchArray: "")
                     if (activatedPressureWeight) {
                         let seconds = 0.25
                         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
@@ -402,6 +400,9 @@ class PressureWeightViewController: UITableViewController{
         let alertController = UIAlertController(title: "Priority", message: "Set the priority for the issue.", preferredStyle: UIAlertControllerStyle.ActionSheet)
         for priority in prioritiesArray {
             let tmpAction = UIAlertAction(title: priority.title, style: UIAlertActionStyle.Default, handler: {(alert :UIAlertAction) in
+                let elapsedTime = CFAbsoluteTimeGetCurrent() - self.startTime
+                QL2(self.timeRounding(elapsedTime), force: "alternativePressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: "", numberOfExperimentsPassed: "", matchedTargetValue: "", touchArray: "")
+                
                 self.sendNewIssueStatusToJira(priority.title, issueKey: issue.title)
                 cell.statusLabel.text = priority.title.uppercaseString
                 if (priority.title == self.prioritiesArray[self.prioritiesArray.count-6].title) {
