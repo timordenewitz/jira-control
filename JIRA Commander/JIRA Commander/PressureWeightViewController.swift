@@ -212,7 +212,6 @@ class PressureWeightViewController: UITableViewController{
     }
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
-        startTime = CFAbsoluteTimeGetCurrent()
         let issue: PressureWeightViewController.issue
         if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
             issue = filteredIssues[indexPath.row]
@@ -396,7 +395,7 @@ class PressureWeightViewController: UITableViewController{
     }
     
     func showAlertWasTapped(table : UITableView, issue: PressureWeightViewController.issue, cell: IssueTableViewCell) {
-        
+        startTime = CFAbsoluteTimeGetCurrent()
         let alertController = UIAlertController(title: "Priority", message: "Set the priority for the issue.", preferredStyle: UIAlertControllerStyle.ActionSheet)
         for priority in prioritiesArray {
             let tmpAction = UIAlertAction(title: priority.title, style: UIAlertActionStyle.Default, handler: {(alert :UIAlertAction) in
