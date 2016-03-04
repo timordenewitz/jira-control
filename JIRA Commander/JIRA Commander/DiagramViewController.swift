@@ -23,7 +23,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     var issuesArray = [Issue]()
     var resolvedIssues = [Issue]()
     
-    let searchQuery="sprint%20in%20openSprints()%20AND%20project%20in%20projectsWhereUserHasRole(Developers)"
+    let searchQuery="sprint in openSprints() and (project in projectsWhereUserHasRole('Developers') or project in projectsWhereUserHasRole('Users') or project in projectsWhereUserHasRole('Administrators'))"
     let maxResultsParameters = "&maxResults=5000"
     
     var projectTitles :[String] = []
@@ -68,7 +68,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     }
     
     func loadProjects() {
-        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=" + searchQuery + maxResultsParameters)
+        Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?jql=" + searchQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20") + maxResultsParameters)
             .responseJSON { response in
 
                 if let JSON = response.result.value {
