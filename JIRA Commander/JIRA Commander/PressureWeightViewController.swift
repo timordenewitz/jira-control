@@ -52,28 +52,6 @@ class PressureWeightViewController: UITableViewController{
         setupSearchBar()
         let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: "performJQL:")
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
-        showLoginAlert()
-    }
-    
-    
-    //TEMP!
-    func showLoginAlert() {
-        //1. Create the alert controller.
-        let alert = UIAlertController(title: "Your UUID", message: "Enter a UUID", preferredStyle: .Alert)
-        
-        //2. Add the text field. You can configure it however you need.
-        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
-            textField.placeholder = "Insert UUID"
-        })
-        
-        //3. Grab the value from the text field, and print it when the user clicks OK.
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-            let textField = alert.textFields![0] as UITextField
-            self.UUID = textField.text!
-        }))
-        
-        // 4. Present the alert.
-        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
