@@ -26,6 +26,7 @@ class PressureWeightViewController: UITableViewController{
     let maxResultsParameters = "&maxResults=500"
     let searchController = UISearchController(searchResultsController: nil)
     var JQL_MODE_ENABLED = false
+    var UUID : String = ""
     
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
@@ -51,8 +52,30 @@ class PressureWeightViewController: UITableViewController{
         setupSearchBar()
         let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: "performJQL:")
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
+        showLoginAlert()
     }
+    
+    
+    //TEMP!
+    func showLoginAlert() {
+        //1. Create the alert controller.
+        let alert = UIAlertController(title: "Your UUID", message: "Enter a UUID", preferredStyle: .Alert)
         
+        //2. Add the text field. You can configure it however you need.
+        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
+            textField.placeholder = "Insert UUID"
+        })
+        
+        //3. Grab the value from the text field, and print it when the user clicks OK.
+        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+            let textField = alert.textFields![0] as UITextField
+            self.UUID = textField.text!
+        }))
+        
+        // 4. Present the alert.
+        self.presentViewController(alert, animated: true, completion: nil)
+    }
+    
     override func viewWillDisappear(animated: Bool) {
         navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
         navigationController!.navigationBar.tintColor = UIColor.blackColor()
@@ -273,34 +296,34 @@ class PressureWeightViewController: UITableViewController{
                     
                     if (activatedPressureWeight) {
                         touchArray.insert(recognizer.force, atIndex: i)
-                        guard touchArray.count > 7 else {
+                        guard touchArray.count > 8 else {
                             forcedCell.backgroundColor = UIColor(red: (2.0 * recognizer.force), green: (2.0 * (1 - recognizer.force)), blue: 0, alpha: 1)
                             forcedCell.statusLabel.text = mapForceToTicketStatus(recognizer.force).uppercaseString
                             forcedCell.iconImageView.image = mapForceToTicketIcon(recognizer.force)
                             i++
                             return
                         }
-                        forcedCell.backgroundColor = UIColor(red: (2.0 * touchArray[i-7]), green: (2.0 * (1 - touchArray[i-7])), blue: 0, alpha: 1)
-                        forcedCell.statusLabel.text = mapForceToTicketStatus(touchArray[i-7]).uppercaseString
-                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-7])
+                        forcedCell.backgroundColor = UIColor(red: (2.0 * touchArray[i-8]), green: (2.0 * (1 - touchArray[i-8])), blue: 0, alpha: 1)
+                        forcedCell.statusLabel.text = mapForceToTicketStatus(touchArray[i-8]).uppercaseString
+                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-8])
                         i++
                     }
                 }
                 
                 if(recognizer.state == .Ended) {
                     let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
-                    QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: "", numberOfExperimentsPassed: "", matchedTargetValue: "", touchArray: "")
+                    QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: UUID, numberOfExperimentsPassed: "", matchedTargetValue: "", touchArray: "")
                     if (activatedPressureWeight) {
                         let seconds = 0.25
                         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
                         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-                        if (touchArray.count < 7) {
+                        if (touchArray.count < 8) {
                             forcedCell.statusLabel.text = mapForceToTicketStatus(recognizer.force).uppercaseString
                             forcedCell.iconImageView.image = mapForceToTicketIcon(recognizer.force)
                         }
-                        let status = mapForceToTicketStatus(touchArray[i-7])
+                        let status = mapForceToTicketStatus(touchArray[i-8])
                         forcedCell.statusLabel.text = status.uppercaseString
-                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-7])
+                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-8])
                         sendNewIssueStatusToJira(status, issueKey: forcedCell.titleLabel.text!)
                         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
                             forcedCell.backgroundColor = UIColor.whiteColor()
