@@ -44,7 +44,6 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
     }
     
-    
     override func viewWillDisappear(animated: Bool) {
         navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
         navigationController!.navigationBar.tintColor = UIColor.blackColor()
@@ -98,7 +97,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             .responseJSON { response in
                 if let statusCode = response.response?.statusCode {
                     if (statusCode == 200) {
-                        self.loadIssues("jql=reporter=" + self.username + self.additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+                        self.loadIssuesWithNormalQuery()
                     }
                 }
         }
@@ -108,10 +107,14 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         if (JQL_MODE_ENABLED) {
             loadIssuesWithJQL()
         }else {
-            loadIssues("jql=creator=" + self.username + self.additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+            loadIssuesWithNormalQuery()
         }
         reloadIssueTable()
         refreshControl.endRefreshing()
+    }
+    
+    func loadIssuesWithNormalQuery() {
+        loadIssues("jql=reporter=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
     }
     
     func loadIssues(JQLQuery: String) {
@@ -229,7 +232,9 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             cell.stressedImageView.image = UIImage(named: "Stressed-Badge")
             cell.stressed = true
             cell.rightUtilityButtons = self.getRightUtilityButtonsToCell() as [AnyObject];
+            cell.leftUtilityButtons = []
         } else {
+            cell.leftUtilityButtons = self.getLeftUtilityButtonsToCell() as [AnyObject];
             cell.stressedImageView.hidden = true
             cell.stressed = false
             cell.backgroundColor = UIColor.whiteColor()
@@ -270,11 +275,24 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         self.navigationController?.setNavigationBarHidden(false, animated: false)
     }
     
+    func getLeftUtilityButtonsToCell()-> NSMutableArray{
+        let utilityButtons: NSMutableArray = NSMutableArray()
+        utilityButtons.sw_addUtilityButtonWithColor(UIColor.jiraCommanderRed(), title: NSLocalizedString("Stress", comment: ""))
+        return utilityButtons
+    }
+    
     func getRightUtilityButtonsToCell()-> NSMutableArray{
         let utilityButtons: NSMutableArray = NSMutableArray()
-        
         utilityButtons.sw_addUtilityButtonWithColor(UIColor.jiraCommanderRed(), title: NSLocalizedString("Remove", comment: ""))
         return utilityButtons
+    }
+    
+    func swipeableTableViewCell(cell: SWTableViewCell!, didTriggerLeftUtilityButtonWithIndex index: Int) {
+        if index == 0 {
+            let tmpCell = cell as! StressTicketTableViewCell
+            sendNewStressedStatusToJira(STRESSED_LABEL_FOR_JIRA, issueKey: tmpCell.issueTitleLabel.text!)
+        }
+        cell.hideUtilityButtonsAnimated(true);
     }
     
     func swipeableTableViewCell(cell: SWTableViewCell!, didTriggerRightUtilityButtonWithIndex index: Int) {
@@ -322,7 +340,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             if (self.JQL_MODE_ENABLED) {
                 self.loadIssuesWithJQL()
             }else {
-                self.loadIssues("jql=creator=" + self.username + self.additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+                self.loadIssuesWithNormalQuery()
             }
         }
     }
