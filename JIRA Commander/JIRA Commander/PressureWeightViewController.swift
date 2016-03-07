@@ -8,7 +8,6 @@
 
 import UIKit
 import Alamofire
-import QorumLogs
 
 class PressureWeightViewController: UITableViewController{
 
@@ -309,13 +308,6 @@ class PressureWeightViewController: UITableViewController{
                 }
             }
         }
-    }
-    
-    func timeRounding(time : Double) -> String {
-        let numberOfPlaces = 2.0
-        let multiplier = pow(10.0, numberOfPlaces)
-        let rounded = round(time * multiplier) / multiplier
-        return String(rounded)
     }
     
     func mapForceToTicketStatus(force :CGFloat) -> String {
