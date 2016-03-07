@@ -115,10 +115,10 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     }
     
     func loadIssues(JQLQuery: String) {
-        issuesArray.removeAll()
         Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery.stringByFoldingWithOptions(NSStringCompareOptions.DiacriticInsensitiveSearch, locale: NSLocale.currentLocale()) + maxResultsParameters)
             .responseJSON { response in
                 if let JSON = response.result.value {
+                    self.issuesArray.removeAll()
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         if (response.response?.statusCode == 200) {
