@@ -63,7 +63,7 @@ class PressureWeightViewController: UITableViewController{
         if (JQL_MODE_ENABLED) {
             JQL_MODE_ENABLED = false
             searchController.searchBar.placeholder = "Search in Issues"
-            loadIssues("jql=reporter=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+            loadIssuesWithNormalQuery()
             navigationController!.navigationBar.tintColor = UIColor.blackColor()
             searchController.searchBar.barTintColor = UIColor.whiteColor()
             navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
@@ -82,6 +82,10 @@ class PressureWeightViewController: UITableViewController{
             loadIssues("jql=" + (searchController.searchBar.text?.stringByReplacingOccurrencesOfString(" ", withString: "%20"))!)
             tableView.reloadData()
         }
+    }
+    
+    func loadIssuesWithNormalQuery() {
+        loadIssues("jql=reporter=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
     }
     
     func setupSearchBar() {
@@ -129,17 +133,17 @@ class PressureWeightViewController: UITableViewController{
                 if let statusCode = response.response?.statusCode {
                     if (statusCode == 200) {
                         self.loadPriorities()
-                        self.loadIssues("jql=reporter=" + self.username + self.additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+                        self.loadIssuesWithNormalQuery()
                     }
                 }
         }
     }
     
     func loadIssues(JQLQuery: String) {
-        issuesArray.removeAll()
         Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery.stringByFoldingWithOptions(NSStringCompareOptions.DiacriticInsensitiveSearch, locale: NSLocale.currentLocale()) + maxResultsParameters)
             .responseJSON { response in
                 if let JSON = response.result.value {
+                    self.issuesArray.removeAll()
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         if (response.response?.statusCode == 200) {
@@ -309,6 +313,7 @@ class PressureWeightViewController: UITableViewController{
                         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
                             forcedCell.backgroundColor = UIColor.whiteColor()
                             self.activatedPressureWeight = false
+                            self.loadIssuesWithNormalQuery()
                         })
                     }
                 }
