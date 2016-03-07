@@ -8,6 +8,7 @@
 
 import UIKit
 import Alamofire
+import QorumLogs
 
 class PressureWeightViewController: UITableViewController{
 
@@ -51,7 +52,7 @@ class PressureWeightViewController: UITableViewController{
         let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: "performJQL:")
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
     }
-        
+    
     override func viewWillDisappear(animated: Bool) {
         navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
         navigationController!.navigationBar.tintColor = UIColor.blackColor()
@@ -62,7 +63,7 @@ class PressureWeightViewController: UITableViewController{
         if (JQL_MODE_ENABLED) {
             JQL_MODE_ENABLED = false
             searchController.searchBar.placeholder = "Search in Issues"
-            loadIssues("jql=reporter=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+            loadIssuesWithNormalQuery()
             navigationController!.navigationBar.tintColor = UIColor.blackColor()
             searchController.searchBar.barTintColor = UIColor.whiteColor()
             navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
@@ -81,6 +82,10 @@ class PressureWeightViewController: UITableViewController{
             loadIssues("jql=" + (searchController.searchBar.text?.stringByReplacingOccurrencesOfString(" ", withString: "%20"))!)
             tableView.reloadData()
         }
+    }
+    
+    func loadIssuesWithNormalQuery() {
+        loadIssues("jql=reporter=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
     }
     
     func setupSearchBar() {
@@ -128,17 +133,17 @@ class PressureWeightViewController: UITableViewController{
                 if let statusCode = response.response?.statusCode {
                     if (statusCode == 200) {
                         self.loadPriorities()
-                        self.loadIssues("jql=reporter=" + self.username + self.additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+                        self.loadIssuesWithNormalQuery()
                     }
                 }
         }
     }
     
     func loadIssues(JQLQuery: String) {
-        issuesArray.removeAll()
         Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery.stringByFoldingWithOptions(NSStringCompareOptions.DiacriticInsensitiveSearch, locale: NSLocale.currentLocale()) + maxResultsParameters)
             .responseJSON { response in
                 if let JSON = response.result.value {
+                    self.issuesArray.removeAll()
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         if (response.response?.statusCode == 200) {
@@ -268,16 +273,16 @@ class PressureWeightViewController: UITableViewController{
                     
                     if (activatedPressureWeight) {
                         touchArray.insert(recognizer.force, atIndex: i)
-                        guard touchArray.count > 7 else {
+                        guard touchArray.count > 8 else {
                             forcedCell.backgroundColor = UIColor(red: (2.0 * recognizer.force), green: (2.0 * (1 - recognizer.force)), blue: 0, alpha: 1)
                             forcedCell.statusLabel.text = mapForceToTicketStatus(recognizer.force).uppercaseString
                             forcedCell.iconImageView.image = mapForceToTicketIcon(recognizer.force)
                             i++
                             return
                         }
-                        forcedCell.backgroundColor = UIColor(red: (2.0 * touchArray[i-7]), green: (2.0 * (1 - touchArray[i-7])), blue: 0, alpha: 1)
-                        forcedCell.statusLabel.text = mapForceToTicketStatus(touchArray[i-7]).uppercaseString
-                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-7])
+                        forcedCell.backgroundColor = UIColor(red: (2.0 * touchArray[i-8]), green: (2.0 * (1 - touchArray[i-8])), blue: 0, alpha: 1)
+                        forcedCell.statusLabel.text = mapForceToTicketStatus(touchArray[i-8]).uppercaseString
+                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-8])
                         i++
                     }
                 }
@@ -287,22 +292,30 @@ class PressureWeightViewController: UITableViewController{
                         let seconds = 0.25
                         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
                         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-                        if (touchArray.count < 7) {
+                        if (touchArray.count < 8) {
                             forcedCell.statusLabel.text = mapForceToTicketStatus(recognizer.force).uppercaseString
                             forcedCell.iconImageView.image = mapForceToTicketIcon(recognizer.force)
                         }
-                        let status = mapForceToTicketStatus(touchArray[i-7])
+                        let status = mapForceToTicketStatus(touchArray[i-8])
                         forcedCell.statusLabel.text = status.uppercaseString
-                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-7])
+                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-8])
                         sendNewIssueStatusToJira(status, issueKey: forcedCell.titleLabel.text!)
                         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
                             forcedCell.backgroundColor = UIColor.whiteColor()
                             self.activatedPressureWeight = false
+                            self.loadIssuesWithNormalQuery()
                         })
                     }
                 }
             }
         }
+    }
+    
+    func timeRounding(time : Double) -> String {
+        let numberOfPlaces = 2.0
+        let multiplier = pow(10.0, numberOfPlaces)
+        let rounded = round(time * multiplier) / multiplier
+        return String(rounded)
     }
     
     func mapForceToTicketStatus(force :CGFloat) -> String {

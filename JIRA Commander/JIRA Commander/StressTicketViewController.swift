@@ -44,7 +44,6 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
     }
     
-    
     override func viewWillDisappear(animated: Bool) {
         navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
         navigationController!.navigationBar.tintColor = UIColor.blackColor()
@@ -98,7 +97,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             .responseJSON { response in
                 if let statusCode = response.response?.statusCode {
                     if (statusCode == 200) {
-                        self.loadIssues("jql=reporter=" + self.username + self.additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+                        self.loadIssuesWithNormalQuery()
                     }
                 }
         }
@@ -108,17 +107,21 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         if (JQL_MODE_ENABLED) {
             loadIssuesWithJQL()
         }else {
-            loadIssues("jql=creator=" + self.username + self.additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+            loadIssuesWithNormalQuery()
         }
         reloadIssueTable()
         refreshControl.endRefreshing()
     }
     
+    func loadIssuesWithNormalQuery() {
+        loadIssues("jql=reporter=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+    }
+    
     func loadIssues(JQLQuery: String) {
-        issuesArray.removeAll()
         Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery.stringByFoldingWithOptions(NSStringCompareOptions.DiacriticInsensitiveSearch, locale: NSLocale.currentLocale()) + maxResultsParameters)
             .responseJSON { response in
                 if let JSON = response.result.value {
+                    self.issuesArray.removeAll()
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         if (response.response?.statusCode == 200) {
@@ -322,7 +325,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             if (self.JQL_MODE_ENABLED) {
                 self.loadIssuesWithJQL()
             }else {
-                self.loadIssues("jql=creator=" + self.username + self.additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+                self.loadIssuesWithNormalQuery()
             }
         }
     }
