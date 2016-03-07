@@ -26,7 +26,6 @@ class PressureWeightViewController: UITableViewController{
     let maxResultsParameters = "&maxResults=500"
     let searchController = UISearchController(searchResultsController: nil)
     var JQL_MODE_ENABLED = false
-    var UUID : String = ""
     
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
@@ -289,8 +288,6 @@ class PressureWeightViewController: UITableViewController{
                 }
                 
                 if(recognizer.state == .Ended) {
-                    let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
-                    QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: UUID, numberOfExperimentsPassed: "", matchedTargetValue: "", touchArray: "")
                     if (activatedPressureWeight) {
                         let seconds = 0.25
                         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
