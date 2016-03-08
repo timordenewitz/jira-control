@@ -74,18 +74,16 @@ class PressureWeightViewController: UITableViewController{
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
             let textField = alert.textFields![0] as UITextField
             self.UUID = textField.text!
-            self.handleExperimentStarted()
+            if (self.UUID != "") {
+                self.handleExperimentStarted()
+            } else {
+                self.showLoginAlert()
+            }
         }))
         
         // 4. Present the alert.
         self.presentViewController(alert, animated: true, completion: nil)
 
-    }
-    
-    override func viewWillDisappear(animated: Bool) {
-        navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
-        navigationController!.navigationBar.tintColor = UIColor.blackColor()
-        searchController.searchBar.barTintColor = UIColor.whiteColor()
     }
     
     func startExperiment(sender:UIButton) {
@@ -104,7 +102,14 @@ class PressureWeightViewController: UITableViewController{
         
         // 4. Present the alert.
         self.presentViewController(alert2, animated: true, completion: nil)
+        self.navigationItem.setRightBarButtonItem(nil, animated: false)
+    }
 
+    
+    override func viewWillDisappear(animated: Bool) {
+        navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
+        navigationController!.navigationBar.tintColor = UIColor.blackColor()
+        searchController.searchBar.barTintColor = UIColor.whiteColor()
     }
     
     func performJQL (sender:UIButton) {
