@@ -28,6 +28,9 @@ class PressureWeightViewController: UITableViewController{
     var JQL_MODE_ENABLED = false
     var UUID : String = ""
     
+    //TMP - LOG ENABLE BOOL
+    var experimentStarted = false
+    
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
 
@@ -50,9 +53,10 @@ class PressureWeightViewController: UITableViewController{
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         setupSearchBar()
-        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: "performJQL:")
+        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "START", style: UIBarButtonItemStyle.Plain, target: self, action: "startExperiment:")
+//        TMP: CHANGE JQL TO START EXPERIMENT BUTTON
+//        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: "performJQL:")
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
-        showLoginAlert()
     }
     
     
@@ -70,16 +74,37 @@ class PressureWeightViewController: UITableViewController{
         alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
             let textField = alert.textFields![0] as UITextField
             self.UUID = textField.text!
+            self.handleExperimentStarted()
         }))
         
         // 4. Present the alert.
         self.presentViewController(alert, animated: true, completion: nil)
+
     }
     
     override func viewWillDisappear(animated: Bool) {
         navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
         navigationController!.navigationBar.tintColor = UIColor.blackColor()
         searchController.searchBar.barTintColor = UIColor.whiteColor()
+    }
+    
+    func startExperiment(sender:UIButton) {
+        showLoginAlert()
+    }
+    
+    func handleExperimentStarted() {
+        experimentStarted = true
+        
+        //1. Create the alert controller.
+        let alert2 = UIAlertController(title: "Experiment Started", message: "Experiment has started.", preferredStyle: .Alert)
+        
+        //3. Grab the value from the text field, and print it when the user clicks OK.
+        alert2.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+        }))
+        
+        // 4. Present the alert.
+        self.presentViewController(alert2, animated: true, completion: nil)
+
     }
     
     func performJQL (sender:UIButton) {
@@ -312,7 +337,11 @@ class PressureWeightViewController: UITableViewController{
                 
                 if(recognizer.state == .Ended) {
                     let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
-                    QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: UUID, numberOfExperimentsPassed: "", matchedTargetValue: "", touchArray: "")
+                    
+                    if (experimentStarted) {
+                        QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: UUID, numberOfExperimentsPassed: "", matchedTargetValue: "", touchArray: "")
+                    }
+
                     if (activatedPressureWeight) {
                         let seconds = 0.25
                         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
