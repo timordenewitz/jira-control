@@ -31,6 +31,7 @@ class PressureWeightViewController: UITableViewController{
     //TMP - LOG ENABLE BOOL
     var experimentStarted = false
     var experimentTouchCounter = 0
+    var experimentStartTime : CFAbsoluteTime!
     var experimentPrios = [
         "Critical",
         "Normal",
@@ -93,7 +94,8 @@ class PressureWeightViewController: UITableViewController{
         "Normal",
         "Trivial",
         "Normal",
-        "Normal"]
+        "Normal"
+    ]
     
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
@@ -160,7 +162,7 @@ class PressureWeightViewController: UITableViewController{
     
     func handleExperimentStarted() {
         experimentStarted = true
-        
+        experimentStartTime = CFAbsoluteTimeGetCurrent()
         //1. Create the alert controller.
         let alert2 = UIAlertController(title: "Experiment Started", message: "Experiment has started.", preferredStyle: .Alert)
         
@@ -172,6 +174,21 @@ class PressureWeightViewController: UITableViewController{
         self.presentViewController(alert2, animated: true, completion: nil)
         self.navigationItem.setRightBarButtonItem(nil, animated: false)
     }
+    
+    func handleExperimentStopped() {
+        experimentStarted = false
+        //1. Create the alert controller.
+        let alert2 = UIAlertController(title: "Experiment Finished", message: "Experiment has finished.", preferredStyle: .Alert)
+        
+        //3. Grab the value from the text field, and print it when the user clicks OK.
+        alert2.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+        }))
+        
+        // 4. Present the alert.
+        self.presentViewController(alert2, animated: true, completion: nil)
+        self.navigationItem.setRightBarButtonItem(nil, animated: false)
+    }
+
 
     
     override func viewWillDisappear(animated: Bool) {
@@ -411,8 +428,6 @@ class PressureWeightViewController: UITableViewController{
                 if(recognizer.state == .Ended) {
                     let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
                     
-
-
                     if (activatedPressureWeight) {
                         let seconds = 0.25
                         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
@@ -435,6 +450,7 @@ class PressureWeightViewController: UITableViewController{
                             QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: UUID, numberOfExperimentsPassed: String(experimentTouchCounter), matchedTargetValue: String(matched), touchArray: "")
                             
                             experimentTouchCounter++
+                            checkLastExperiment()
                         }
                         
                         
@@ -509,6 +525,16 @@ class PressureWeightViewController: UITableViewController{
             .responseJSON { response in
             }
     }
+    
+    //TMP:
+    func checkLastExperiment() {
+        if (experimentTouchCounter == experimentPrios.count) {
+            let elapsedTime = CFAbsoluteTimeGetCurrent() - experimentStartTime
+            QL2(self.timeRounding(elapsedTime), force: "", targetForce:"ELAPSED TOTAL TIME", userAge: "--", userHanded: "--", used3DTouch: "--", uuid: self.UUID, numberOfExperimentsPassed:"" , matchedTargetValue: "", touchArray: "")
+            handleExperimentStopped()
+        }
+    }
+
 }
 extension PressureWeightViewController: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate
