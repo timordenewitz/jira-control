@@ -33,16 +33,14 @@ class PressureWeightViewController: UITableViewController{
     var experimentTouchCounter = 0
     var experimentStartTime : CFAbsoluteTime!
     var experimentPrios = [
-        
-//        EXPERIMENT I
         "Critical",
         "Normal",
         "Trivial",
         "Normal",
         "Critical",
-        "Critical",
-        "Normal",
         "Trivial",
+        "Normal",
+        "Critical",
         
         "Trivial",
         "Critical",
@@ -54,13 +52,13 @@ class PressureWeightViewController: UITableViewController{
         "Trivial",
         
         "Normal",
-        "Normal",
+        "Trivial",
         "Critical",
         "Normal",
         "Trivial",
         "Critical",
         "Trivial",
-        "Trivial"
+        "Normal"
     ]
     
     var issuesArray = [issue]()
