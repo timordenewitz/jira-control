@@ -30,6 +30,7 @@ class PressureWeightViewController: UITableViewController{
     
     //TMP - LOG ENABLE BOOL
     var experimentStarted = false
+    var experimentRoundCounter = 1
     var experimentTouchCounter = 0
     var experimentStartTime : CFAbsoluteTime!
     var experimentPrios = [
@@ -125,20 +126,6 @@ class PressureWeightViewController: UITableViewController{
         experimentStartTime = CFAbsoluteTimeGetCurrent()
         //1. Create the alert controller.
         let alert2 = UIAlertController(title: "Experiment Started", message: "Experiment has started.", preferredStyle: .Alert)
-        
-        //3. Grab the value from the text field, and print it when the user clicks OK.
-        alert2.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-        }))
-        
-        // 4. Present the alert.
-        self.presentViewController(alert2, animated: true, completion: nil)
-        self.navigationItem.setRightBarButtonItem(nil, animated: false)
-    }
-    
-    func handleExperimentStopped() {
-        experimentStarted = false
-        //1. Create the alert controller.
-        let alert2 = UIAlertController(title: "Experiment Finished", message: "Experiment has finished.", preferredStyle: .Alert)
         
         //3. Grab the value from the text field, and print it when the user clicks OK.
         alert2.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
@@ -403,8 +390,7 @@ class PressureWeightViewController: UITableViewController{
                             if (experimentPrios[experimentTouchCounter].uppercaseString == forcedCell.statusLabel.text) {
                                 matched = true
                             }
-                            QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: UUID, numberOfExperimentsPassed: String(experimentTouchCounter), matchedTargetValue: String(matched), touchArray: "")
-                            
+                            QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: UUID, numberOfExperimentsPassed: String(experimentRoundCounter), matchedTargetValue: String(matched), touchArray: "")
                             experimentTouchCounter++
                             checkLastExperiment()
                         }
@@ -485,10 +471,59 @@ class PressureWeightViewController: UITableViewController{
     func checkLastExperiment() {
         if (experimentTouchCounter == experimentPrios.count) {
             let elapsedTime = CFAbsoluteTimeGetCurrent() - experimentStartTime
-            QL2(self.timeRounding(elapsedTime), force: "", targetForce:"ELAPSED TOTAL TIME", userAge: "--", userHanded: "--", used3DTouch: "--", uuid: self.UUID, numberOfExperimentsPassed:"" , matchedTargetValue: "", touchArray: "")
+            QL2("", force: "", targetForce:"ELAPSED TOTAL TIME:", userAge: self.timeRounding(elapsedTime), userHanded: "--", used3DTouch: "--", uuid: self.UUID, numberOfExperimentsPassed:"" , matchedTargetValue: "", touchArray: "")
             handleExperimentStopped()
         }
     }
+    
+    func handleExperimentStopped() {
+        //1. Create the alert controller.
+        let alert2 = UIAlertController(title: "Round Finished", message: "Round has finished.", preferredStyle: .Alert)
+        
+        //3. Grab the value from the text field, and print it when the user clicks OK.
+        alert2.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+            if (self.experimentRoundCounter < 4) {
+                self.presentNextRoundAlert()
+            } else {
+                self.presentFinish()
+            }
+        }))
+        
+        // 4. Present the alert.
+        self.presentViewController(alert2, animated: true, completion: nil)
+        self.navigationItem.setRightBarButtonItem(nil, animated: false)
+    }
+    
+    func presentNextRoundAlert() {
+        //1. Create the alert controller.
+        let alert2 = UIAlertController(title: "Next Round", message: "Please go on.", preferredStyle: .Alert)
+        
+        //3. Grab the value from the text field, and print it when the user clicks OK.
+        alert2.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+            self.experimentTouchCounter = 0
+            self.experimentStartTime = CFAbsoluteTimeGetCurrent()
+            self.experimentRoundCounter++
+        }))
+        
+        // 4. Present the alert.
+        self.presentViewController(alert2, animated: true, completion: nil)
+        self.navigationItem.setRightBarButtonItem(nil, animated: false)
+    }
+    
+    func presentFinish() {
+        experimentStarted = false
+        //1. Create the alert controller.
+        let alert2 = UIAlertController(title: "Experiment Finished", message: "Thank you!", preferredStyle: .Alert)
+        
+        //3. Grab the value from the text field, and print it when the user clicks OK.
+        alert2.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
+        }))
+        
+        // 4. Present the alert.
+        self.presentViewController(alert2, animated: true, completion: nil)
+        self.navigationItem.setRightBarButtonItem(nil, animated: false)
+    }
+
 
 }
 extension PressureWeightViewController: UISearchBarDelegate {
