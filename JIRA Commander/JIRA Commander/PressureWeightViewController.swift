@@ -33,6 +33,8 @@ class PressureWeightViewController: UITableViewController{
     var experimentTouchCounter = 0
     var experimentStartTime : CFAbsoluteTime!
     var experimentPrios = [
+        
+//        EXPERIMENT I
         "Critical",
         "Normal",
         "Trivial",
@@ -54,6 +56,7 @@ class PressureWeightViewController: UITableViewController{
         "Trivial",
         "Critical",
         
+//        EXPERIMENT II
         "Normal",
         "Critical",
         "Trivial",
@@ -75,6 +78,7 @@ class PressureWeightViewController: UITableViewController{
         "Critical",
         "Trivial",
         
+//        EXPERIMENT III
         "Critical",
         "Trivial",
         "Trivial",
@@ -99,7 +103,6 @@ class PressureWeightViewController: UITableViewController{
     
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
-
     var touchArray = [CGFloat]()
     var prioritiesArray = [priority]()
     
@@ -120,11 +123,8 @@ class PressureWeightViewController: UITableViewController{
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         setupSearchBar()
         let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "START", style: UIBarButtonItemStyle.Plain, target: self, action: "startExperiment:")
-//        TMP: CHANGE JQL TO START EXPERIMENT BUTTON
-//        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: "performJQL:")
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
     }
-    
     
     //TEMP!
     func showLoginAlert() {
@@ -188,8 +188,6 @@ class PressureWeightViewController: UITableViewController{
         self.presentViewController(alert2, animated: true, completion: nil)
         self.navigationItem.setRightBarButtonItem(nil, animated: false)
     }
-
-
     
     override func viewWillDisappear(animated: Bool) {
         navigationController?.navigationBar.backgroundColor = UIColor.whiteColor()
@@ -373,7 +371,6 @@ class PressureWeightViewController: UITableViewController{
         cell.subtitleLabel.text = issue.description
         cell.statusLabel.text = issue.issueStatus.uppercaseString
         
-        
         if (issue.issueStatus == prioritiesArray[prioritiesArray.count-6].title) {
             cell.iconImageView.image = UIImage(named: "blocker")!
             return cell
@@ -440,7 +437,6 @@ class PressureWeightViewController: UITableViewController{
                         forcedCell.statusLabel.text = status.uppercaseString
                         forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-8])
 
-                        
                         //TMP
                         if (experimentStarted) {
                             var matched = false
@@ -452,7 +448,6 @@ class PressureWeightViewController: UITableViewController{
                             experimentTouchCounter++
                             checkLastExperiment()
                         }
-                        
                         
                         sendNewIssueStatusToJira(status, issueKey: forcedCell.titleLabel.text!)
                         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
