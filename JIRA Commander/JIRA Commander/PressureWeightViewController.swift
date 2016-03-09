@@ -30,6 +30,70 @@ class PressureWeightViewController: UITableViewController{
     
     //TMP - LOG ENABLE BOOL
     var experimentStarted = false
+    var experimentTouchCounter = 0
+    var experimentPrios = [
+        "Critical",
+        "Normal",
+        "Trivial",
+        "Normal",
+        "Normal",
+        "Trivial",
+        "Critical",
+        "Normal",
+        "Trivial",
+        "Critical",
+        "Critical",
+        "Normal",
+        "Trivial",
+        "Normal",
+        "Normal",
+        "Trivial",
+        "Critical",
+        "Normal",
+        "Trivial",
+        "Critical",
+        
+        "Normal",
+        "Critical",
+        "Trivial",
+        "Trivial",
+        "Normal",
+        "Normal",
+        "Critical",
+        "Trivial",
+        "Critical",
+        "Trivial",
+        "Normal",
+        "Critical",
+        "Trivial",
+        "Trivial",
+        "Normal",
+        "Normal",
+        "Critical",
+        "Trivial",
+        "Critical",
+        "Trivial",
+        
+        "Critical",
+        "Trivial",
+        "Trivial",
+        "Normal",
+        "Critical",
+        "Critical",
+        "Normal",
+        "Trivial",
+        "Normal",
+        "Normal",
+        "Critical",
+        "Trivial",
+        "Trivial",
+        "Normal",
+        "Critical",
+        "Critical",
+        "Normal",
+        "Trivial",
+        "Normal",
+        "Normal"]
     
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
@@ -68,6 +132,7 @@ class PressureWeightViewController: UITableViewController{
         //2. Add the text field. You can configure it however you need.
         alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
             textField.placeholder = "Insert UUID"
+            textField.keyboardType = UIKeyboardType.NumberPad
         })
         
         //3. Grab the value from the text field, and print it when the user clicks OK.
@@ -79,6 +144,9 @@ class PressureWeightViewController: UITableViewController{
             } else {
                 self.showLoginAlert()
             }
+        }))
+        
+        alert.addAction(UIAlertAction(title: "Cancel", style: .Destructive, handler: { (UIAlertAction) -> Void in
         }))
         
         // 4. Present the alert.
@@ -343,9 +411,7 @@ class PressureWeightViewController: UITableViewController{
                 if(recognizer.state == .Ended) {
                     let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
                     
-                    if (experimentStarted) {
-                        QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: UUID, numberOfExperimentsPassed: "", matchedTargetValue: "", touchArray: "")
-                    }
+
 
                     if (activatedPressureWeight) {
                         let seconds = 0.25
@@ -358,6 +424,20 @@ class PressureWeightViewController: UITableViewController{
                         let status = mapForceToTicketStatus(touchArray[i-8])
                         forcedCell.statusLabel.text = status.uppercaseString
                         forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-8])
+
+                        
+                        //TMP
+                        if (experimentStarted) {
+                            var matched = false
+                            if (experimentPrios[experimentTouchCounter].uppercaseString == forcedCell.statusLabel.text) {
+                                matched = true
+                            }
+                            QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: UUID, numberOfExperimentsPassed: String(experimentTouchCounter), matchedTargetValue: String(matched), touchArray: "")
+                            
+                            experimentTouchCounter++
+                        }
+                        
+                        
                         sendNewIssueStatusToJira(status, issueKey: forcedCell.titleLabel.text!)
                         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
                             forcedCell.backgroundColor = UIColor.whiteColor()
