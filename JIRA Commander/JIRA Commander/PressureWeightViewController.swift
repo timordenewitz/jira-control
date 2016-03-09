@@ -482,7 +482,7 @@ class PressureWeightViewController: UITableViewController{
         
         //3. Grab the value from the text field, and print it when the user clicks OK.
         alert2.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-            if (self.experimentRoundCounter < 4) {
+            if (self.experimentRoundCounter < 3) {
                 self.presentNextRoundAlert()
             } else {
                 self.presentFinish()
