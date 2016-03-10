@@ -31,14 +31,9 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         var stressed :Bool
     }
     
-    struct profilePicture {
-        var picture :UIImage
-        var url :String
-    }
-    
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
-    var profilePictures = [profilePicture]()
+    var profilePictures = Set<profilePicture>()
 
 
     override func viewDidLoad() {
@@ -60,6 +55,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     func performJQL (sender:UIButton) {
         if (JQL_MODE_ENABLED) {
             JQL_MODE_ENABLED = false
+            profilePictures.removeAll()
             searchController.searchBar.placeholder = "Search in Issues"
             loadIssues("jql=reporter=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
             navigationController!.navigationBar.tintColor = UIColor.blackColor()
@@ -223,10 +219,9 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             cell.assigneeLabel.text = "UNASSIGNED"
         }
         if let url = issue.profilePictureURL {
-            
             if (profilePictures.count != 0) {
                 for picture in profilePictures {
-                    if (picture.url == url) {
+                    if (picture.url == url.URLString) {
                         cell.profilePictureImageView.image = picture.picture
                     } else {
                         imageFromUrl(url, cell: cell)
@@ -354,7 +349,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
                 (response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
                 if let imageData = data as NSData? {
                     let tmpImage = UIImage(data: imageData)
-                    self.profilePictures.append(profilePicture(picture: tmpImage!, url: url.URLString))
+                    self.profilePictures.insert(profilePicture(picture: tmpImage!, url: url.URLString))
                     cell.profilePictureImageView.image = tmpImage
                 }
             }
@@ -388,5 +383,22 @@ extension StressTicketViewController: UISearchResultsUpdating {
 extension UIColor {
     static func jiraCommanderRed() -> UIColor {
         return UIColor(red: 208/255, green: 69/255, blue: 55/255, alpha: 1)
+    }
+}
+
+struct profilePicture {
+    var picture :UIImage
+    var url :String
+}
+
+// MARK: Equatable
+func ==(lhs: profilePicture, rhs: profilePicture) -> Bool {
+    return lhs.url == rhs.url
+}
+
+// MARK: Hashable
+extension profilePicture: Hashable {
+    var hashValue: Int {
+        return url.hashValue
     }
 }
