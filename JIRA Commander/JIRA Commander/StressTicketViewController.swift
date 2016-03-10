@@ -31,8 +31,15 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         var stressed :Bool
     }
     
+    struct profilePicture {
+        var picture :UIImage
+        var url :String
+    }
+    
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
+    var profilePictures = [profilePicture]()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -216,8 +223,18 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             cell.assigneeLabel.text = "UNASSIGNED"
         }
         if let url = issue.profilePictureURL {
-            cell.profilePictureImageView.imageFromUrl(url)
-
+            
+            if (profilePictures.count != 0) {
+                for picture in profilePictures {
+                    if (picture.url == url) {
+                        cell.profilePictureImageView.image = picture.picture
+                    } else {
+                        imageFromUrl(url, cell: cell)
+                    }
+                }
+            } else {
+                imageFromUrl(url, cell: cell)
+            }
         } else {
             cell.profilePictureImageView.image = UIImage(named: "unassigned")
         }
@@ -329,22 +346,22 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             }
         }
     }
-}
-
-extension UIImageView {
-    public func imageFromUrl(urlString: String) {
+    
+    func imageFromUrl(urlString: String, cell :StressTicketTableViewCell ) {
         if let url = NSURL(string: urlString) {
             let request = NSURLRequest(URL: url)
             NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {
                 (response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
                 if let imageData = data as NSData? {
-                    self.image = UIImage(data: imageData)
+                    let tmpImage = UIImage(data: imageData)
+                    self.profilePictures.append(profilePicture(picture: tmpImage!, url: url.URLString))
+                    cell.profilePictureImageView.image = tmpImage
                 }
             }
         }
+        
     }
 }
-
 
 extension StressTicketViewController: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate

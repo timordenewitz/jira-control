@@ -120,9 +120,9 @@ class ViewController: UIViewController, UITextFieldDelegate {
         //Send Request
         Alamofire.request(.POST, serverAdress + "/rest/auth/1/session" , headers: ["Content-Type" : "application/json"], parameters: parameters, encoding: .JSON)
             .responseJSON { response in
+                print(response.result)
                 print(response.request)
                 print(response.response)
-
                 if (response.response == nil) {
                     self.showLoginAlert(" Please enable your network connection.")
                 }
