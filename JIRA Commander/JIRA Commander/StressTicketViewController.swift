@@ -202,7 +202,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! StressTicketTableViewCell
         let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         let issue: StressTicketViewController.issue
-        tableView.addGestureRecognizer(deepPressGestureRecognizer)
+        cell.addGestureRecognizer(deepPressGestureRecognizer)
         cell.profilePictureImageView.image = nil
         
         if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
