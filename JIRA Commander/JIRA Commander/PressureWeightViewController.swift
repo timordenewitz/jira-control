@@ -220,8 +220,9 @@ class PressureWeightViewController: UITableViewController{
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! IssueTableViewCell
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         let issue: PressureWeightViewController.issue
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
+        cell.addGestureRecognizer(deepPressGestureRecognizer)
 
         if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
             issue = filteredIssues[indexPath.row]
@@ -229,7 +230,6 @@ class PressureWeightViewController: UITableViewController{
             issue = issuesArray[indexPath.row]
         }
         
-        cell.addGestureRecognizer(deepPressGestureRecognizer)
         cell.titleLabel.text = issue.title
         cell.subtitleLabel.text = issue.description
         cell.statusLabel.text = issue.issueStatus.uppercaseString
