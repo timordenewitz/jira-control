@@ -45,7 +45,7 @@ class PressureWeightViewController: UITableViewController{
         
         "Trivial",
         "Critical",
-        "Trivial",
+        "Normal",
         "Critical",
         "Normal",
         "Normal",
@@ -55,7 +55,7 @@ class PressureWeightViewController: UITableViewController{
         "Normal",
         "Trivial",
         "Critical",
-        "Normal",
+        "Trivial",
         "Trivial",
         "Critical",
         "Trivial",
