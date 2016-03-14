@@ -200,9 +200,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! StressTicketTableViewCell
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         let issue: StressTicketViewController.issue
-        cell.addGestureRecognizer(deepPressGestureRecognizer)
         cell.profilePictureImageView.image = nil
         
         if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
@@ -251,6 +249,13 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             cell.rightUtilityButtons = []
         }
         return cell
+    }
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! StressTicketTableViewCell
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
+        cell.addGestureRecognizer(deepPressGestureRecognizer)
+
     }
     
     func deepPressHandler(recognizer: DeepPressGestureRecognizer) {
