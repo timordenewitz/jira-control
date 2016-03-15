@@ -390,7 +390,7 @@ class PressureWeightViewController: UITableViewController{
                             if (experimentPrios[experimentTouchCounter].uppercaseString == forcedCell.statusLabel.text) {
                                 matched = true
                             }
-                            QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: status, userHanded: "", used3DTouch: "", uuid: UUID, numberOfExperimentsPassed: String(experimentRoundCounter), matchedTargetValue: String(matched), touchArray: "")
+                            QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: status, used3DTouch: "", uuid: UUID, numberOfExperimentsPassed: String(experimentRoundCounter), matchedTargetValue: String(matched), touchArray: "")
                             experimentTouchCounter++
                             checkLastExperiment()
                         }
