@@ -471,7 +471,7 @@ class PressureWeightViewController: UITableViewController{
     func checkLastExperiment() {
         if (experimentTouchCounter == experimentPrios.count) {
             let elapsedTime = CFAbsoluteTimeGetCurrent() - experimentStartTime
-            QL2("", force: "", targetForce:"ELAPSED TOTAL TIME:", userAge: self.timeRounding(elapsedTime), userHanded: "--", used3DTouch: "--", uuid: self.UUID, numberOfExperimentsPassed:"" , matchedTargetValue: "", touchArray: "")
+            QL2("", force: "", targetForce:"ELAPSED TOTAL TIME:", userAge: self.timeRounding(elapsedTime), userHanded: "--", used3DTouch: "originalPressureIssue", uuid: self.UUID, numberOfExperimentsPassed:"" , matchedTargetValue: "", touchArray: "")
             handleExperimentStopped()
         }
     }
