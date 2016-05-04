@@ -28,7 +28,6 @@ class PressureWeightViewController: UITableViewController{
     
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
-
     var touchArray = [CGFloat]()
     var prioritiesArray = [priority]()
     
@@ -220,8 +219,9 @@ class PressureWeightViewController: UITableViewController{
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! IssueTableViewCell
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         let issue: PressureWeightViewController.issue
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
+        cell.addGestureRecognizer(deepPressGestureRecognizer)
 
         if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
             issue = filteredIssues[indexPath.row]
@@ -229,11 +229,9 @@ class PressureWeightViewController: UITableViewController{
             issue = issuesArray[indexPath.row]
         }
         
-        cell.addGestureRecognizer(deepPressGestureRecognizer)
         cell.titleLabel.text = issue.title
         cell.subtitleLabel.text = issue.description
         cell.statusLabel.text = issue.issueStatus.uppercaseString
-        
         
         if (issue.issueStatus == prioritiesArray[prioritiesArray.count-6].title) {
             cell.iconImageView.image = UIImage(named: "blocker")!
@@ -316,20 +314,11 @@ class PressureWeightViewController: UITableViewController{
         case (force < 0.2):
             ret = prioritiesArray[prioritiesArray.count-1].title
             break
-        case (force < 0.3):
-            ret = prioritiesArray[prioritiesArray.count-2].title
-            break
-        case (force < 0.6):
+        case (force < 0.8):
             ret = prioritiesArray[prioritiesArray.count-3].title
             break
-        case (force < 0.8):
-            ret = prioritiesArray[prioritiesArray.count-4].title
-            break
-        case (force < 0.95):
+        case (force <= 1):
             ret = prioritiesArray[prioritiesArray.count-5].title
-            break
-        case (force <= 1.0):
-            ret = prioritiesArray[prioritiesArray.count-6].title
             break
         default:
             ret = prioritiesArray[prioritiesArray.count-3].title
@@ -344,20 +333,11 @@ class PressureWeightViewController: UITableViewController{
         case (force < 0.2):
             ret =  UIImage(named: "TAG Green")!
             break
-        case (force < 0.3):
-            ret =  UIImage(named: "TAG Green")!
-            break
-        case (force < 0.6):
+        case (force < 0.8):
             ret =  UIImage(named: "TAG Yellow")!
             break
-        case (force < 0.8):
+        case (force <= 1):
             ret =  UIImage(named: "TAG Red")!
-            break
-        case (force < 0.95):
-            ret =  UIImage(named: "TAG Red")!
-            break
-        case (force <= 1.0):
-            ret =  UIImage(named: "blocker")!
             break
         default:
             ret =  UIImage(named: "TAG Yellow")!
