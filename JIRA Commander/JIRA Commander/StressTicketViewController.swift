@@ -128,7 +128,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         if (response.response?.statusCode == 200) {
-                            for var index = 0; index < issues!.count; ++index{
+                            for var index = 0; index < issues!.count; index += 1{
                                 if let fields = issues![index]["fields"] {
                                     if let assignee = fields!["assignee"] {
                                         if let labels = fields!["labels"] {
@@ -167,7 +167,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     
     
     func checkIfIssueGotStressed(labels : AnyObject) -> Bool {
-        for var i = 0; i < labels.count; ++i {
+        for var i = 0; i < labels.count; i += 1 {
             if (labels[i] == STRESSED_LABEL_FOR_JIRA) {
                 return true
             }

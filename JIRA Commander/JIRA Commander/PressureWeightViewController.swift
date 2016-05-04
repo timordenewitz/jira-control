@@ -28,7 +28,6 @@ class PressureWeightViewController: UITableViewController{
     
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
-
     var touchArray = [CGFloat]()
     var prioritiesArray = [priority]()
     
@@ -233,7 +232,6 @@ class PressureWeightViewController: UITableViewController{
         cell.titleLabel.text = issue.title
         cell.subtitleLabel.text = issue.description
         cell.statusLabel.text = issue.issueStatus.uppercaseString
-        
         
         if (issue.issueStatus == prioritiesArray[prioritiesArray.count-6].title) {
             cell.iconImageView.image = UIImage(named: "blocker")!
