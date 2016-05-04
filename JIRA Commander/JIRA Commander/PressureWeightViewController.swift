@@ -49,7 +49,7 @@ class PressureWeightViewController: UITableViewController{
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
         setupSearchBar()
-        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "START", style: UIBarButtonItemStyle.Plain, target: self, action: "startExperiment:")
+        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: "performJQL:")
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
     }
     
