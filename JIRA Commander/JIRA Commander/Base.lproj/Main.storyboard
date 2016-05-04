@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9532" systemVersion="15D21" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="xEh-UB-a1I">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="xEh-UB-a1I">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9530"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -400,10 +400,10 @@
             </objects>
             <point key="canvasLocation" x="2258.5" y="9.5"/>
         </scene>
-        <!--DIAGRAMS-->
+        <!--DIAGRAM VIEW-->
         <scene sceneID="zYY-jS-ZnF">
             <objects>
-                <viewController storyboardIdentifier="DiagramViewController" title="DIAGRAMS" useStoryboardIdentifierAsRestorationIdentifier="YES" id="f3P-Bx-i4I" customClass="DiagramViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="DiagramViewController" title="DIAGRAM VIEW" useStoryboardIdentifierAsRestorationIdentifier="YES" id="f3P-Bx-i4I" customClass="DiagramViewController" customModule="JIRA_Control" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="rBJ-3J-Pf5"/>
                         <viewControllerLayoutGuide type="bottom" id="4JF-SE-Esm"/>
