@@ -33,6 +33,8 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
+    var profilePictures = Set<profilePicture>()
+
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -53,6 +55,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     func performJQL (sender:UIButton) {
         if (JQL_MODE_ENABLED) {
             JQL_MODE_ENABLED = false
+            profilePictures.removeAll()
             searchController.searchBar.placeholder = "Search in Issues"
             loadIssues("jql=reporter=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
             navigationController!.navigationBar.tintColor = UIColor.blackColor()
@@ -197,10 +200,10 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! StressTicketTableViewCell
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         let issue: StressTicketViewController.issue
-        tableView.addGestureRecognizer(deepPressGestureRecognizer)
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         cell.profilePictureImageView.image = nil
+        cell.addGestureRecognizer(deepPressGestureRecognizer)
         
         if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
             issue = filteredIssues[indexPath.row]
@@ -216,8 +219,17 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             cell.assigneeLabel.text = "UNASSIGNED"
         }
         if let url = issue.profilePictureURL {
-            cell.profilePictureImageView.imageFromUrl(url)
-
+            if (profilePictures.count != 0) {
+                for picture in profilePictures {
+                    if (picture.url == url.URLString) {
+                        cell.profilePictureImageView.image = picture.picture
+                    } else {
+                        imageFromUrl(url, cell: cell)
+                    }
+                }
+            } else {
+                imageFromUrl(url, cell: cell)
+            }
         } else {
             cell.profilePictureImageView.image = UIImage(named: "unassigned")
         }
@@ -240,7 +252,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
         }
         return cell
     }
-    
+        
     func deepPressHandler(recognizer: DeepPressGestureRecognizer) {
         let forceLocation = recognizer.locationInView(self.tableView)
         if let forcedIndexPath = tableView.indexPathForRowAtPoint(forceLocation) {
@@ -329,22 +341,22 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
             }
         }
     }
-}
-
-extension UIImageView {
-    public func imageFromUrl(urlString: String) {
+    
+    func imageFromUrl(urlString: String, cell :StressTicketTableViewCell ) {
         if let url = NSURL(string: urlString) {
             let request = NSURLRequest(URL: url)
             NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {
                 (response: NSURLResponse?, data: NSData?, error: NSError?) -> Void in
                 if let imageData = data as NSData? {
-                    self.image = UIImage(data: imageData)
+                    let tmpImage = UIImage(data: imageData)
+                    self.profilePictures.insert(profilePicture(picture: tmpImage!, url: url.URLString))
+                    cell.profilePictureImageView.image = tmpImage
                 }
             }
         }
+        
     }
 }
-
 
 extension StressTicketViewController: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate
@@ -371,5 +383,22 @@ extension StressTicketViewController: UISearchResultsUpdating {
 extension UIColor {
     static func jiraCommanderRed() -> UIColor {
         return UIColor(red: 208/255, green: 69/255, blue: 55/255, alpha: 1)
+    }
+}
+
+struct profilePicture {
+    var picture :UIImage
+    var url :String
+}
+
+// MARK: Equatable
+func ==(lhs: profilePicture, rhs: profilePicture) -> Bool {
+    return lhs.url == rhs.url
+}
+
+// MARK: Hashable
+extension profilePicture: Hashable {
+    var hashValue: Int {
+        return url.hashValue
     }
 }

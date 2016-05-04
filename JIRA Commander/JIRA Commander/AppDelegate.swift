@@ -10,7 +10,6 @@ import UIKit
 import Fabric
 import Crashlytics
 import Appsee
-import QorumLogs
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -31,16 +30,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         UISearchBar.appearance().barTintColor = UIColor.whiteColor()
         UISearchBar.appearance().tintColor = UIColor.blackColor()
         UITextField.appearanceWhenContainedInInstancesOfClasses([UISearchBar.self]).tintColor = UIColor.whiteColor()
-        quorumLogInit()
         return true
     }
-    
-    func quorumLogInit() {
-        QorumOnlineLogs.setupOnlineLogs(formLink: "https://docs.google.com/forms/d/1m-Zm4WNejE2gQa8DnnDE8aR07FTOzlBBcJgHX-eGO78/formResponse", versionField: "entry_935409", userInfoField: "entry_279656771", methodInfoField: "entry_492594094", textField: "entry_453397443", forceField: "entry_1326940741", targetForceField: "entry_1507533875", userAgeField: "entry_1132471491", userHandedField: "entry_1377018990", used3DTouchField: "entry_302073775", uuidField: "entry_2127357423", numberOfExperimentsPassedField: "entry_1992293764", matchedTargetValueField: "entry_1856907095", touchArrayField: "entry_425307947")
-        QorumLogs.enabled = false // This should be disabled for OnlineLogs to work
-        QorumOnlineLogs.enabled = true
-    }
-
 
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.

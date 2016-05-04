@@ -8,7 +8,6 @@
 
 import UIKit
 import Alamofire
-import QorumLogs
 
 class PressureWeightViewController: UITableViewController{
 
@@ -26,7 +25,6 @@ class PressureWeightViewController: UITableViewController{
     let maxResultsParameters = "&maxResults=500"
     let searchController = UISearchController(searchResultsController: nil)
     var JQL_MODE_ENABLED = false
-    var UUID : String = ""
     
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
@@ -52,28 +50,6 @@ class PressureWeightViewController: UITableViewController{
         setupSearchBar()
         let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: "performJQL:")
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
-        showLoginAlert()
-    }
-    
-    
-    //TEMP!
-    func showLoginAlert() {
-        //1. Create the alert controller.
-        let alert = UIAlertController(title: "Your UUID", message: "Enter a UUID", preferredStyle: .Alert)
-        
-        //2. Add the text field. You can configure it however you need.
-        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
-            textField.placeholder = "Insert UUID"
-        })
-        
-        //3. Grab the value from the text field, and print it when the user clicks OK.
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-            let textField = alert.textFields![0] as UITextField
-            self.UUID = textField.text!
-        }))
-        
-        // 4. Present the alert.
-        self.presentViewController(alert, animated: true, completion: nil)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -244,8 +220,9 @@ class PressureWeightViewController: UITableViewController{
     
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! IssueTableViewCell
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
         let issue: PressureWeightViewController.issue
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
+        cell.addGestureRecognizer(deepPressGestureRecognizer)
 
         if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
             issue = filteredIssues[indexPath.row]
@@ -253,7 +230,6 @@ class PressureWeightViewController: UITableViewController{
             issue = issuesArray[indexPath.row]
         }
         
-        cell.addGestureRecognizer(deepPressGestureRecognizer)
         cell.titleLabel.text = issue.title
         cell.subtitleLabel.text = issue.description
         cell.statusLabel.text = issue.issueStatus.uppercaseString
@@ -311,8 +287,6 @@ class PressureWeightViewController: UITableViewController{
                 }
                 
                 if(recognizer.state == .Ended) {
-                    let elapsedTime = CFAbsoluteTimeGetCurrent() - startTime
-                    QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: "", used3DTouch: "", uuid: UUID, numberOfExperimentsPassed: "", matchedTargetValue: "", touchArray: "")
                     if (activatedPressureWeight) {
                         let seconds = 0.25
                         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
@@ -334,13 +308,6 @@ class PressureWeightViewController: UITableViewController{
                 }
             }
         }
-    }
-    
-    func timeRounding(time : Double) -> String {
-        let numberOfPlaces = 2.0
-        let multiplier = pow(10.0, numberOfPlaces)
-        let rounded = round(time * multiplier) / multiplier
-        return String(rounded)
     }
     
     func mapForceToTicketStatus(force :CGFloat) -> String {
