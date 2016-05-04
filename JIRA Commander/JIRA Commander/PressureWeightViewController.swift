@@ -28,40 +28,6 @@ class PressureWeightViewController: UITableViewController{
     var JQL_MODE_ENABLED = false
     var UUID : String = ""
     
-    //TMP - LOG ENABLE BOOL
-    var experimentStarted = false
-    var experimentRoundCounter = 1
-    var experimentTouchCounter = 0
-    var experimentStartTime : CFAbsoluteTime!
-    var experimentPrios = [
-        "Critical",
-        "Normal",
-        "Trivial",
-        "Normal",
-        "Critical",
-        "Trivial",
-        "Normal",
-        "Critical",
-        
-        "Trivial",
-        "Critical",
-        "Normal",
-        "Critical",
-        "Normal",
-        "Normal",
-        "Critical",
-        "Trivial",
-        
-        "Normal",
-        "Trivial",
-        "Critical",
-        "Trivial",
-        "Trivial",
-        "Critical",
-        "Trivial",
-        "Normal"
-    ]
-    
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
     var touchArray = [CGFloat]()
@@ -85,55 +51,6 @@ class PressureWeightViewController: UITableViewController{
         setupSearchBar()
         let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "START", style: UIBarButtonItemStyle.Plain, target: self, action: "startExperiment:")
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
-    }
-    
-    //TEMP!
-    func showLoginAlert() {
-        //1. Create the alert controller.
-        let alert = UIAlertController(title: "Your UUID", message: "Enter a UUID", preferredStyle: .Alert)
-        
-        //2. Add the text field. You can configure it however you need.
-        alert.addTextFieldWithConfigurationHandler({ (textField) -> Void in
-            textField.placeholder = "Insert UUID"
-            textField.keyboardType = UIKeyboardType.NumberPad
-        })
-        
-        //3. Grab the value from the text field, and print it when the user clicks OK.
-        alert.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-            let textField = alert.textFields![0] as UITextField
-            self.UUID = textField.text!
-            if (self.UUID != "") {
-                self.handleExperimentStarted()
-            } else {
-                self.showLoginAlert()
-            }
-        }))
-        
-        alert.addAction(UIAlertAction(title: "Cancel", style: .Destructive, handler: { (UIAlertAction) -> Void in
-        }))
-        
-        // 4. Present the alert.
-        self.presentViewController(alert, animated: true, completion: nil)
-
-    }
-    
-    func startExperiment(sender:UIButton) {
-        showLoginAlert()
-    }
-    
-    func handleExperimentStarted() {
-        experimentStarted = true
-        experimentStartTime = CFAbsoluteTimeGetCurrent()
-        //1. Create the alert controller.
-        let alert2 = UIAlertController(title: "Experiment Started", message: "Experiment has started.", preferredStyle: .Alert)
-        
-        //3. Grab the value from the text field, and print it when the user clicks OK.
-        alert2.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-        }))
-        
-        // 4. Present the alert.
-        self.presentViewController(alert2, animated: true, completion: nil)
-        self.navigationItem.setRightBarButtonItem(nil, animated: false)
     }
     
     override func viewWillDisappear(animated: Bool) {
@@ -383,18 +300,6 @@ class PressureWeightViewController: UITableViewController{
                         let status = mapForceToTicketStatus(touchArray[i-8])
                         forcedCell.statusLabel.text = status.uppercaseString
                         forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-8])
-
-                        //TMP
-                        if (experimentStarted) {
-                            var matched = false
-                            if (experimentPrios[experimentTouchCounter].uppercaseString == forcedCell.statusLabel.text) {
-                                matched = true
-                            }
-                            QL2(timeRounding(elapsedTime), force: "originalPressureIssue", targetForce:"", userAge: "", userHanded: status, used3DTouch: "", uuid: UUID, numberOfExperimentsPassed: String(experimentRoundCounter), matchedTargetValue: String(matched), touchArray: forcedCell.titleLabel.text!)
-                            experimentTouchCounter++
-                            checkLastExperiment()
-                        }
-                        
                         sendNewIssueStatusToJira(status, issueKey: forcedCell.titleLabel.text!)
                         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
                             forcedCell.backgroundColor = UIColor.whiteColor()
@@ -466,65 +371,6 @@ class PressureWeightViewController: UITableViewController{
             .responseJSON { response in
             }
     }
-    
-    //TMP:
-    func checkLastExperiment() {
-        if (experimentTouchCounter == experimentPrios.count) {
-            let elapsedTime = CFAbsoluteTimeGetCurrent() - experimentStartTime
-            QL2("", force: "", targetForce:"ELAPSED TOTAL TIME:", userAge: self.timeRounding(elapsedTime), userHanded: "--", used3DTouch: "originalPressureIssue", uuid: self.UUID, numberOfExperimentsPassed:"" , matchedTargetValue: "", touchArray: "")
-            handleExperimentStopped()
-        }
-    }
-    
-    func handleExperimentStopped() {
-        //1. Create the alert controller.
-        let alert2 = UIAlertController(title: "Round Finished", message: "Round has finished.", preferredStyle: .Alert)
-        
-        //3. Grab the value from the text field, and print it when the user clicks OK.
-        alert2.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-            if (self.experimentRoundCounter < 3) {
-                self.presentNextRoundAlert()
-            } else {
-                self.presentFinish()
-            }
-        }))
-        
-        // 4. Present the alert.
-        self.presentViewController(alert2, animated: true, completion: nil)
-        self.navigationItem.setRightBarButtonItem(nil, animated: false)
-    }
-    
-    func presentNextRoundAlert() {
-        //1. Create the alert controller.
-        let alert2 = UIAlertController(title: "Next Round", message: "Please go on.", preferredStyle: .Alert)
-        
-        //3. Grab the value from the text field, and print it when the user clicks OK.
-        alert2.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-            self.experimentTouchCounter = 0
-            self.experimentStartTime = CFAbsoluteTimeGetCurrent()
-            self.experimentRoundCounter++
-        }))
-        
-        // 4. Present the alert.
-        self.presentViewController(alert2, animated: true, completion: nil)
-        self.navigationItem.setRightBarButtonItem(nil, animated: false)
-    }
-    
-    func presentFinish() {
-        experimentStarted = false
-        //1. Create the alert controller.
-        let alert2 = UIAlertController(title: "Experiment Finished", message: "Thank you!", preferredStyle: .Alert)
-        
-        //3. Grab the value from the text field, and print it when the user clicks OK.
-        alert2.addAction(UIAlertAction(title: "OK", style: .Default, handler: { (action) -> Void in
-        }))
-        
-        // 4. Present the alert.
-        self.presentViewController(alert2, animated: true, completion: nil)
-        self.navigationItem.setRightBarButtonItem(nil, animated: false)
-    }
-
-
 }
 extension PressureWeightViewController: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate
