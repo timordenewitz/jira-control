@@ -23,7 +23,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     var issuesArray = [Issue]()
     var resolvedIssues = [Issue]()
     
-    let searchQuery="sprint in openSprints() and (project in projectsWhereUserHasRole('Developers') or project in projectsWhereUserHasRole('Users') or project in projectsWhereUserHasRole('Administrators'))"
+    let searchQuery="sprint in openSprints()"
     let maxResultsParameters = "&maxResults=5000"
     
     var projectTitles :[String] = []
