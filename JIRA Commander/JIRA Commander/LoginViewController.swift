@@ -119,7 +119,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
         
 
         //Send Request
-        Alamofire.request(.POST, serverAdress + "/rest/auth/1/session" , headers: ["Content-Type" : "application/json"], parameters: ["username" : "tordenewitz", "password" : "i4NwKXqdxcw8xotH"], encoding: .JSON)
+        Alamofire.request(.POST, serverAdress + "/rest/auth/1/session" , headers: ["Content-Type" : "application/json"], parameters: parameters, encoding: .JSON)
             .responseJSON { response in
                 print(response.result)
                 print(response.request?.HTTPBodyStream)

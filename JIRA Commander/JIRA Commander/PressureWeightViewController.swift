@@ -47,9 +47,9 @@ class PressureWeightViewController: UITableViewController{
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(PressureWeightViewController.handleRefresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         setupSearchBar()
-        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: "performJQL:")
+        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(PressureWeightViewController.performJQL(_:)))
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
     }
     
@@ -62,6 +62,66 @@ class PressureWeightViewController: UITableViewController{
     override func viewDidAppear(animated: Bool) {
         checkConnection()
     }
+    
+    /*
+        Custom Table View function. Get Nr. Of Rows in Section.
+     */
+    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
+            return filteredIssues.count
+        }
+        return self.issuesArray.count;
+    }
+    
+    /*
+        Custom Table View function. Get Title Of Header in Section.
+     */
+    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return "Reported Issues"
+    }
+    
+    /*
+        Custom Table View function. Get Cell for Row at IndexPath.
+        Add Pressure Recognizer, add Priority Icon.
+     */
+    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! IssueTableViewCell
+        let issue: PressureWeightViewController.issue
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
+        cell.addGestureRecognizer(deepPressGestureRecognizer)
+        
+        if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
+            issue = filteredIssues[indexPath.row]
+        } else {
+            issue = issuesArray[indexPath.row]
+        }
+        
+        cell.titleLabel.text = issue.title
+        cell.subtitleLabel.text = issue.description
+        cell.statusLabel.text = issue.issueStatus.uppercaseString
+        
+        if (issue.issueStatus == prioritiesArray[prioritiesArray.count-6].title) {
+            cell.iconImageView.image = UIImage(named: "blocker")!
+            return cell
+        }
+        if (issue.issueStatus == prioritiesArray[prioritiesArray.count-5].title || issue.issueStatus == prioritiesArray[prioritiesArray.count-4].title) {
+            cell.iconImageView.image = UIImage(named: "TAG Red")!
+            return cell
+        }
+        if (issue.issueStatus == prioritiesArray[prioritiesArray.count-3].title) {
+            cell.iconImageView.image = UIImage(named: "TAG Yellow")!
+            return cell
+        }
+        else {
+            cell.iconImageView.image = UIImage(named: "TAG Green")!
+            return cell
+        }
+    }
+    
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+
     
     //---Methods---
     
@@ -108,7 +168,7 @@ class PressureWeightViewController: UITableViewController{
     }
     
     /*
-     Load Issues from JIRA using a custom JQL Query.
+        Load Issues from JIRA using a custom JQL Query.
      */
     func loadIssuesWithJQL() {
         if(searchController.searchBar.text != ""){
@@ -117,6 +177,9 @@ class PressureWeightViewController: UITableViewController{
         }
     }
     
+    /*
+        Filter Issues.
+     */
     func filterContentForSearchText(searchText: String) {
         filteredIssues = issuesArray.filter({( issue : PressureWeightViewController.issue) -> Bool in
             return issue.title.lowercaseString.containsString(searchText.lowercaseString)
@@ -124,13 +187,17 @@ class PressureWeightViewController: UITableViewController{
         tableView.reloadData()
     }
     
-
-    
+    /*
+        iOS Refreshing by pull to refresh.
+     */
     func handleRefresh(refreshControl: UIRefreshControl) {
         refresh()
         refreshControl.endRefreshing()
     }
     
+    /*
+        Refresh Issues.
+     */
     func refresh() {
         if (JQL_MODE_ENABLED) {
             loadIssuesWithJQL()
@@ -140,6 +207,9 @@ class PressureWeightViewController: UITableViewController{
         reloadIssueTable()
     }
     
+    /*
+        Used to check for Connection. And to load Priorities and Issues.
+     */
     func checkConnection() {
         if (serverAdress.isEmpty) {
             let vc = self.storyboard?.instantiateViewControllerWithIdentifier("NavController") as! UINavigationController
@@ -156,6 +226,10 @@ class PressureWeightViewController: UITableViewController{
         }
     }
     
+   /*
+        Load issues From JIRA by given JQL Query.
+        All issues will be stored in the issuesArray.
+    */
     func loadIssues(JQLQuery: String) {
         Alamofire.request(.GET, serverAdress + "/rest/api/latest/search?" + JQLQuery.stringByFoldingWithOptions(NSStringCompareOptions.DiacriticInsensitiveSearch, locale: NSLocale.currentLocale()) + maxResultsParameters)
             .responseJSON { response in
@@ -194,13 +268,9 @@ class PressureWeightViewController: UITableViewController{
         }
     }
     
-    func checkIfIssueIsClosed(name : String) -> Bool {
-        if (name == "Closed") {
-            return true
-        }
-        return false
-    }
-    
+    /*
+     Load Priorities from JIRA.
+     */
     func loadPriorities() {
         prioritiesArray.removeAll()
         Alamofire.request(.GET, serverAdress + "/rest/api/2/priority")
@@ -214,66 +284,29 @@ class PressureWeightViewController: UITableViewController{
         }
     }
     
+    /*
+        Check Closed Issue.
+     */
+    func checkIfIssueIsClosed(name : String) -> Bool {
+        if (name == "Closed") {
+            return true
+        }
+        return false
+    }
+    
+    /*
+        Reload Table asynchronous.
+     */
     func reloadIssueTable() {
         dispatch_async(dispatch_get_main_queue(), { () -> Void in
             self.tableView.reloadData()
         })
     }
     
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
-            return filteredIssues.count
-        }
-        return self.issuesArray.count;
-    }
-    
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return "Reported Issues"
-    }
-    
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! IssueTableViewCell
-        let issue: PressureWeightViewController.issue
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
-        cell.addGestureRecognizer(deepPressGestureRecognizer)
-
-        if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
-            issue = filteredIssues[indexPath.row]
-        } else {
-            issue = issuesArray[indexPath.row]
-        }
-        
-        cell.titleLabel.text = issue.title
-        cell.subtitleLabel.text = issue.description
-        cell.statusLabel.text = issue.issueStatus.uppercaseString
-        
-        if (issue.issueStatus == prioritiesArray[prioritiesArray.count-6].title) {
-            cell.iconImageView.image = UIImage(named: "blocker")!
-            return cell
-        }
-        if (issue.issueStatus == prioritiesArray[prioritiesArray.count-5].title || issue.issueStatus == prioritiesArray[prioritiesArray.count-4].title) {
-            cell.iconImageView.image = UIImage(named: "TAG Red")!
-            return cell
-        }
-        if (issue.issueStatus == prioritiesArray[prioritiesArray.count-3].title) {
-            cell.iconImageView.image = UIImage(named: "TAG Yellow")!
-            return cell
-        }
-        else {
-            cell.iconImageView.image = UIImage(named: "TAG Green")!
-            return cell            
-        }
-    }
-    
-    override func viewWillAppear(animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-    }
-    
+    /*
+        Configure the DeepPressHandler.
+        Change priority according to applied pressure.
+     */
     func deepPressHandler(recognizer: DeepPressGestureRecognizer) {
         let forceLocation = recognizer.locationInView(self.tableView)
         if let forcedIndexPath = tableView.indexPathForRowAtPoint(forceLocation) {
@@ -327,6 +360,9 @@ class PressureWeightViewController: UITableViewController{
         }
     }
     
+    /*
+        Mapping function. Force -> Priority.
+     */
     func mapForceToTicketStatus(force :CGFloat) -> String {
         var ret :String
         switch true {
@@ -346,6 +382,9 @@ class PressureWeightViewController: UITableViewController{
         return ret
     }
     
+    /*
+        Mapping function. Force -> Icon.
+     */
     func mapForceToTicketIcon(force :CGFloat) -> UIImage {
         var ret :UIImage
         switch true {
@@ -365,6 +404,9 @@ class PressureWeightViewController: UITableViewController{
         return ret
     }
     
+    /*
+        Call to JIRA with new Issue Status.
+     */
     func sendNewIssueStatusToJira(status :String, issueKey :String) {
         let parameters = [
             "update": [
@@ -380,23 +422,32 @@ class PressureWeightViewController: UITableViewController{
             }
     }
 }
+
+/*
+    Search Bar Delegate.
+    Handles Search Input depending on JQL_MODE_ENABLED
+ */
 extension PressureWeightViewController: UISearchBarDelegate {
     // MARK: - UISearchBar Delegate
     func searchBar(searchBar: UISearchBar, selectedScopeButtonIndexDidChange selectedScope: Int) {
         if (JQL_MODE_ENABLED) {
             loadIssuesWithJQL()
-        }else {
+        } else {
             filterContentForSearchText(searchBar.text!)
         }
     }
 }
 
+/*
+    Search Results.
+    Handles Search Input depending on JQL_MODE_ENABLED
+*/
 extension PressureWeightViewController: UISearchResultsUpdating {
     // MARK: - UISearchResultsUpdating Delegate
     func updateSearchResultsForSearchController(searchController: UISearchController) {
         if (JQL_MODE_ENABLED) {
             loadIssuesWithJQL()
-        }else {
+        } else {
             filterContentForSearchText(searchController.searchBar.text!)
         }
     }
