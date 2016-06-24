@@ -105,6 +105,7 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
     
     @IBAction func loginButtonClicked(sender: AnyObject) {
         let pw = PWTextField.text!
+        print("clicked")
         username = UserTextField.text!
         let auth = pw + ":" + username
         let utf8auth = auth.dataUsingEncoding(NSUTF8StringEncoding)
@@ -116,10 +117,14 @@ class LoginViewController: UIViewController, UITextFieldDelegate {
             "password" : pw
         ]
         
+
         //Send Request
-        Alamofire.request(.POST, serverAdress + "/rest/auth/1/session" , headers: ["Content-Type" : "application/json"], parameters: parameters, encoding: .JSON)
+        Alamofire.request(.POST, serverAdress + "/rest/auth/1/session" , headers: ["Content-Type" : "application/json"], parameters: ["username" : "tordenewitz", "password" : "i4NwKXqdxcw8xotH"], encoding: .JSON)
             .responseJSON { response in
                 print(response.result)
+                print(response.request?.HTTPBodyStream)
+                print(response.request?.HTTPBodyStream)
+                print(response.request?.allHTTPHeaderFields)
                 print(response.request)
                 print(response.response)
                 if (response.response == nil) {
