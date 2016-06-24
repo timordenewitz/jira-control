@@ -39,10 +39,10 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.refreshControl?.addTarget(self, action: "handleRefresh:", forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(StressTicketViewController.handleRefresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         checkConnection()
         setupSearchBar()
-        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: "performJQL:")
+        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(StressTicketViewController.performJQL(_:)))
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
     }
     
@@ -128,7 +128,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
                         if (response.response?.statusCode == 200) {
-                            for var index = 0; index < issues!.count; index += 1{
+                            for index in 0 ..< issues!.count{
                                 if let fields = issues![index]["fields"] {
                                     if let assignee = fields!["assignee"] {
                                         if let labels = fields!["labels"] {
@@ -167,7 +167,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     
     
     func checkIfIssueGotStressed(labels : AnyObject) -> Bool {
-        for var i = 0; i < labels.count; i += 1 {
+        for i in 0 ..< labels.count {
             if (labels[i] == STRESSED_LABEL_FOR_JIRA) {
                 return true
             }
@@ -201,7 +201,7 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! StressTicketTableViewCell
         let issue: StressTicketViewController.issue
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: #selector(StressTicketViewController.deepPressHandler(_:)), threshold: 0.8)
         cell.profilePictureImageView.image = nil
         cell.addGestureRecognizer(deepPressGestureRecognizer)
         

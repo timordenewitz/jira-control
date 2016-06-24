@@ -10,7 +10,7 @@ import UIKit
 import Alamofire
 import OnePasswordExtension
 
-class ViewController: UIViewController, UITextFieldDelegate {
+class LoginViewController: UIViewController, UITextFieldDelegate {
 
     @IBOutlet var UserTextField: UITextField!
     @IBOutlet var PWTextField: UITextField!
@@ -55,7 +55,6 @@ class ViewController: UIViewController, UITextFieldDelegate {
         onePasswordButton.hidden = true
         if (OnePasswordExtension.sharedExtension().isAppExtensionAvailable()) {
             onePasswordButton.hidden = false
-
         }
     }
     
@@ -82,7 +81,7 @@ class ViewController: UIViewController, UITextFieldDelegate {
     }
 
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        UIApplication.sharedApplication().sendAction("resignFirstResponder", to:nil, from:nil, forEvent:nil)
+        UIApplication.sharedApplication().sendAction(#selector(UIResponder.resignFirstResponder), to:nil, from:nil, forEvent:nil)
     }
     
     func textFieldShouldReturn(textField: UITextField) -> Bool {

@@ -1,9 +1,6 @@
 //
 //  PressureWeightViewController.swift
-//  
-//
 //  Created by Tim Ordenewitz on 05.02.16.
-//
 //
 
 import UIKit
@@ -11,6 +8,7 @@ import Alamofire
 
 class PressureWeightViewController: UITableViewController{
 
+    //---Constants---
     let cellIdentifier = "issueCell"
     let epicCustomField = "customfield_10900"
     var authBase64 :String = ""
@@ -26,11 +24,14 @@ class PressureWeightViewController: UITableViewController{
     let searchController = UISearchController(searchResultsController: nil)
     var JQL_MODE_ENABLED = false
     
+    //---Variables---
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
     var touchArray = [CGFloat]()
     var prioritiesArray = [priority]()
     
+    
+    //---Structs---
     struct issue {
         var title :String
         var description :String
@@ -42,6 +43,7 @@ class PressureWeightViewController: UITableViewController{
         var id : String
     }
     
+    //---Lifetime Methods---
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
@@ -57,6 +59,29 @@ class PressureWeightViewController: UITableViewController{
         searchController.searchBar.barTintColor = UIColor.whiteColor()
     }
     
+    override func viewDidAppear(animated: Bool) {
+        checkConnection()
+    }
+    
+    //---Methods---
+    
+    /*
+        Method to setup the Search Bar in this View Controller.
+        Setting the Keyboardtype, Delegate and Placeholder.
+     */
+    func setupSearchBar() {
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.keyboardType = UIKeyboardType.URL
+        searchController.searchBar.delegate = self
+        definesPresentationContext = true
+        searchController.dimsBackgroundDuringPresentation = false
+        tableView.tableHeaderView = searchController.searchBar
+        searchController.searchBar.placeholder = "Search in Issues"
+    }
+    
+    /*
+        Switch the Search Bar from 'normal' search-mode to JQL-search-mode.
+     */
     func performJQL (sender:UIButton) {
         if (JQL_MODE_ENABLED) {
             JQL_MODE_ENABLED = false
@@ -75,25 +100,21 @@ class PressureWeightViewController: UITableViewController{
         }
     }
     
+    /*
+        Load Issues from JIRA where the user is reporter.
+     */
+    func loadIssuesWithNormalQuery() {
+        loadIssues("jql=reporter=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
+    }
+    
+    /*
+     Load Issues from JIRA using a custom JQL Query.
+     */
     func loadIssuesWithJQL() {
         if(searchController.searchBar.text != ""){
             loadIssues("jql=" + (searchController.searchBar.text?.stringByReplacingOccurrencesOfString(" ", withString: "%20"))!)
             tableView.reloadData()
         }
-    }
-    
-    func loadIssuesWithNormalQuery() {
-        loadIssues("jql=reporter=" + username + additionalJQLQuery.stringByReplacingOccurrencesOfString(" ", withString: "%20"))
-    }
-    
-    func setupSearchBar() {
-        searchController.searchResultsUpdater = self
-        searchController.searchBar.keyboardType = UIKeyboardType.URL
-        searchController.searchBar.delegate = self
-        definesPresentationContext = true
-        searchController.dimsBackgroundDuringPresentation = false
-        tableView.tableHeaderView = searchController.searchBar
-        searchController.searchBar.placeholder = "Search in Issues"
     }
     
     func filterContentForSearchText(searchText: String) {
@@ -103,9 +124,7 @@ class PressureWeightViewController: UITableViewController{
         tableView.reloadData()
     }
     
-    override func viewDidAppear(animated: Bool) {
-        checkConnection()
-    }
+
     
     func handleRefresh(refreshControl: UIRefreshControl) {
         refresh()
@@ -274,13 +293,13 @@ class PressureWeightViewController: UITableViewController{
                             forcedCell.backgroundColor = UIColor(red: (2.0 * recognizer.force), green: (2.0 * (1 - recognizer.force)), blue: 0, alpha: 1)
                             forcedCell.statusLabel.text = mapForceToTicketStatus(recognizer.force).uppercaseString
                             forcedCell.iconImageView.image = mapForceToTicketIcon(recognizer.force)
-                            i++
+                            i += 1
                             return
                         }
                         forcedCell.backgroundColor = UIColor(red: (2.0 * touchArray[i-8]), green: (2.0 * (1 - touchArray[i-8])), blue: 0, alpha: 1)
                         forcedCell.statusLabel.text = mapForceToTicketStatus(touchArray[i-8]).uppercaseString
                         forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-8])
-                        i++
+                         i += 1
                     }
                 }
                 

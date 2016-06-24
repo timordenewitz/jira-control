@@ -37,7 +37,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     override func viewDidLoad() {
         super.viewDidLoad()
         checkConnection()
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: #selector(DiagramViewController.deepPressHandler(_:)), threshold: 0.8)
         lineChartView.addGestureRecognizer(deepPressGestureRecognizer)
     }
     
@@ -74,14 +74,14 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
                 if let JSON = response.result.value {
                     if let issues = JSON["issues"] {
                         //All Issues Reported by User
-                        for var index = 0; index < issues!.count; ++index {
+                        for index in 0 ..< issues!.count {
                             var tmpProject : Project
                             if let fields = issues![index]["fields"] {
                                 if let projectArray = fields!["project"] {
                                     tmpProject = Project(title: projectArray!["name"] as! String, key: projectArray!["key"] as! String, sprints: nil)
                                     self.projects.insert(tmpProject)
                                     if let sprintInfo = fields![self.sprintInfoField] {
-                                        for var index = 0; index < sprintInfo!.count; ++index {
+                                        for index in 0 ..< sprintInfo!.count {
                                             var myTempStrArray = sprintInfo![index].componentsSeparatedByString(",")
                                             if (self.checkSprintObjectForNullValues(myTempStrArray)) {
                                                 let sprintState = myTempStrArray[2].componentsSeparatedByString("=")[1]
@@ -98,13 +98,13 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
                                 }
                             }
                         }
-                        for var index = 0; index < issues!.count; ++index{
+                        for index in 0 ..< issues!.count{
                             if let fields = issues![index]["fields"] {
                                 if let projectArray = fields!["project"] {
                                     if let storyPointsJSON = fields![self.storyPointKey] {
                                         if (!(storyPointsJSON is NSNull)) {
                                             if let sprintInfo = fields![self.sprintInfoField] {
-                                                for var index = 0; index < sprintInfo!.count; ++index {
+                                                for index in 0 ..< sprintInfo!.count {
                                                     var myTempStrArray = sprintInfo![index].componentsSeparatedByString(",")
                                                     let sprintName = myTempStrArray[3].componentsSeparatedByString("=")[1]
                                                     for sprintObject in self.sprints {
@@ -232,7 +232,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     
     func filterIssuesByProject(resolvedIssues :[Issue], project: String) -> [Issue]{
         var tmpArray: [Issue] = []
-        for var index = 0; index < resolvedIssues.count; ++index {
+        for index in 0 ..< resolvedIssues.count {
             if(project == resolvedIssues[index].project.title) {
                 tmpArray.append(resolvedIssues[index])
             }
@@ -365,7 +365,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     func buildBurndownMeanLine(maxSP : Double, nrOfDataPoints : Int, sprintLength : Int) -> [Double]{
         var ret : [Double] = []
         let storyPointsPerDay = maxSP/Double(sprintLength)
-        for var i = 0; i < nrOfDataPoints; ++i {
+        for i in 0 ..< nrOfDataPoints {
             ret.append(maxSP - Double(i) * storyPointsPerDay)
         }
         return ret
@@ -377,6 +377,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
         for sprint in sprints {
             if(sprint.project == project) {
                 NSCalendar.currentCalendar()
+                
                 for var date = sprint.startDate; date.isLessThanDate(NSDate()); date = date.addDays(1) {
                     if(!date.inWeekend) {
                         ret.append(burndownDate(date: date, numberOfStorypoints: 0))
@@ -439,7 +440,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
             touchArray.append(recognizer)
             guard touchArray.count > 7 else {
                 lineChartView.zoom((zoomThresehold + recognizer.force / 10), scaleY: (zoomThresehold + recognizer.force / 10) , x: recognizer.xTouch, y: recognizer.yTouch)
-                index++
+                index += 1
                 return
             }
             let point1 = lineChartView.getEntryByTouchPoint(touchArray[0].point!)
