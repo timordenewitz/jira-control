@@ -11,25 +11,25 @@ class PressureWeightViewController: UITableViewController{
     //---Constants---
     let cellIdentifier = "issueCell"
     let epicCustomField = "customfield_10900"
+    let touchArraySaveValue = 14
+    let additionalJQLQuery = " AND (NOT status = 'Closed' AND NOT status = 'resolved' AND NOT status='done')"
+    let authTempBase64 = "YWRtaW46YWRtaW4="
+    let testJiraUrl = "http://46.101.221.171:8080"
+    let maxResultsParameters = "&maxResults=500"
+    let searchController = UISearchController(searchResultsController: nil)
+    
+    //---Variables---
     var authBase64 :String = ""
     var serverAdress :String = ""
     var username :String = ""
     var startTime: CFAbsoluteTime!
     var i: Int = 0
     var activatedPressureWeight = false
-    let additionalJQLQuery = " AND (NOT status = 'Closed' AND NOT status = 'resolved' AND NOT status='done')"
-    var authTempBase64 = "YWRtaW46YWRtaW4="
-    let testJiraUrl = "http://46.101.221.171:8080"
-    let maxResultsParameters = "&maxResults=500"
-    let searchController = UISearchController(searchResultsController: nil)
-    var JQL_MODE_ENABLED = false
-    
-    //---Variables---
     var issuesArray = [issue]()
     var filteredIssues = [issue]()
     var touchArray = [CGFloat]()
     var prioritiesArray = [priority]()
-    
+    var JQL_MODE_ENABLED = false
     
     //---Structs---
     struct issue {
@@ -322,16 +322,17 @@ class PressureWeightViewController: UITableViewController{
                     
                     if (activatedPressureWeight) {
                         touchArray.insert(recognizer.force, atIndex: i)
-                        guard touchArray.count > 8 else {
+                        guard touchArray.count > touchArraySaveValue else {
                             forcedCell.backgroundColor = UIColor(red: (2.0 * recognizer.force), green: (2.0 * (1 - recognizer.force)), blue: 0, alpha: 1)
                             forcedCell.statusLabel.text = mapForceToTicketStatus(recognizer.force).uppercaseString
                             forcedCell.iconImageView.image = mapForceToTicketIcon(recognizer.force)
                             i += 1
                             return
                         }
-                        forcedCell.backgroundColor = UIColor(red: (2.0 * touchArray[i-8]), green: (2.0 * (1 - touchArray[i-8])), blue: 0, alpha: 1)
-                        forcedCell.statusLabel.text = mapForceToTicketStatus(touchArray[i-8]).uppercaseString
-                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-8])
+                        
+                        forcedCell.backgroundColor = UIColor(red: (2.0 * touchArray[i-touchArraySaveValue]), green: (2.0 * (1 - touchArray[i-touchArraySaveValue])), blue: 0, alpha: 1)
+                        forcedCell.statusLabel.text = mapForceToTicketStatus(touchArray[i-touchArraySaveValue]).uppercaseString
+                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-touchArraySaveValue])
                          i += 1
                     }
                 }
@@ -341,13 +342,14 @@ class PressureWeightViewController: UITableViewController{
                         let seconds = 0.25
                         let delay = seconds * Double(NSEC_PER_SEC)  // nanoseconds per seconds
                         let dispatchTime = dispatch_time(DISPATCH_TIME_NOW, Int64(delay))
-                        if (touchArray.count < 8) {
+                        if (touchArray.count < touchArraySaveValue) {
                             forcedCell.statusLabel.text = mapForceToTicketStatus(recognizer.force).uppercaseString
                             forcedCell.iconImageView.image = mapForceToTicketIcon(recognizer.force)
                         }
-                        let status = mapForceToTicketStatus(touchArray[i-8])
+                        
+                        let status = mapForceToTicketStatus(touchArray[i-touchArraySaveValue])
                         forcedCell.statusLabel.text = status.uppercaseString
-                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-8])
+                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-touchArraySaveValue])
                         sendNewIssueStatusToJira(status, issueKey: forcedCell.titleLabel.text!)
                         dispatch_after(dispatchTime, dispatch_get_main_queue(), {
                             forcedCell.backgroundColor = UIColor.whiteColor()
@@ -419,6 +421,8 @@ class PressureWeightViewController: UITableViewController{
         ]
         Alamofire.request(.PUT, serverAdress + "/rest/api/2/issue/" + issueKey, parameters: parameters, encoding: .JSON)
             .responseJSON { response in
+                print(response.request)
+                print(response.response)
             }
     }
 }
