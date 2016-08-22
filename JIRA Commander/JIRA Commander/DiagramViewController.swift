@@ -11,7 +11,7 @@ import Charts
 import Alamofire
 import Foundation
 
-class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerViewDelegate {
+class DiagramViewController: UIViewController {
     
     var authBase64 :String = ""
     var serverAdress :String = ""
@@ -37,7 +37,7 @@ class DiagramViewController: UIViewController, UIPickerViewDataSource, UIPickerV
     override func viewDidLoad() {
         super.viewDidLoad()
         checkConnection()
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: #selector(DiagramViewController.deepPressHandler(_:)), threshold: 0.8)
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: #selector(deepPressHandler(_:)), threshold: 0.8)
         lineChartView.addGestureRecognizer(deepPressGestureRecognizer)
     }
     
@@ -589,3 +589,4 @@ extension UIColor {
         return UIColor(red: 74/255, green: 157/255, blue: 218/255, alpha: 0.9)
     }
 }
+

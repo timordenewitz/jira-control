@@ -39,10 +39,10 @@ class StressTicketViewController: UITableViewController, SWTableViewCellDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         self.navigationController?.setNavigationBarHidden(false, animated: false)
-        self.refreshControl?.addTarget(self, action: #selector(StressTicketViewController.handleRefresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
+        self.refreshControl?.addTarget(self, action: #selector(handleRefresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         checkConnection()
         setupSearchBar()
-        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(StressTicketViewController.performJQL(_:)))
+        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(performJQL(_:)))
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
     }
     

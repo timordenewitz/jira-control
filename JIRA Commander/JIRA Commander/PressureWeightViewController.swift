@@ -6,7 +6,7 @@
 import UIKit
 import Alamofire
 
-class PressureWeightViewController: UITableViewController{
+class PressureWeightViewController: UITableViewController { 
 
     //---Constants---
     let cellIdentifier = "issueCell"
@@ -33,9 +33,9 @@ class PressureWeightViewController: UITableViewController{
     
     //---Structs---
     struct issue {
-        var title :String
-        var description :String
-        var issueStatus :String
+        var title : String
+        var description : String
+        var issueStatus : String
     }
     
     struct priority {
@@ -49,7 +49,7 @@ class PressureWeightViewController: UITableViewController{
         self.navigationController?.setNavigationBarHidden(false, animated: false)
         self.refreshControl?.addTarget(self, action: #selector(PressureWeightViewController.handleRefresh(_:)), forControlEvents: UIControlEvents.ValueChanged)
         setupSearchBar()
-        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(PressureWeightViewController.performJQL(_:)))
+        let rightAddBarButtonItem:UIBarButtonItem = UIBarButtonItem(title: "JQL", style: UIBarButtonItemStyle.Plain, target: self, action: #selector(performJQL(_:)))
         self.navigationItem.setRightBarButtonItems([rightAddBarButtonItem], animated: true)
     }
     
@@ -63,6 +63,8 @@ class PressureWeightViewController: UITableViewController{
         checkConnection()
     }
     
+    
+    //---Table View Methods---
     /*
         Custom Table View function. Get Nr. Of Rows in Section.
      */
@@ -80,6 +82,10 @@ class PressureWeightViewController: UITableViewController{
         return "Reported Issues"
     }
     
+    override func viewWillAppear(animated: Bool) {
+        self.navigationController?.setNavigationBarHidden(false, animated: false)
+    }
+    
     /*
         Custom Table View function. Get Cell for Row at IndexPath.
         Add Pressure Recognizer, add Priority Icon.
@@ -87,7 +93,7 @@ class PressureWeightViewController: UITableViewController{
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCellWithIdentifier(cellIdentifier, forIndexPath: indexPath) as! IssueTableViewCell
         let issue: PressureWeightViewController.issue
-        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: "deepPressHandler:", threshold: 0.8)
+        let deepPressGestureRecognizer = DeepPressGestureRecognizer(target: self, action: #selector(deepPressHandler(_:)), threshold: 0.8)
         cell.addGestureRecognizer(deepPressGestureRecognizer)
         
         if (searchController.active && searchController.searchBar.text != "" && !JQL_MODE_ENABLED) {
@@ -118,13 +124,8 @@ class PressureWeightViewController: UITableViewController{
         }
     }
     
-    override func viewWillAppear(animated: Bool) {
-        self.navigationController?.setNavigationBarHidden(false, animated: false)
-    }
-
     
     //---Methods---
-    
     /*
         Method to setup the Search Bar in this View Controller.
         Setting the Keyboardtype, Delegate and Placeholder.
@@ -276,7 +277,7 @@ class PressureWeightViewController: UITableViewController{
         Alamofire.request(.GET, serverAdress + "/rest/api/2/priority")
             .responseJSON { response in
                 if let JSON = response.result.value {
-                    for var index = 0; index < JSON.count; ++index{
+                    for index in 0 ..< JSON.count{
                         let myPriority = priority(title: JSON[index]["name"] as! String, id: JSON[index]["id"] as! String)
                         self.prioritiesArray.append(myPriority)
                     }
@@ -333,7 +334,7 @@ class PressureWeightViewController: UITableViewController{
                         forcedCell.backgroundColor = UIColor(red: (2.0 * touchArray[i-touchArraySaveValue]), green: (2.0 * (1 - touchArray[i-touchArraySaveValue])), blue: 0, alpha: 1)
                         forcedCell.statusLabel.text = mapForceToTicketStatus(touchArray[i-touchArraySaveValue]).uppercaseString
                         forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-touchArraySaveValue])
-                         i += 1
+                        i += 1
                     }
                 }
                 
@@ -345,17 +346,17 @@ class PressureWeightViewController: UITableViewController{
                         if (touchArray.count < touchArraySaveValue) {
                             forcedCell.statusLabel.text = mapForceToTicketStatus(recognizer.force).uppercaseString
                             forcedCell.iconImageView.image = mapForceToTicketIcon(recognizer.force)
+                        } else {
+                            let status = mapForceToTicketStatus(touchArray[i-touchArraySaveValue])
+                            forcedCell.statusLabel.text = status.uppercaseString
+                            forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-touchArraySaveValue])
+                            sendNewIssueStatusToJira(status, issueKey: forcedCell.titleLabel.text!)
+                            dispatch_after(dispatchTime, dispatch_get_main_queue(), {
+                                forcedCell.backgroundColor = UIColor.whiteColor()
+                                self.activatedPressureWeight = false
+                                self.loadIssuesWithNormalQuery()
+                            })
                         }
-                        
-                        let status = mapForceToTicketStatus(touchArray[i-touchArraySaveValue])
-                        forcedCell.statusLabel.text = status.uppercaseString
-                        forcedCell.iconImageView.image = mapForceToTicketIcon(touchArray[i-touchArraySaveValue])
-                        sendNewIssueStatusToJira(status, issueKey: forcedCell.titleLabel.text!)
-                        dispatch_after(dispatchTime, dispatch_get_main_queue(), {
-                            forcedCell.backgroundColor = UIColor.whiteColor()
-                            self.activatedPressureWeight = false
-                            self.loadIssuesWithNormalQuery()
-                        })
                     }
                 }
             }
