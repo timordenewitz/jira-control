@@ -1,0 +1,11 @@
+source 'https://github.com/CocoaPods/Specs.git'
+platform :ios, '9.0'
+use_frameworks!
+
+target 'JIRA Control' do
+  pod 'QorumLogs' 
+  pod 'Alamofire', '~>  3.4'
+  pod '1PasswordExtension', :git => 'https://github.com/AgileBits/onepassword-app-extension.git'
+  pod 'Charts'
+  pod 'SWTableViewCell', '~> 0.3.7'
+end
